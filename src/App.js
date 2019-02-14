@@ -55,10 +55,10 @@ export default class App extends React.Component {
       <div style={{ height: "100%", display: 'flex', flexDirection: 'row' }}>
         <div style={{ display: 'flex', flexDirection: 'column', height: "100%", width: '50%' }} >
           <MonacoJSONEditor onChange={this.setMarkers.bind(this)}/>
-          <JSONValidationErrorList id="errorList" markers={this.state.markers}/>
+          <JSONValidationErrorList markers={this.state.markers}/>
         </div>
 
-        <div className='docs' style={{marginLeft: '30px', marginTop: '30px'}}>
+        <div className='docs' style={{margin: '40px'}}>
           {this.state.parsedSchema.info && <ReactMarkdown source={infoTemplate({info: this.state.parsedSchema.info})} />}
           {this.state.parsedSchema.servers && <ReactMarkdown source={serverTemplate({servers: this.state.parsedSchema.servers})} />}
           {this.state.parsedSchema.methods && <ReactMarkdown source={this.state.parsedSchema.methods.map((m) => methodTemplate({method: m})).join('')} />}
