@@ -2,10 +2,10 @@
 A place to play around with OPEN-RPC.
 
 ## For Non-developers
-This is a tool for building and validating OPEN-RPC documents.
+This is a tool for editing, validating and previewing OPEN-RPC documents.
 
 ## What is it?
-This is meant to be an all-in-one developer portal for  OPEN-RPC documents. It includes an editor and a live-preview of the documentation.
+This is meant to be an all-in-one developer portal for OPEN-RPC documents. It includes an editor and a live-preview of the documentation.
 
 This helps developers visualize the OPEN-RPC and iterate very quickly on creating OPEN-RPC documents via the built in editor tooling.
 
@@ -20,12 +20,14 @@ Navigate to [open-rpc.github.io/playground/](https://open-rpc.github.io/playgrou
 
 - `CTRL + SPACE` - auto complete (TAB or ENTER to complete)
 - `CTRL + N/CTRL + P` - down/up a line (also works as up/down in autocomplete)
-- `ALT + SHIFT + F` - Format Document
+- `ALT + SHIFT + F` - format document
 - `CMD + K + I` - pop up tooltip under cursor (this one is tricky, you have to hold `CMD`)
 - `CMD + ALV + V` - toggle vim mode
 
 ## Resources and Inspirations
 
+- [open-rpc/spec](https://github.com/open-rpc/spec)
+- [open-rpc/generator-docs](https://github.com/open-rpc/generator-docs)
 - [Swagger Editor](https://editor.swagger.io/)
 - [Marvel Interactive Documentation](https://developer.marvel.com/docs)
 - [apiary.io](https://apiary.io/)
