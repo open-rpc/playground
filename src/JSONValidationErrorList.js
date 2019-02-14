@@ -7,15 +7,16 @@ export default class JSONValidationErrorList extends React.Component {
     this.state = {}
   }
   render() {
+    if (!this.props.markers || this.props.markers.length === 0) return null;
     return (
-      <ul>
-      Error List
-      {this.props.markers && this.props.markers.map((marker) => {
-        return (
-          <li key={marker.message}>{marker.message} @ {marker.starLineNumber}:{marker.startColumn}</li>
-        )
-      })}
-     </ul>
+      <ul id="errorList">
+        {this.props.markers && this.props.markers.length > 0 && "Error List"}
+        {this.props.markers && this.props.markers.map((marker) => {
+           return (
+             <li key={marker.message}>{marker.message} @ {marker.starLineNumber}:{marker.startColumn}</li>
+           )
+        })}
+      </ul>
     );
   }
 }
