@@ -3,7 +3,8 @@ import Hotkeys from 'react-hot-keys';
 import { render } from 'react-dom';
 import MonacoEditor from 'react-monaco-editor';
 import { initVimMode } from 'monaco-vim';
-
+import empty from 'json-schema-empty';
+import * as monaco from 'monaco-editor';
 
 const fetchUrlSchemaFile = async (schema) => {
   try {
@@ -17,22 +18,26 @@ const fetchUrlSchemaFile = async (schema) => {
 export default class MonacoJSONEditor extends React.Component {
   constructor(props) {
     super(props);
-    console.log('props=', props);
-    this.state = {
-      code: [
-        '{',
-        '\t',
-        '}'
-      ].join('\n')
-    }
     this.monaco = React.createRef();
   }
-  async setEditor(editor, monaco) {
+  async componentDidMount() {
     const schema = await fetchUrlSchemaFile('https://raw.githubusercontent.com/open-rpc/meta-schema/master/schema.json');
+    const emptySchema = JSON.stringify(empty(schema), undefined, '\t');
 
+    this.editorInstance = monaco.editor.create(this.monaco.current, {
+	    value: emptySchema,
+	    language: 'json',
+      theme: 'vs-dark',
+      options: {
+        tabSize: 2,
+        formatOnType: true,
+        formatOnPaste: true,
+        autoIndent: true
+      }
+    });
     const modelUri = window.monaco.Uri.parse("inmemory://model/userSpec.json");
-    const model = monaco.editor.createModel(this.state.code, "json", modelUri);
-    editor.setModel(model);
+    const model = monaco.editor.createModel(emptySchema, "json", modelUri);
+    this.editorInstance.setModel(model);
     monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
       enableSchemaRequest: true,
       validate: true,
@@ -43,10 +48,12 @@ export default class MonacoJSONEditor extends React.Component {
         }
       ]
     })
-    editor.setSelection(new monaco.Selection(2,2,2,2));
+    this.editorInstance.setSelection(new monaco.Selection(3,13,3,13));
 
-    editor.focus();
-    this.editor = editor;
+    this.editorInstance.focus();
+    window.onresize = () => this.editorInstance.layout();
+    setTimeout(() => this.editorInstance.layout(), 1000);
+    this.editorInstance.onDidChangeModelContent(() => this.props.onChange(), 1000);
   }
   editorDidMount(editor, monaco) {
     this.setEditor(editor, monaco);
@@ -55,7 +62,6 @@ export default class MonacoJSONEditor extends React.Component {
     this.props.onChangeMarkers(window.monaco.editor.getModelMarkers())
   }
   onVimKeybind(e) {
-    console.log('vim mode', this.vimMode);
     if (this.vimMode) {
       this.vimMode.dispose();
       this.statusNode.innerHTML = '';
@@ -63,37 +69,15 @@ export default class MonacoJSONEditor extends React.Component {
       return;
     }
     this.statusNode = document.getElementById('vim-status-bar');
-    this.vimMode = initVimMode(this.editor, this.statusNode);
+    this.vimMode = initVimMode(this.editorInstance, this.statusNode);
     return;
   }
   render() {
-    const code = this.state.code;
-    const options = {
-      tabSize: 2,
-      formatOnType: true, 
-      formatOnPaste: true,
-      autoIndent: true,
-      glyphMargin: true
-    };
-    return (
-      <>
-        <Hotkeys 
-          keyName="ctrl+alt+v"
-          onKeyDown={this.onVimKeybind.bind(this)}>
-          <MonacoEditor
-            width={window.innerWidth / 2}
-            height={window.innerHeight * .8}
-            language="json"
-            theme="vs-dark"
-            ref={this.monaco}
-            defaulValue={code}
-            options={options}
-            onChange={this.onChange.bind(this)}
-            editorDidMount={this.editorDidMount.bind(this)}
-          />
-        </Hotkeys>
+     return (
+      <Hotkeys keyName="ctrl+alt+v" onKeyDown={this.onVimKeybind.bind(this)}>
+        <div style={{height: '100%'}} ref={this.monaco} />
         <div id="vim-status-bar"></div>
-      </>
+      </Hotkeys>
     );
   }
 }
