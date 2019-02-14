@@ -15,6 +15,15 @@ Navigate to [open-rpc.github.io/playground/](https://open-rpc.github.io/playgrou
 
 ![playground-screenshot](https://user-images.githubusercontent.com/364566/52815421-8303e480-3053-11e9-81f3-92a875d9608e.png)
 
+
+## Keybinds
+
+- `CTRL + SPACE` - auto complete (TAB or ENTER to complete)
+- `CTRL + N/CTRL + P` - down/up a line (also works as up/down in autocomplete)
+- `ALT + SHIFT + F` - Format Document
+- `CMD + K + I` - pop up tooltip under cursor (this one is tricky, you have to hold `CMD`)
+- `CMD + ALV + V` - toggle vim mode
+
 ## Resources and Inspirations
 
 - [Swagger Editor](https://editor.swagger.io/)
@@ -26,6 +35,7 @@ Navigate to [open-rpc.github.io/playground/](https://open-rpc.github.io/playgrou
 - [Stripe API Docs](https://stripe.com/docs/api)
 - [Monaco Editor](https://microsoft.github.io/monaco-editor/)
 - [Microsoft/vscode](https://github.com/Microsoft/vscode)
+- [theia-ide/theia](https://github.com/theia-ide/theia)
 
 
 ## Contributing
