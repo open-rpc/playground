@@ -29,10 +29,10 @@ export default class MonacoJSONEditor extends React.Component {
 	    language: 'json',
       theme: 'vs-dark',
       options: {
-        tabsize: 2,
-        formatontype: true,
-        formatonpaste: true,
-        autoindent: true
+        tabSize: 2,
+        formatOnType: true,
+        formatOnPaste: true,
+        autoIndent: true
       }
     });
     const modelUri = window.monaco.Uri.parse("inmemory://model/userSpec.json");
