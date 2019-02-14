@@ -54,8 +54,8 @@ export default class App extends React.Component {
     return (
       <div style={{ height: "100%", display: 'flex', flexDirection: 'row' }}>
         <div style={{ display: 'flex', flexDirection: 'column', height: "100%", width: '50%' }} >
-          <MonacoJSONEditor onChange={this.setMarkers.bind(this)}/>
           <JSONValidationErrorList markers={this.state.markers}/>
+          <MonacoJSONEditor onChange={this.setMarkers.bind(this)}/>
         </div>
 
         <div className='docs' style={{margin: '40px'}}>
