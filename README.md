@@ -1,9 +1,6 @@
 # OPEN-RPC Playground
 A place to play around with OPEN-RPC.
 
-## For Non-developers
-This is a tool for editing, validating and previewing OPEN-RPC documents.
-
 ## What is it?
 This is meant to be an all-in-one developer portal for OPEN-RPC documents. It includes an editor and a live-preview of the documentation.
 
