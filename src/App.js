@@ -30,8 +30,9 @@ export default class App extends React.Component {
   }
   async componentDidMount() {
     this.interval = setInterval(this.refreshEditorData, 1000);
+    this.refreshEditorData();
   }
-  refreshEditorData(editorInstance) {
+  refreshEditorData() {
     const markers = monaco.editor.getModelMarkers();
     let parsedSchema
     try {
@@ -47,8 +48,8 @@ export default class App extends React.Component {
   componentWillUnmount() {
     clearInterval(this.interval);
   }
-  setMarkers(editorInstance) {
-    this.refreshEditorData(editorInstance);
+  setMarkers() {
+    this.refreshEditorData();
   }
   render() {
     return (
