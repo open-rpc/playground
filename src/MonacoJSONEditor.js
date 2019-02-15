@@ -92,7 +92,16 @@ export default class MonacoJSONEditor extends React.Component {
       // Method that will be executed when the action is triggered.
       // @param editor The editor instance is passed in as a convinience
       run: (ed) => {
-        const emptySchema = JSON.stringify(empty(this.metaSchema), undefined, '\t');
+        let emptySchema;
+        try {
+          emptySchema = JSON.stringify(empty(this.metaSchema), undefined, '\t');
+        } catch (e) {
+          if (JSON.stringify(this.metaSchema) == '{}') {
+            emptySchema = '{\n\t\n}';
+          } else {
+            emptySchema = JSON.stringify(this.metaSchema, undefined, '\t');
+          }
+        }
         this.editorInstance.setValue(emptySchema);
       }
     });
