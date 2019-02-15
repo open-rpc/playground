@@ -22,6 +22,7 @@ export default class MonacoJSONEditor extends React.Component {
   }
   async componentDidMount() {
     const schema = await fetchUrlSchemaFile('https://raw.githubusercontent.com/open-rpc/meta-schema/master/schema.json');
+    this.metaSchema = schema;
     const emptySchema = JSON.stringify(empty(schema), undefined, '\t');
     const localStorageSchema = window.localStorage.getItem('schema');
     const defaultValue = localStorageSchema || emptySchema;
@@ -64,6 +65,38 @@ export default class MonacoJSONEditor extends React.Component {
   }
   addCommands(editor) {
 
+    // reset editor to empty schema
+
+    editor.addAction({
+      // An unique identifier of the contributed action.
+      id: 'empty-schema',
+
+      // A label of the action that will be presented to the user.
+      label: 'Reset to Empty Schema',
+
+      // An optional array of keybindings for the action.
+      keybindings: [
+        monaco.KeyMod.chord(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_K, monaco.KeyMod.CtrlCmd | monaco.KeyCode.Backspace)
+      ],
+
+      // A precondition for this action.
+      precondition: null,
+
+      // A rule to evaluate on top of the precondition in order to dispatch the keybindings.
+      keybindingContext: null,
+
+      contextMenuGroupId: 'navigation',
+
+      contextMenuOrder: 1.5,
+
+      // Method that will be executed when the action is triggered.
+      // @param editor The editor instance is passed in as a convinience
+      run: (ed) => {
+        const emptySchema = JSON.stringify(empty(this.metaSchema), undefined, '\t');
+        this.editorInstance.setValue(emptySchema);
+      }
+    });
+
     // replace schema:
     // Press Chord Ctrl-K, Ctrl-R => the action will run if it is enabled
 
@@ -93,6 +126,8 @@ export default class MonacoJSONEditor extends React.Component {
       // @param editor The editor instance is passed in as a convinience
       run: (ed) => {
         const result = window.prompt("Paste schema to replace current meta schema", "{}");
+        const metaSchema = JSON.parse(result)
+        this.metaSchema = metaSchema;
         if (result != null) {
           monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
             enableSchemaRequest: true,
@@ -100,7 +135,7 @@ export default class MonacoJSONEditor extends React.Component {
             schemas: [
               {
                 fileMatch: ['*'],
-                schema: JSON.parse(result)
+                schema: metaSchema
               }
             ]
           })

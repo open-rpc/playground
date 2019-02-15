@@ -30,6 +30,7 @@ export default class App extends React.Component {
   }
   async componentDidMount() {
     this.interval = setInterval(this.refreshEditorData, 1000);
+    this.refreshEditorData();
   }
   refreshEditorData() {
     const markers = monaco.editor.getModelMarkers();
