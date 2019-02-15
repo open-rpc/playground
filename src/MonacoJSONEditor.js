@@ -23,9 +23,11 @@ export default class MonacoJSONEditor extends React.Component {
   async componentDidMount() {
     const schema = await fetchUrlSchemaFile('https://raw.githubusercontent.com/open-rpc/meta-schema/master/schema.json');
     const emptySchema = JSON.stringify(empty(schema), undefined, '\t');
+    const localStorageSchema = window.localStorage.getItem('schema');
+    const defaultValue = localStorageSchema || emptySchema;
 
     this.editorInstance = monaco.editor.create(this.monaco.current, {
-	    value: emptySchema,
+	    value: defaultValue,
 	    language: 'json',
       theme: 'vs-dark',
       options: {
@@ -35,7 +37,7 @@ export default class MonacoJSONEditor extends React.Component {
       }
     });
     const modelUri = window.monaco.Uri.parse("inmemory://model/userSpec.json");
-    const model = monaco.editor.createModel(emptySchema, "json", modelUri);
+    const model = monaco.editor.createModel(defaultValue, "json", modelUri);
     model.updateOptions({tabSize: 2});
     this.editorInstance.setModel(model);
     monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
@@ -53,7 +55,11 @@ export default class MonacoJSONEditor extends React.Component {
     this.editorInstance.focus();
     window.onresize = () => this.editorInstance.layout();
     setTimeout(() => this.editorInstance.layout(), 1000);
-    this.editorInstance.onDidChangeModelContent(() => this.props.onChange(), 1000);
+    this.editorInstance.onDidChangeModelContent(() => {
+      const changedSchema = this.editorInstance.getValue();
+      window.localStorage.setItem('schema', changedSchema);
+      this.props.onChange(changedSchema);
+    });
     this.addCommands(this.editorInstance);
   }
   addCommands(editor) {
