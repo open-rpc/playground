@@ -21,8 +21,12 @@ Navigate to [open-rpc.github.io/playground/](https://open-rpc.github.io/playgrou
 - `CTRL + SPACE` - auto complete (TAB or ENTER to complete)
 - `CTRL + N/CTRL + P` - down/up a line (also works as up/down in autocomplete)
 - `ALT + SHIFT + F` - format document
+
+##### Chords
+
 - `CMD + K + I` - pop up tooltip under cursor (this one is tricky, you have to hold `CMD`)
-- `CMD + ALV + V` - toggle vim mode
+- `CMD + K + V` - toggle vim mode
+- `CMD + K + R` - replace meta schema
 
 ## Resources and Inspirations
 

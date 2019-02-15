@@ -58,7 +58,6 @@
     "react-app-polyfill": "^0.2.1",
     "react-dev-utils": "^7.0.3",
     "react-dom": "^16.8.1",
-    "react-hot-keys": "^1.2.2",
     "react-markdown": "^4.0.6",
     "react-monaco-editor": "^0.23.0",
     "resolve": "^1.10.0",
