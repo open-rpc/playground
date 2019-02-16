@@ -1,7 +1,5 @@
-import React, { Suspense } from 'react';
-import { render } from 'react-dom';
+import React from 'react';
 import * as monaco from 'monaco-editor';
-import fetch from 'isomorphic-fetch';
 import JSONValidationErrorList from './JSONValidationErrorList';
 import MonacoJSONEditor from './MonacoJSONEditor';
 import ReactMarkdown from 'react-markdown';
@@ -10,17 +8,7 @@ import serverTemplate from '@open-rpc/generator-docs/templates/server.template.m
 import methodTemplate from '@open-rpc/generator-docs/templates/method.template.md.js';
 import refParser from 'json-schema-ref-parser';
 import schemaToMarkdown from 'json-schema-to-markdown-table';
-
 import './App.css'
-
-const fetchUrlSchemaFile = async (schema) => {
-  try {
-    const response = await fetch(schema);
-    return await response.json();
-  } catch(e) {
-    throw new Error(`Unable to download openrpc.json file located at the url: ${schema}`);
-  }
-};
 
 export default class App extends React.Component {
 
