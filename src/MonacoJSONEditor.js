@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { render } from 'react-dom';
-import MonacoEditor from 'react-monaco-editor';
+import React from 'react';
 import { initVimMode } from 'monaco-vim';
 import empty from 'json-schema-empty';
 import * as monaco from 'monaco-editor';
@@ -96,7 +94,7 @@ export default class MonacoJSONEditor extends React.Component {
         try {
           emptySchema = JSON.stringify(empty(this.metaSchema), undefined, '\t');
         } catch (e) {
-          if (JSON.stringify(this.metaSchema) == '{}') {
+          if (JSON.stringify(this.metaSchema) === '{}') {
             emptySchema = '{\n\t\n}';
           } else {
             emptySchema = JSON.stringify(this.metaSchema, undefined, '\t');
