@@ -58,15 +58,14 @@ export default class App extends React.Component {
   render() {
     return (
       <div style={{ height: "100%", display: 'flex', flexDirection: 'row' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', height: "100%", width: '50%' }} >
+        <div style={{ display: 'flex', flexDirection: 'column', height: "100%", width: '100%' }} >
           <JSONValidationErrorList markers={this.state.markers}/>
           <MonacoJSONEditor onChange={this.setMarkers.bind(this)}/>
         </div>
-
         <div className='docs'>
           {this.state.parsedSchema.info && <ReactMarkdown source={infoTemplate({info: this.state.parsedSchema.info})} />}
           {this.state.parsedSchema.servers && <ReactMarkdown source={serverTemplate({servers: this.state.parsedSchema.servers})} />}
-          {this.state.parsedSchema.methods && <ReactMarkdown source={'## Methods \n\n'} />}
+          {this.state.parsedSchema.methods && this.state.parsedSchema.methods.length > 0 && <ReactMarkdown source={'## Methods \n\n'} />}
           {this.state.parsedSchema.methods && <ReactMarkdown source={this.state.parsedSchema.methods.map((m) => methodTemplate({method: m, schemaToMarkdown})).join('')} />}
         </div>
       </div>
