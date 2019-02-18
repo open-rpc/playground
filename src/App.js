@@ -2,7 +2,7 @@ import React from 'react';
 import * as monaco from 'monaco-editor';
 import JSONValidationErrorList from './JSONValidationErrorList';
 import MonacoJSONEditor from './MonacoJSONEditor';
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown from 'react-markdown/with-html';
 import infoTemplate from '@open-rpc/generator-docs/templates/info.template.md.js';
 import serverTemplate from '@open-rpc/generator-docs/templates/server.template.md.js';
 import methodTemplate from '@open-rpc/generator-docs/templates/method.template.md.js';
@@ -51,10 +51,10 @@ export default class App extends React.Component {
           <MonacoJSONEditor onChange={this.setMarkers.bind(this)}/>
         </div>
         <div className='docs'>
-          {this.state.parsedSchema.info && <ReactMarkdown source={infoTemplate({info: this.state.parsedSchema.info})} />}
-          {this.state.parsedSchema.servers && <ReactMarkdown source={serverTemplate({servers: this.state.parsedSchema.servers})} />}
+          {this.state.parsedSchema.info && <ReactMarkdown escapeHtml={false} source={infoTemplate({info: this.state.parsedSchema.info})} />}
+          {this.state.parsedSchema.servers && <ReactMarkdown escapeHtml={false} source={serverTemplate({servers: this.state.parsedSchema.servers})} />}
           {this.state.parsedSchema.methods && this.state.parsedSchema.methods.length > 0 && <ReactMarkdown source={'## Methods \n\n'} />}
-          {this.state.parsedSchema.methods && <ReactMarkdown source={this.state.parsedSchema.methods.map((m) => methodTemplate({method: m, schemaToMarkdown})).join('')} />}
+          {this.state.parsedSchema.methods && <ReactMarkdown escapeHtml={false} source={this.state.parsedSchema.methods.map((m) => methodTemplate({method: m, schemaToMarkdown})).join('')} />}
         </div>
       </div>
     );
