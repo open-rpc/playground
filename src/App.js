@@ -19,26 +19,39 @@ export default class App extends React.Component {
       parsedSchema: {}
     }
     this.refreshEditorData = this.refreshEditorData.bind(this);
+    this.checkMarkers = this.refeshMarkers.bind(this);
   }
   async componentDidMount() {
-    this.interval = setInterval(this.refreshEditorData, 1000);
-    this.refreshEditorData();
+    setTimeout(this.refreshEditorData, 300);
+  }
+
+  refeshMarkers() {
+    setTimeout(() => {
+      const markers = monaco.editor.getModelMarkers();
+      this.setState({
+        markers
+      })
+    }, 1000)
   }
   async refreshEditorData() {
-    const markers = monaco.editor.getModelMarkers();
     let parsedSchema
     try {
       parsedSchema = await refParser.dereference(JSON.parse(monaco.editor.getModels()[0].getValue()));
     } catch (e) {
+
+    }
+
+    if (!parsedSchema) {
+      this.refeshMarkers();
+      return;
     }
 
     this.setState({
-      markers,
+      ...this.state,
       parsedSchema: parsedSchema || this.state.parsedSchema
     });
-  }
-  componentWillUnmount() {
-    clearInterval(this.interval);
+
+    this.refeshMarkers();
   }
   setMarkers() {
     this.refreshEditorData();
