@@ -206,7 +206,7 @@ export default class MonacoJSONEditor extends React.Component {
      return (
        <>
         <div style={{height: '100%'}} ref={this.monaco} />
-        <div id="vim-status-bar"></div>
+        <div id="vim-status-bar" style={{position: 'fixed', bottom: '0', background: 'white', opacity: '0.5'}}></div>
        </>
     );
   }
