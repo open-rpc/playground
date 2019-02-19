@@ -489,7 +489,7 @@ module.exports = function(webpackEnv) {
       // Generates an `index.html` file with the <script> injected.
       new MonacoWebpackPlugin({
         // available options are documented at https://github.com/Microsoft/monaco-editor-webpack-plugin#options
-        languages: ['json', 'javascript', 'typescript']
+        languages: ['json']
       }),
       new HtmlWebpackPlugin(
         Object.assign(

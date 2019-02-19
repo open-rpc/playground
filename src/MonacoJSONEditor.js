@@ -1,7 +1,7 @@
 import React from 'react';
-import { initVimMode } from 'monaco-vim';
 import empty from 'json-schema-empty';
 import * as monaco from 'monaco-editor';
+import { initVimMode } from 'monaco-vim';
 
 const fetchUrlSchemaFile = async (schema) => {
   try {
