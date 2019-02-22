@@ -13,8 +13,7 @@ This helps developers visualize the OPEN-RPC and iterate very quickly on creatin
 
 Navigate to [playground.open-rpc.org](https://playground.open-rpc.org/) and start playing around. You can build your own OPEN-RPC document, validate existing documents quickly, or use the [examples](https://github.com/open-rpc/examples).
 
-![playground-screenshot](https://user-images.githubusercontent.com/364566/52815421-8303e480-3053-11e9-81f3-92a875d9608e.png)
-
+![playground-screenshot](https://user-images.githubusercontent.com/364566/53223488-5f7a0480-3626-11e9-929d-f7e10f3247c7.png)
 
 ## Keybinds
 
