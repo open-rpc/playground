@@ -1,6 +1,6 @@
 .docs {
-  height: calc(100% - 80px);
-  padding: 40px;
+  height: calc(100% - 20px);
+  padding: 10px;
   overflow: scroll;
   width: 100%;
 }
