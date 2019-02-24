@@ -4,6 +4,7 @@ import MonacoJSONEditor from './MonacoJSONEditor';
 import refParser from 'json-schema-ref-parser';
 import * as monaco from 'monaco-editor';
 import Documentation from './Documentation';
+import _ from 'lodash';
 import './App.css'
 
 export default class App extends React.Component {
@@ -12,13 +13,21 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       markers: [],
-      parsedSchema: {}
+      parsedSchema: {},
+      uiSchema: {
+        methods: {
+          "ui:defaultExpanded": false
+        },
+        params: {
+          "ui:defaultExpanded": false
+        }
+      }
     }
     this.refreshEditorData = this.refreshEditorData.bind(this);
-    this.checkMarkers = this.refeshMarkers.bind(this);
+    this.setMarkers = _.debounce(this.setMarkers.bind(this), 300);
   }
   async componentDidMount() {
-    setTimeout(this.refreshEditorData, 300);
+    setTimeout(this.refreshEditorData, 1000);
   }
 
   refeshMarkers() {
@@ -60,7 +69,7 @@ export default class App extends React.Component {
           <MonacoJSONEditor onChange={this.setMarkers.bind(this)}/>
         </div>
         <div className='docs'>
-          <Documentation schema={this.state.parsedSchema}/>
+          <Documentation schema={this.state.parsedSchema} uiSchema={this.state.uiSchema}/>
         </div>
       </div>
     );
