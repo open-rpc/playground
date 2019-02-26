@@ -25,9 +25,6 @@ it('renders empty with empty schema', () => {
 it('renders with a schema', () => {
   const div = document.createElement('div');
   const schema = {
-    "required": [
-      "name"
-    ],
     "properties": {
       "name": {
         "type": "string"
@@ -43,5 +40,40 @@ it('renders with a schema', () => {
 
   expect(div.innerHTML.includes('tag')).toBe(true);
   expect(div.innerHTML.includes('string')).toBe(true);
+  ReactDOM.unmountComponentAtNode(div);
+});
+
+it('renders with a schema required', () => {
+  const div = document.createElement('div');
+  const schema = {
+    "required": [
+      "name"
+    ],
+    "properties": {
+      "name": {
+        "type": "string"
+      }
+    }
+  };
+  ReactDOM.render(<JSONSchemaFields schema={schema}/>, div);
+  expect(div.innerHTML.includes('Required')).toBe(true);
+  expect(div.innerHTML.includes('true')).toBe(true);
+
+  ReactDOM.unmountComponentAtNode(div);
+});
+
+it('renders with a schema without required', () => {
+  const div = document.createElement('div');
+  const schema = {
+    "properties": {
+      "name": {
+        "type": "string"
+      }
+    }
+  };
+  ReactDOM.render(<JSONSchemaFields schema={schema}/>, div);
+  expect(div.innerHTML.includes('Required')).toBe(true);
+  expect(div.innerHTML.includes('false')).toBe(true);
+
   ReactDOM.unmountComponentAtNode(div);
 });

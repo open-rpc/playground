@@ -30,6 +30,7 @@ class JSONSchemaFields extends Component {
                 <TableCell>Name</TableCell>
                 <TableCell align="right">Type</TableCell>
                 <TableCell align="right" style={{ width: '90px' }}>Pattern</TableCell>
+                <TableCell align="right">Required</TableCell>
                 <TableCell align="right">Description</TableCell>
               </TableRow>
             </TableHead>
@@ -51,12 +52,13 @@ class JSONSchemaFields extends Component {
                   )
                 }
                 return (
-                  <TableRow key={prop.name}>
+                  <TableRow key={name}>
                     <TableCell component="th" scope="row">
                       {name}
                     </TableCell>
                     <TableCell align="right">{prop.type}</TableCell>
                     <TableCell align="right">{prop.pattern}</TableCell>
+                    <TableCell align="right">{schema.required && schema.required.includes(name) ? 'true' : 'false'}</TableCell>
                     <TableCell align="right">{prop.description}</TableCell>
                   </TableRow>
                 )

@@ -32,15 +32,15 @@ class Params extends Component {
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
-            <TableCell className={classes.tableStart}>Parameter Name</TableCell>
-            <TableCell align="right">Summary</TableCell>
-            <TableCell align="right" className={classes.tableEnd}>Required</TableCell>
+            <TableCell key={1} className={classes.tableStart}>Parameter Name</TableCell>
+            <TableCell key={2} align="right">Summary</TableCell>
+            <TableCell key={3} align="right" className={classes.tableEnd}>Required</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           <TableRow>
             <TableCell colSpan="6">
-              {params.map(row => <ContentDescriptor contentDescriptor={row} uiSchema={uiSchema}/>) }
+              {params.map(row => <ContentDescriptor key={row.name} contentDescriptor={row} uiSchema={uiSchema}/>) }
             </TableCell>
           </TableRow>
         </TableBody>
