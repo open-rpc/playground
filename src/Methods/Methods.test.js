@@ -97,7 +97,6 @@ it('renders schema methods result', () => {
       {
         "result": {
           "schema": {
-            "type": "object",
             "required": [
               "id"
             ],
@@ -119,6 +118,8 @@ it('renders schema methods result', () => {
     ]
   }
   ReactDOM.render(<Methods schema={schema}/>, div);
-  expect(div.innerHTML.includes("object")).toBe(true);
+  expect(div.innerHTML.includes("name")).toBe(true);
+  expect(div.innerHTML.includes("tag")).toBe(true);
+  expect(div.innerHTML.includes("id")).toBe(true);
   ReactDOM.unmountComponentAtNode(div);
 });

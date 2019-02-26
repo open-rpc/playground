@@ -7,6 +7,9 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ReactMarkdown from 'react-markdown';
 import Params from '../Params/Params';
+import JSONSchema from '../JSONSchema/JSONSchema';
+import ContentDescriptor from '../ContentDescriptor/ContentDescriptor';
+
 
 const styles = theme => ({
   root: {
@@ -23,16 +26,20 @@ const styles = theme => ({
     fontSize: theme.typography.pxToRem(15),
     color: theme.palette.text.secondary,
   },
+  result: {
+    marginLeft: theme.spacing.unit * 3,
+  }
 });
 
 class Methods extends Component {
   render() {
-    const { schema, classes = {}} = this.props;
+    const { schema, classes, uiSchema } = this.props;
     if (!schema || !schema.methods || !schema.methods.length > 0) { return null; }
     return (
       <div className={classes.root}>
+        <Typography variant="h3" gutterBottom>Methods</Typography>
         {schema.methods.map((method) => (
-          <ExpansionPanel key={method.name}>
+          <ExpansionPanel key={method.name} defaultExpanded={uiSchema && uiSchema.methods['ui:defaultExpanded']}>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
               <Typography className={classes.heading}>{method.name}</Typography>
               <Typography className={classes.secondaryHeading}>{method.summary}</Typography>
@@ -44,15 +51,17 @@ class Methods extends Component {
             }
             {method.params &&
               <ExpansionPanelDetails>
-                <Params params={method.params} />
+              <Params params={method.params} uiSchema={uiSchema}/>
               </ExpansionPanelDetails>
             }
-            {method.result && method.result.schema && method.result.schema.type &&
+            {method.result &&
               <ExpansionPanelDetails>
-                <div><b>result:  </b></div>
-                <br />
-                <br />
-                <div>{method.result.schema.type}</div>
+                <Typography className={classes.result} variant="h5">Result</Typography>
+              </ExpansionPanelDetails>
+            }
+            {method.result && method.result.schema && 
+              <ExpansionPanelDetails>
+              <ContentDescriptor contentDescriptor={method.result} hideRequired={true} uiSchema={uiSchema}/>
               </ExpansionPanelDetails>
             }
           </ExpansionPanel>
