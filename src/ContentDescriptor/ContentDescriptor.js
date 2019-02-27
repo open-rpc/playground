@@ -47,28 +47,12 @@ class ContentDescriptor extends Component {
           <ExpansionPanelDetails style={{display: 'block'}}>
             <div>
               {contentDescriptor.description && <ReactMarkdown source={contentDescriptor.description} /> }
-                {contentDescriptor.schema && contentDescriptor.schema.oneOf &&
-                   <>
-                    <Typography variant="body1" color="primary" className={classes.schema}>One Of</Typography>
-                    {contentDescriptor.schema.oneOf.map((s) => {
-                      return (
-                        <JSONSchema schema={s} />
-                      )
-                    })}
-                  </>
-                }
-                {contentDescriptor.schema && contentDescriptor.schema.type === 'array' &&
-                   <>
-                    <Typography variant="body1" color="primary" className={classes.schema}>array of</Typography>
-                    <JSONSchema schema={contentDescriptor.schema.items || contentDescriptor.schema.contains} />
-                  </>
-                }
-                {contentDescriptor.schema && !contentDescriptor.schema.oneOf && contentDescriptor.schema.type !== 'array' &&
-                    <>
-                      <Typography variant="body1" color="primary" className={classes.schema}>schema</Typography>
-                      <JSONSchema schema={contentDescriptor.schema} />
-                    </>
-                }
+              {contentDescriptor.schema &&
+                <>
+                  <Typography variant="body1" color="primary" className={classes.schema}>schema</Typography>
+                  <JSONSchema schema={contentDescriptor.schema} />
+                </>
+              }
             </div>
           </ExpansionPanelDetails>
         </ExpansionPanel>
