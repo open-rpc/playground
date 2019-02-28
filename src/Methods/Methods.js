@@ -7,9 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ReactMarkdown from 'react-markdown';
 import Params from '../Params/Params';
-import JSONSchema from '../JSONSchema/JSONSchema';
 import ContentDescriptor from '../ContentDescriptor/ContentDescriptor';
-
 
 const styles = theme => ({
   root: {

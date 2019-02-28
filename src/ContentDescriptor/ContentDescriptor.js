@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
 import { Typography, withStyles } from '@material-ui/core';
-import _ from 'lodash';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import Table from '@material-ui/core/Table';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
 import JSONSchema from '../JSONSchema/JSONSchema';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ReactMarkdown from 'react-markdown';
