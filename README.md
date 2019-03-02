@@ -2,12 +2,12 @@
 A place to play around with OPEN-RPC.
 
 ## For Non-developers
-This is a tool for editing, validating and previewing OPEN-RPC documents.
+This is a tool for editing, validating and previewing [OpenRPC documents](https://github.com/open-rpc/spec#openrpc-document).
 
 ## What is it?
-This is meant to be an all-in-one developer portal for OPEN-RPC documents. It includes an editor and a live-preview of the documentation.
+This is meant to be an all-in-one developer portal for [OpenRPC documents](https://github.com/open-rpc/spec#openrpc-document). It includes an editor and a live-preview of the documentation.
 
-This helps developers visualize the OPEN-RPC and iterate very quickly on creating OPEN-RPC documents via the built in editor tooling.
+This helps developers visualize the OpenRPC and iterate very quickly on creating [OpenRPC documents](https://github.com/open-rpc/spec#openrpc-document) via the built in editor tooling.
 
 ## Usage
 
