@@ -2,19 +2,14 @@ import React from 'react';
 import empty from 'json-schema-empty';
 import * as monaco from 'monaco-editor';
 import { initVimMode } from 'monaco-vim';
-
-const fetchUrlSchemaFile = async (schema) => {
-  try {
-    const response = await fetch(schema);
-    return await response.json();
-  } catch(e) {
-    throw new Error(`Unable to download openrpc.json file located at the url: ${schema}`);
-  }
-};
+import fetchUrlSchemaFile from './fetchUrlSchemaFile';
 
 export default class MonacoJSONEditor extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+
+    };
     this.monaco = React.createRef();
     this.addCommands = this.addCommands.bind(this);
   }
@@ -26,7 +21,7 @@ export default class MonacoJSONEditor extends React.Component {
     const defaultValue = localStorageSchema || emptySchema;
 
     this.editorInstance = monaco.editor.create(this.monaco.current, {
-	    value: defaultValue,
+	    value: this.props.defaultValue || defaultValue,
 	    language: 'json',
       theme: 'vs-dark',
       options: {
@@ -35,7 +30,7 @@ export default class MonacoJSONEditor extends React.Component {
         autoIndent: true
       }
     });
-    const modelUri = window.monaco.Uri.parse("inmemory://model/userSpec.json");
+    const modelUri = window.monaco.Uri.parse(`inmemory://model/${Math.random()}-userSpec.json`);
     const model = monaco.editor.createModel(defaultValue, "json", modelUri);
     model.updateOptions({tabSize: 2});
     this.editorInstance.setModel(model);
@@ -60,6 +55,14 @@ export default class MonacoJSONEditor extends React.Component {
       this.props.onChange(changedSchema);
     });
     this.addCommands(this.editorInstance);
+  }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.defaultValue !== this.state.defaultValue) {
+      this.editorInstance.setValue(JSON.stringify(nextProps.defaultValue, null, '  '));
+      this.setState({
+        defaultValue: nextProps.defaultValue
+      })
+    }
   }
   addCommands(editor) {
 
@@ -190,6 +193,9 @@ export default class MonacoJSONEditor extends React.Component {
   }
   onChange(newValue, e) {
     this.props.onChangeMarkers(window.monaco.editor.getModelMarkers())
+  }
+  componentWillUnmount() {
+    this.editorInstance && this.editorInstance.dispose();
   }
   onVimKeybind(e) {
     if (this.vimMode) {
