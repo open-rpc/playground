@@ -12,7 +12,7 @@ export default class ContentDescriptors extends Component {
       <>
         <Typography variant="h3" gutterBottom>ContentDescriptors</Typography>
         {entries.map(([key, val]) => {
-          return <ContentDescriptor contentDescriptor={val} uiSchema={this.props.uiSchema} hideRequired={true}/>
+          return <ContentDescriptor key={key} contentDescriptor={val} uiSchema={this.props.uiSchema} hideRequired={true}/>
         })}
       </>
     );

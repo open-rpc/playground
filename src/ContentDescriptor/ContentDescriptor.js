@@ -31,29 +31,27 @@ class ContentDescriptor extends Component {
     let entries = Object.entries(contentDescriptor);
     if (entries.length === 0) { return null; }
     return (
-      <>
-        <ExpansionPanel style={{ width: '100%' }} defaultExpanded={uiSchema && uiSchema.params['ui:defaultExpanded']} expanded={contentDescriptor.name ? null : true}>
-          <ExpansionPanelSummary expandIcon={(!contentDescriptor.name || hideIcon) ? null : <ExpandMoreIcon />} style={{ justifyContent: 'space-between' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', height: '100%'}}>
-              <Typography className={classes.heading}>{contentDescriptor.name}</Typography>
-              <Typography className={classes.secondaryHeading}>{contentDescriptor.summary}</Typography>
-              {hideRequired ? null : <Typography className={classes.secondaryHeading}>{contentDescriptor.required ? 'true' : 'false'}</Typography>}
-            </div>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails style={{display: 'block'}}>
-            <div>
-              {contentDescriptor.description && <ReactMarkdown source={contentDescriptor.description} /> }
-              {contentDescriptor.schema &&
-                <>
-                  <Typography variant="body1" color="primary" className={classes.schema}>schema</Typography>
-                  <JSONSchema schema={contentDescriptor.schema} />
-                </>
-              }
-            </div>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-      </>
-        );
-      }
+      <ExpansionPanel style={{ width: '100%' }} defaultExpanded={uiSchema && uiSchema.params['ui:defaultExpanded']} expanded={contentDescriptor.name ? null : true}>
+        <ExpansionPanelSummary expandIcon={(!contentDescriptor.name || hideIcon) ? null : <ExpandMoreIcon />} style={{ justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', height: '100%' }}>
+            <Typography className={classes.heading}>{contentDescriptor.name}</Typography>
+            <Typography className={classes.secondaryHeading}>{contentDescriptor.summary}</Typography>
+            {hideRequired ? null : <Typography className={classes.secondaryHeading}>{contentDescriptor.required ? 'true' : 'false'}</Typography>}
+          </div>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails style={{ display: 'block' }}>
+          <div>
+            {contentDescriptor.description && <ReactMarkdown source={contentDescriptor.description} />}
+            {contentDescriptor.schema &&
+              <>
+                <Typography variant="body1" color="primary" className={classes.schema}>schema</Typography>
+                <JSONSchema schema={contentDescriptor.schema} />
+              </>
+            }
+          </div>
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
+    );
+  }
 }
 export default withStyles(styles)(ContentDescriptor)
