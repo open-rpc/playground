@@ -8,6 +8,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ReactMarkdown from 'react-markdown';
 import Params from '../Params/Params';
 import ContentDescriptor from '../ContentDescriptor/ContentDescriptor';
+import ExamplePairings from '../ExamplePairings/ExamplePairings';
 
 const styles = theme => ({
   root: {
@@ -36,30 +37,35 @@ class Methods extends Component {
     return (
       <div className={classes.root}>
         <Typography variant="h3" gutterBottom>Methods</Typography>
-        {schema.methods.map((method) => (
-          <ExpansionPanel key={method.name} defaultExpanded={uiSchema && uiSchema.methods['ui:defaultExpanded']}>
+        {schema.methods.map((method, i) => (
+          <ExpansionPanel key={i + method.name} defaultExpanded={uiSchema && uiSchema.methods['ui:defaultExpanded']}>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography className={classes.heading}>{method.name}</Typography>
-              <Typography className={classes.secondaryHeading}>{method.summary}</Typography>
+              <Typography key={method.name} className={classes.heading}>{method.name}</Typography>
+              <Typography key={method.summary} className={classes.secondaryHeading}>{method.summary}</Typography>
             </ExpansionPanelSummary>
             {method.description &&
-              <ExpansionPanelDetails>
+              <ExpansionPanelDetails key="description">
                 <ReactMarkdown source={method.description} />
               </ExpansionPanelDetails>
             }
             {method.params &&
-              <ExpansionPanelDetails>
-              <Params params={method.params} uiSchema={uiSchema}/>
+              <ExpansionPanelDetails key="params">
+                <Params params={method.params} uiSchema={uiSchema}/>
               </ExpansionPanelDetails>
             }
             {method.result &&
-              <ExpansionPanelDetails>
+              <ExpansionPanelDetails key="result-title">
                 <Typography className={classes.result} variant="h5">Result</Typography>
               </ExpansionPanelDetails>
             }
             {method.result && method.result.schema && 
-              <ExpansionPanelDetails>
-              <ContentDescriptor contentDescriptor={method.result} hideRequired={true} uiSchema={uiSchema}/>
+              <ExpansionPanelDetails key="result">
+                <ContentDescriptor contentDescriptor={method.result} hideRequired={true} uiSchema={uiSchema}/>
+              </ExpansionPanelDetails>
+            }
+            {method.examples && method.examples.length > 0 && 
+              <ExpansionPanelDetails key="examples">
+                <ExamplePairings examples={method.examples} method={method} uiSchema={uiSchema}/>
               </ExpansionPanelDetails>
             }
           </ExpansionPanel>
