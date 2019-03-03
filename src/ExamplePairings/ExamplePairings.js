@@ -49,7 +49,7 @@ class ExamplePairings extends Component {
         <Grid item xs={12}>
           <List component="nav">
             <ListItem button aria-haspopup="true" aria-controls="menu-menu" aria-label="Method Examples" onClick={this.handleClickListItem}>
-              <ListItemText primary="Selected Example" secondary={examples[this.state.selectedIndex].name} />
+              <ListItemText primary={examples[this.state.selectedIndex].name} secondary={examples[this.state.selectedIndex].summary} />
             </ListItem>
             <Menu
               id="menu-menu"
