@@ -36,7 +36,7 @@ class ExamplePairings extends Component {
     this.setState({ anchorEl: null });
   };
   render() {
-    const { examples, classes } = this.props;
+    const { examples, classes, method } = this.props;
     const { anchorEl } = this.state;
     if (!examples || examples.length === 0) {
       return null;
@@ -70,7 +70,7 @@ class ExamplePairings extends Component {
           </List>
         </Grid>
         <Grid item xs={12}>
-          <ExamplePairing example={this.props.examples[this.state.selectedIndex]} />
+          <ExamplePairing method={method} example={this.props.examples[this.state.selectedIndex]} />
         </Grid>
       </Grid>
     );

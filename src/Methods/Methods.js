@@ -65,7 +65,7 @@ class Methods extends Component {
             }
             {method.examples && method.examples.length > 0 && 
               <ExpansionPanelDetails key="examples">
-                <ExamplePairings examples={method.examples} uiSchema={uiSchema}/>
+                <ExamplePairings examples={method.examples} method={method} uiSchema={uiSchema}/>
               </ExpansionPanelDetails>
             }
           </ExpansionPanel>
