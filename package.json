@@ -10,7 +10,7 @@
     "@cloudflare/json-schema-walker": "^0.1.1",
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",
-    "@open-rpc/examples": "https://github.com/open-rpc/examples.git#fix/simple-math-name-examples",
+    "@open-rpc/examples": "1.0.3",
     "@open-rpc/generator-docs": "https://github.com/open-rpc/generator-docs.git#898732d9230152ffa4940e9fb6244afdce0386a7",
     "@svgr/webpack": "4.1.0",
     "ajv": "^6.9.1",
