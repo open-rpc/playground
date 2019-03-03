@@ -14,7 +14,7 @@ const reactJsonOptions = {
 export default class ExamplePairing extends Component {
   render() {
     const { example, method } = this.props;
-    if (!example || !example.result) {
+    if (!example) {
       return null;
     }
     return (
