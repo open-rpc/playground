@@ -9,7 +9,6 @@ import './App.css'
 import fetchUrlSchemaFile from './fetchUrlSchemaFile';
 import fetchSchemaFromRpcDiscover from './fetchSchemaFromRpcDiscover';
 import AppBar from './AppBar/AppBar';
-const fetchSchemaRpc = fetchSchemaFromRpcDiscover;
 
 export default class App extends React.Component {
 
@@ -48,7 +47,7 @@ export default class App extends React.Component {
       }
     } else {
       try {
-        newSchema = await fetchSchemaRpc(jsonOrRPC);
+        newSchema = await fetchSchemaFromRpcDiscover(jsonOrRPC);
       } catch (e) {
         return;
         // show user error fetching rpc.discover
