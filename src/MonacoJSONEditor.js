@@ -8,9 +8,6 @@ import _ from 'lodash';
 export default class MonacoJSONEditor extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-
-    };
     this.monaco = React.createRef();
     this.addCommands = this.addCommands.bind(this);
   }

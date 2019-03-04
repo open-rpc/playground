@@ -4,13 +4,12 @@ import MonacoJSONEditor from './MonacoJSONEditor';
 import refParser from 'json-schema-ref-parser';
 import * as monaco from 'monaco-editor';
 import Documentation from './Documentation';
-import InputBase from '@material-ui/core/InputBase';
 import _ from 'lodash';
 import './App.css'
-import { AppBar, Toolbar, Typography, Grid, Paper, FormControlLabel, Checkbox } from '@material-ui/core';
 import fetchUrlSchemaFile from './fetchUrlSchemaFile';
 import fetchSchemaFromRpcDiscover from './fetchSchemaFromRpcDiscover';
 import AwesomeDebouncePromise from 'awesome-debounce-promise';
+import AppBar from './AppBar/AppBar';
 const fetchSchemaRpcDebounced = AwesomeDebouncePromise(fetchSchemaFromRpcDiscover, 500);
 const fetchUrlSchemaFileDebounced = AwesomeDebouncePromise(fetchUrlSchemaFile, 500);
 
@@ -24,8 +23,9 @@ export default class App extends React.Component {
       splitView: true,
       uiSchema: {
         appBar: {
+          "ui:title": "OpenRPC Playground",
           "ui:logoUrl": "https://github.com/open-rpc/design/raw/master/icons/open-rpc-logo-noText/open-rpc-logo-noText%20(PNG)/128x128.png",
-          "ui:title": "OpenRPC Playground"
+          "ui:inputPlaceholder": "Enter OpenRPC Document Url or rpc.discover Endpoint"
         },
         methods: {
           "ui:defaultExpanded": false
@@ -105,39 +105,7 @@ export default class App extends React.Component {
   render() {
     return (
       <>
-        <AppBar position="static" color="default">
-          <Toolbar>
-            <Grid container>
-              <img alt="open-rpc" height="30" width="30" src={this.state.uiSchema.appBar['ui:logoUrl']} />
-              <Grid item xs={2}>
-                <Typography variant="h6">{this.state.uiSchema.appBar['ui:title']}</Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <Paper style={{width: '100%', background: 'rgba(0, 0, 0, 0.1)', padding: '0px 10px 0px 10px'}} elevation={0}>
-                  <InputBase
-                    style={{width: '100%'}}
-                    onChange={this.handleUrlChange}
-                    placeholder="Enter OpenRPC Document Url or rpc.discover Endpoint"
-                  />
-                </Paper>
-              </Grid>
-              <Grid item xs={2}>
-                <FormControlLabel
-                  style={{marginLeft: '30px', height: '30px'}}
-                  control={
-                    <Checkbox
-                      checked={this.state.splitView}
-                      onChange={this.handleChange('splitView')}
-                      value="splitView"
-                      color="primary"
-                    />
-                  }
-                  label="Split View"
-                />
-              </Grid>
-            </Grid>
-          </Toolbar>
-        </AppBar>
+        <AppBar uiSchema={this.state.uiSchema} splitView={this.state.splitView} onSplitViewChange={this.handleChange('splitView')} onChangeUrl={this.handleUrlChange}/>
         <div style={{ height: "100%", display: 'flex', flexDirection: 'row' }}>
           {this.state.splitView &&
             <div style={{ display: 'flex', flexDirection: 'column', height: "100%", width: '100%' }} >
