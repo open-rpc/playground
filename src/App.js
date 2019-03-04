@@ -10,6 +10,9 @@ import './App.css'
 import { AppBar, Toolbar, Typography, Grid, Paper, FormControlLabel, Checkbox } from '@material-ui/core';
 import fetchUrlSchemaFile from './fetchUrlSchemaFile';
 import fetchSchemaFromRpcDiscover from './fetchSchemaFromRpcDiscover';
+import AwesomeDebouncePromise from 'awesome-debounce-promise';
+const fetchSchemaRpcDebounced = AwesomeDebouncePromise(fetchSchemaFromRpcDiscover, 500);
+const fetchUrlSchemaFileDebounced = AwesomeDebouncePromise(fetchUrlSchemaFile, 500);
 
 export default class App extends React.Component {
 
@@ -40,25 +43,28 @@ export default class App extends React.Component {
     let newSchema = null;
     if (jsonOrRPC.match(/\.json$/)) {
       try {
-        newSchema = await fetchUrlSchemaFile(jsonOrRPC);
+        newSchema = await fetchUrlSchemaFileDebounced(jsonOrRPC);
       } catch (e) {
         // show user error fetching schema file
         return;
       }
     } else {
       try {
-        newSchema = await fetchSchemaFromRpcDiscover(jsonOrRPC);
+        newSchema = await fetchSchemaRpcDebounced(jsonOrRPC);
       } catch (e) {
         return;
         // show user error fetching rpc.discover
       }
     }
+    monaco.editor.getModels()[0].setValue(JSON.stringify(newSchema, undefined, ' '));
+    this.refreshEditorData();
     this.setState({
-      defaultEditorValue: newSchema
+      ...this.state,
+      defaultValue: newSchema
     })
   }
   handleChange = name => event => {
-    this.setState({ [name]: event.target.checked })
+    this.setState({ ...this.state, [name]: event.target.checked  })
   }
 
   async componentDidMount() {
@@ -73,7 +79,7 @@ export default class App extends React.Component {
       })
     }, 1000)
   }
-  async refreshEditorData(forceData) {
+  async refreshEditorData() {
     let parsedSchema
     try {
       parsedSchema = await refParser.dereference(JSON.parse(monaco.editor.getModels()[0].getValue()));
@@ -136,7 +142,7 @@ export default class App extends React.Component {
           {this.state.splitView &&
             <div style={{ display: 'flex', flexDirection: 'column', height: "100%", width: '100%' }} >
               <JSONValidationErrorList markers={this.state.markers} />
-              <MonacoJSONEditor defaultValue={this.state.defaultEditorValue} onChange={this.setMarkers.bind(this)} />
+              <MonacoJSONEditor defaultValue={this.state.defaultValue} onChange={this.setMarkers.bind(this)} />
             </div>
           }
           <div className='docs'>

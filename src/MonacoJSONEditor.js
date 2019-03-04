@@ -3,6 +3,7 @@ import empty from 'json-schema-empty';
 import * as monaco from 'monaco-editor';
 import { initVimMode } from 'monaco-vim';
 import fetchUrlSchemaFile from './fetchUrlSchemaFile';
+import _ from 'lodash';
 
 export default class MonacoJSONEditor extends React.Component {
   constructor(props) {
@@ -19,9 +20,8 @@ export default class MonacoJSONEditor extends React.Component {
     const emptySchema = JSON.stringify(empty(schema), undefined, '\t');
     const localStorageSchema = window.localStorage.getItem('schema');
     const defaultValue = localStorageSchema || emptySchema;
-
-    this.editorInstance = monaco.editor.create(this.monaco.current, {
-	    value: this.props.defaultValue || defaultValue,
+    const options = {
+	    value: defaultValue,
 	    language: 'json',
       theme: 'vs-dark',
       options: {
@@ -29,9 +29,22 @@ export default class MonacoJSONEditor extends React.Component {
         formatOnPaste: true,
         autoIndent: true
       }
-    });
+    }
     const modelUri = window.monaco.Uri.parse(`inmemory://model/${Math.random()}-userSpec.json`);
-    const model = monaco.editor.createModel(defaultValue, "json", modelUri);
+    let model;
+
+    if (!_.isEmpty(this.props.defaultValue)) {
+      const value = JSON.stringify(this.props.defaultValue, undefined, '  ');
+      this.editorInstance = monaco.editor.create(this.monaco.current, {
+        ...options,
+        value
+      });
+      model = monaco.editor.createModel(value, "json", modelUri);
+    } else {
+      this.editorInstance = monaco.editor.create(this.monaco.current, options);
+      model = monaco.editor.createModel(defaultValue, "json", modelUri);
+    }
+
     model.updateOptions({tabSize: 2});
     this.editorInstance.setModel(model);
     monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
@@ -55,14 +68,6 @@ export default class MonacoJSONEditor extends React.Component {
       this.props.onChange(changedSchema);
     });
     this.addCommands(this.editorInstance);
-  }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.defaultValue !== this.state.defaultValue) {
-      this.editorInstance.setValue(JSON.stringify(nextProps.defaultValue, null, '  '));
-      this.setState({
-        defaultValue: nextProps.defaultValue
-      })
-    }
   }
   addCommands(editor) {
 
