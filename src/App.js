@@ -4,14 +4,11 @@ import MonacoJSONEditor from './MonacoJSONEditor';
 import refParser from 'json-schema-ref-parser';
 import * as monaco from 'monaco-editor';
 import Documentation from './Documentation';
-import _ from 'lodash';
+import { debounce } from 'lodash';
 import './App.css'
 import fetchUrlSchemaFile from './fetchUrlSchemaFile';
 import fetchSchemaFromRpcDiscover from './fetchSchemaFromRpcDiscover';
-import AwesomeDebouncePromise from 'awesome-debounce-promise';
 import AppBar from './AppBar/AppBar';
-const fetchSchemaRpcDebounced = AwesomeDebouncePromise(fetchSchemaFromRpcDiscover, 500);
-const fetchUrlSchemaFileDebounced = AwesomeDebouncePromise(fetchUrlSchemaFile, 500);
 
 export default class App extends React.Component {
 
@@ -36,21 +33,21 @@ export default class App extends React.Component {
       }
     }
     this.refreshEditorData = this.refreshEditorData.bind(this);
-    this.setMarkers = _.debounce(this.setMarkers.bind(this), 300);
+    this.setMarkers = debounce(this.setMarkers.bind(this), 300);
+    this.debouncedHandleUrlChange = debounce(this._handleUrlChange.bind(this), 300);
   }
-  handleUrlChange = async event => {
-    const jsonOrRPC = event.target.value
-    let newSchema = null;
+  _handleUrlChange = async jsonOrRPC => {
+    let newSchema;
     if (jsonOrRPC.match(/\.json$/)) {
       try {
-        newSchema = await fetchUrlSchemaFileDebounced(jsonOrRPC);
+        newSchema = await fetchUrlSchemaFile(jsonOrRPC);
       } catch (e) {
         // show user error fetching schema file
         return;
       }
     } else {
       try {
-        newSchema = await fetchSchemaRpcDebounced(jsonOrRPC);
+        newSchema = await fetchSchemaFromRpcDiscover(jsonOrRPC);
       } catch (e) {
         return;
         // show user error fetching rpc.discover
@@ -63,6 +60,9 @@ export default class App extends React.Component {
       defaultValue: newSchema
     })
   }
+
+  handleUrlChange = (event) => this.debouncedHandleUrlChange(event.target.value)
+
   handleChange = name => event => {
     this.setState({ ...this.state, [name]: event.target.checked  })
   }
@@ -107,7 +107,7 @@ export default class App extends React.Component {
       <>
         <AppBar uiSchema={this.state.uiSchema} splitView={this.state.splitView} onSplitViewChange={this.handleChange('splitView')} onChangeUrl={this.handleUrlChange}/>
         <div style={{ height: "100%", display: 'flex', flexDirection: 'row' }}>
-          {this.state.splitView &&
+          { this.state.splitView &&
             <div style={{ display: 'flex', flexDirection: 'column', height: "100%", width: '100%' }} >
               <JSONValidationErrorList markers={this.state.markers} />
               <MonacoJSONEditor defaultValue={this.state.defaultValue} onChange={this.setMarkers.bind(this)} />
