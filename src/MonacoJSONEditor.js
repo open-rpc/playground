@@ -14,9 +14,10 @@ export default class MonacoJSONEditor extends React.Component {
   async componentDidMount() {
     const schema = await fetchUrlSchemaFile('https://raw.githubusercontent.com/open-rpc/meta-schema/master/schema.json');
     this.metaSchema = schema;
+    let defaultV = _.isEmpty(this.props.defaultValue) ? null : JSON.stringify(this.props.defaultValue, undefined, '  ');
     const emptySchema = JSON.stringify(empty(schema), undefined, '\t');
     const localStorageSchema = window.localStorage.getItem('schema');
-    const defaultValue = localStorageSchema || emptySchema;
+    const defaultValue = defaultV || localStorageSchema || emptySchema;
     const options = {
 	    value: defaultValue,
 	    language: 'json',
@@ -30,17 +31,11 @@ export default class MonacoJSONEditor extends React.Component {
     const modelUri = window.monaco.Uri.parse(`inmemory://model/${Math.random()}-userSpec.json`);
     let model;
 
-    if (!_.isEmpty(this.props.defaultValue)) {
-      const value = JSON.stringify(this.props.defaultValue, undefined, '  ');
-      this.editorInstance = monaco.editor.create(this.monaco.current, {
-        ...options,
-        value
-      });
-      model = monaco.editor.createModel(value, "json", modelUri);
-    } else {
-      this.editorInstance = monaco.editor.create(this.monaco.current, options);
-      model = monaco.editor.createModel(defaultValue, "json", modelUri);
-    }
+    this.editorInstance = monaco.editor.create(this.monaco.current, {
+      ...options,
+      value: defaultValue
+    });
+    model = monaco.editor.createModel(defaultValue, "json", modelUri);
 
     model.updateOptions({tabSize: 2});
     this.editorInstance.setModel(model);
