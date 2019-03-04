@@ -2,15 +2,8 @@ import React from 'react';
 import empty from 'json-schema-empty';
 import * as monaco from 'monaco-editor';
 import { initVimMode } from 'monaco-vim';
-
-const fetchUrlSchemaFile = async (schema) => {
-  try {
-    const response = await fetch(schema);
-    return await response.json();
-  } catch(e) {
-    throw new Error(`Unable to download openrpc.json file located at the url: ${schema}`);
-  }
-};
+import fetchUrlSchemaFile from './fetchUrlSchemaFile';
+import _ from 'lodash';
 
 export default class MonacoJSONEditor extends React.Component {
   constructor(props) {
@@ -19,36 +12,49 @@ export default class MonacoJSONEditor extends React.Component {
     this.addCommands = this.addCommands.bind(this);
   }
   async componentDidMount() {
-    const schema = await fetchUrlSchemaFile('https://raw.githubusercontent.com/open-rpc/meta-schema/master/schema.json');
-    this.metaSchema = schema;
-    const emptySchema = JSON.stringify(empty(schema), undefined, '\t');
-    const localStorageSchema = window.localStorage.getItem('schema');
-    const defaultValue = localStorageSchema || emptySchema;
+    const existingModels = monaco.editor.getModels().length > 0;
+    let model;
 
-    this.editorInstance = monaco.editor.create(this.monaco.current, {
-	    value: defaultValue,
-	    language: 'json',
+    if (!existingModels) {
+      const schema = await fetchUrlSchemaFile('https://raw.githubusercontent.com/open-rpc/meta-schema/master/schema.json');
+      this.metaSchema = schema;
+      let defaultV = _.isEmpty(this.props.defaultValue) ? null : JSON.stringify(this.props.defaultValue, undefined, '  ');
+      const emptySchema = JSON.stringify(empty(schema), undefined, '\t');
+      const localStorageSchema = window.localStorage.getItem('schema');
+      const defaultValue = defaultV || localStorageSchema || emptySchema;
+      const modelUri = window.monaco.Uri.parse(`inmemory://model/${Math.random()}-userSpec.json`);
+
+      model = monaco.editor.createModel(defaultValue, "json", modelUri);
+      monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+        enableSchemaRequest: true,
+        validate: true,
+        schemas: [
+          {
+            fileMatch: ['*'],
+            schema
+          }
+        ]
+      })
+      model.updateOptions({ tabSize: 2 });
+    } else {
+      model = monaco.editor.getModels()[0];
+    }
+
+    const options = {
+      language: 'json',
       theme: 'vs-dark',
       options: {
         formatOnType: true,
         formatOnPaste: true,
         autoIndent: true
       }
+    }
+
+    this.editorInstance = monaco.editor.create(this.monaco.current, {
+      ...options
     });
-    const modelUri = window.monaco.Uri.parse("inmemory://model/userSpec.json");
-    const model = monaco.editor.createModel(defaultValue, "json", modelUri);
-    model.updateOptions({tabSize: 2});
+
     this.editorInstance.setModel(model);
-    monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
-      enableSchemaRequest: true,
-      validate: true,
-      schemas: [
-        {
-          fileMatch: ['*'],
-          schema
-        }
-      ]
-    })
     this.editorInstance.setSelection(new monaco.Selection(3,13,3,13));
 
     this.editorInstance.focus();
@@ -190,6 +196,9 @@ export default class MonacoJSONEditor extends React.Component {
   }
   onChange(newValue, e) {
     this.props.onChangeMarkers(window.monaco.editor.getModelMarkers())
+  }
+  componentWillUnmount() {
+    this.editorInstance && this.editorInstance.dispose();
   }
   onVimKeybind(e) {
     if (this.vimMode) {

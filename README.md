@@ -13,7 +13,7 @@ This helps developers visualize the OpenRPC and iterate very quickly on creating
 
 Navigate to [playground.open-rpc.org](https://playground.open-rpc.org/) and start playing around. You can build your own OPEN-RPC document, validate existing documents quickly, or use the [examples](https://github.com/open-rpc/examples).
 
-![playground-screenshot](https://user-images.githubusercontent.com/364566/53257535-418cbe00-367f-11e9-9061-024ec4961a72.png)
+![playground-screenshot](https://user-images.githubusercontent.com/364566/53761322-1de52700-3e7a-11e9-8156-56c356bb52da.png)
 
 ## Keybinds
 
