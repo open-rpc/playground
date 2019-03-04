@@ -107,11 +107,11 @@ export default class App extends React.Component {
       <>
         <AppBar uiSchema={this.state.uiSchema} splitView={this.state.splitView} onSplitViewChange={this.handleChange('splitView')} onChangeUrl={this.handleUrlChange}/>
         <div style={{ height: "100%", display: 'flex', flexDirection: 'row' }}>
-          {this.state.splitView &&
-           <div style={{ display: 'flex', flexDirection: 'column', height: "100%", width: '100%' }} >
-             <JSONValidationErrorList markers={this.state.markers} />
-             <MonacoJSONEditor defaultValue={this.state.defaultValue} onChange={this.setMarkers.bind(this)} />
-           </div>
+          { this.state.splitView &&
+            <div style={{ display: 'flex', flexDirection: 'column', height: "100%", width: '100%' }} >
+              <JSONValidationErrorList markers={this.state.markers} />
+              <MonacoJSONEditor defaultValue={this.state.defaultValue} onChange={this.setMarkers.bind(this)} />
+            </div>
           }
           <div className='docs'>
             <Documentation schema={this.state.parsedSchema} uiSchema={this.state.uiSchema} />
