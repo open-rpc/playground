@@ -4,7 +4,7 @@ import MonacoJSONEditor from './MonacoJSONEditor';
 import refParser from 'json-schema-ref-parser';
 import * as monaco from 'monaco-editor';
 import Documentation from './Documentation';
-import _ from 'lodash';
+import { debounce } from 'lodash';
 import './App.css'
 import fetchUrlSchemaFile from './fetchUrlSchemaFile';
 import fetchSchemaFromRpcDiscover from './fetchSchemaFromRpcDiscover';
@@ -34,8 +34,8 @@ export default class App extends React.Component {
       }
     }
     this.refreshEditorData = this.refreshEditorData.bind(this);
-    this.setMarkers = _.debounce(this.setMarkers.bind(this), 300);
-    this.debouncedHandleUrlChange = _.debounce(this._handleUrlChange.bind(this), 300);
+    this.setMarkers = debounce(this.setMarkers.bind(this), 300);
+    this.debouncedHandleUrlChange = debounce(this._handleUrlChange.bind(this), 300);
   }
   _handleUrlChange = async jsonOrRPC => {
     let newSchema;
