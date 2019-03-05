@@ -47,7 +47,8 @@ export default class App extends React.Component {
       }
     } else {
       try {
-        newSchema = await fetchSchemaFromRpcDiscover(jsonOrRPC);
+        const rpcResult = await fetchSchemaFromRpcDiscover(jsonOrRPC);
+        newSchema = rpcResult.result;
       } catch (e) {
         return;
         // show user error fetching rpc.discover
