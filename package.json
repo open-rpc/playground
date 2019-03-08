@@ -13,7 +13,7 @@
     "@open-rpc/examples": "1.0.3",
     "@open-rpc/generator-docs": "https://github.com/open-rpc/generator-docs.git#898732d9230152ffa4940e9fb6244afdce0386a7",
     "@svgr/webpack": "4.1.0",
-    "ajv": "^6.9.1",
+    "ajv": "^6.10.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "9.0.0",
     "babel-jest": "23.6.0",
