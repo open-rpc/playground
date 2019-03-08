@@ -1,7 +1,7 @@
 # OPEN-RPC Playground
 A place to play around with OPEN-RPC.
 
-[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=open-rpc/generator-mock-server)](https://dependabot.com)
+[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=open-rpc/playground)](https://dependabot.com)
 
 ## For Non-developers
 This is a tool for editing, validating and previewing [OpenRPC documents](https://github.com/open-rpc/spec#openrpc-document).
