@@ -18,6 +18,13 @@ export default class App extends React.Component {
       markers: [],
       parsedSchema: {},
       splitView: true,
+      reactJsonOptions: {
+        name: false,
+        indentWidth: 2,
+        collapseStringsAfterLength: 15,
+        displayObjectSize: false,
+        displayDataTypes: false
+      },
       uiSchema: {
         appBar: {
           "ui:title": "OpenRPC Playground",
@@ -115,7 +122,7 @@ export default class App extends React.Component {
             </div>
           }
           <div className='docs'>
-            <Documentation schema={this.state.parsedSchema} uiSchema={this.state.uiSchema} />
+            <Documentation schema={this.state.parsedSchema} uiSchema={this.state.uiSchema} reactJsonOptions={this.state.reactJsonOptions}/>
           </div>
         </div>
       </>

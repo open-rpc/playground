@@ -10,7 +10,7 @@ export default class Documentation extends React.Component {
       <>
           <Info schema={this.props.schema} uiSchema={this.props.uiSchema}/>
           <Servers schema={this.props.schema} uiSchema={this.props.uiSchema}/>
-          <Methods schema={this.props.schema} uiSchema={this.props.uiSchema}/>
+          <Methods schema={this.props.schema} uiSchema={this.props.uiSchema} reactJsonOptions={this.props.reactJsonOptions}/>
           <ContentDescriptors schema={this.props.schema} uiSchema={this.props.uiSchema}></ContentDescriptors>
       </>
     )
