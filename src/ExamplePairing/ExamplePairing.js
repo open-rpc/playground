@@ -5,14 +5,6 @@ import ReactJson from 'react-json-view';
 import ReactMarkdown from 'react-markdown';
 import _ from 'lodash';
 
-const reactJsonOptions = {
-  name: false,
-  indentWidth: 2,
-  collapseStringsAfterLength: 15,
-  displayObjectSize: false,
-  displayDataTypes: false
-}
-
 export default class ExamplePairing extends Component {
   render() {
     const { example, method } = this.props;
@@ -32,7 +24,7 @@ export default class ExamplePairing extends Component {
                 method: method && method.name,
                 params: example.params.map(e => e.value),
                 id: 1
-              }} {...reactJsonOptions} />} 
+              }} {...this.props.reactJsonOptions} />} 
             </CardContent>
           </Card>
         </Grid>
@@ -43,7 +35,7 @@ export default class ExamplePairing extends Component {
                 jsonrpc: "2.0",
                 result: example.result.value,
                 id: 1
-              }} {...reactJsonOptions} />}
+              }} {...this.props.reactJsonOptions} />}
             </CardContent>
           </Card>
         </Grid>

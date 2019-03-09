@@ -9,6 +9,7 @@ import ReactMarkdown from 'react-markdown';
 import Params from '../Params/Params';
 import ContentDescriptor from '../ContentDescriptor/ContentDescriptor';
 import ExamplePairings from '../ExamplePairings/ExamplePairings';
+import Errors from '../Errors/Errors';
 
 const styles = theme => ({
   root: {
@@ -26,7 +27,7 @@ const styles = theme => ({
     color: theme.palette.text.secondary,
   },
   result: {
-    marginLeft: theme.spacing.unit * 3,
+   
   }
 });
 
@@ -48,6 +49,11 @@ class Methods extends Component {
                 <ReactMarkdown source={method.description} />
               </ExpansionPanelDetails>
             }
+            {method.params && method.params.length > 0 &&
+              <ExpansionPanelDetails key="result-title">
+                <Typography className={classes.result} variant="h5">Params</Typography>
+              </ExpansionPanelDetails>
+            }
             {method.params &&
               <ExpansionPanelDetails key="params">
                 <Params params={method.params} uiSchema={uiSchema}/>
@@ -63,9 +69,14 @@ class Methods extends Component {
                 <ContentDescriptor contentDescriptor={method.result} hideRequired={true} uiSchema={uiSchema}/>
               </ExpansionPanelDetails>
             }
+            {method.errors && method.errors.length > 0 && 
+              <ExpansionPanelDetails key="result">
+                <Errors errors={method.errors} reactJsonOptions={this.props.reactJsonOptions}/>
+              </ExpansionPanelDetails>
+            }
             {method.examples && method.examples.length > 0 && 
               <ExpansionPanelDetails key="examples">
-                <ExamplePairings examples={method.examples} method={method} uiSchema={uiSchema}/>
+                <ExamplePairings examples={method.examples} method={method} uiSchema={uiSchema} reactJsonOptions={this.props.reactJsonOptions}/>
               </ExpansionPanelDetails>
             }
           </ExpansionPanel>

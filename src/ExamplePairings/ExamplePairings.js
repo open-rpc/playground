@@ -4,7 +4,7 @@ import { Typography, List, ListItem, ListItemText, Grid, MenuItem, Menu, withSty
 
 const styles = theme => ({
   header: {
-    marginLeft: theme.spacing.unit * 3,
+   
   }
 });
 
@@ -70,7 +70,7 @@ class ExamplePairings extends Component {
           </List>
         </Grid>
         <Grid item xs={12}>
-          <ExamplePairing method={method} example={this.props.examples[this.state.selectedIndex]} />
+          <ExamplePairing method={method} example={this.props.examples[this.state.selectedIndex]} reactJsonOptions={this.props.reactJsonOptions}/>
         </Grid>
       </Grid>
     );
