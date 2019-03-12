@@ -42,7 +42,7 @@
     "isomorphic-fetch": "^2.2.1",
     "jest": "24.3.1",
     "jest-pnp-resolver": "1.0.2",
-    "jest-resolve": "23.6.0",
+    "jest-resolve": "24.4.0",
     "jest-watch-typeahead": "^0.2.1",
     "json-schema-empty": "^1.1.1",
     "json-schema-ref-parser": "^6.0.3",
