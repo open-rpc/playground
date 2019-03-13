@@ -66,7 +66,7 @@
     "react-dom": "^16.8.1",
     "react-json-view": "^1.19.1",
     "react-markdown": "^4.0.6",
-    "react-monaco-editor": "^0.23.0",
+    "react-monaco-editor": "^0.25.1",
     "resolve": "^1.10.0",
     "sass-loader": "7.1.0",
     "style-loader": "0.23.1",
