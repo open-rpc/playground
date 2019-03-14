@@ -9,6 +9,8 @@ import './App.css'
 import fetchUrlSchemaFile from './fetchUrlSchemaFile';
 import fetchSchemaFromRpcDiscover from './fetchSchemaFromRpcDiscover';
 import AppBar from './AppBar/AppBar';
+import qs from 'qs'
+
 
 export default class App extends React.Component {
 
@@ -76,6 +78,10 @@ export default class App extends React.Component {
   }
 
   async componentDidMount() {
+    let urlParams = qs.parse(window.location.search, { ignoreQueryPrefix: true })
+    if (urlParams['schemaUrl']) {
+      this._handleUrlChange(urlParams['schemaUrl'])
+    }
     setTimeout(this.refreshEditorData, 1000);
   }
 
