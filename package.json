@@ -45,7 +45,7 @@
     "jest-resolve": "23.6.0",
     "jest-watch-typeahead": "^0.2.1",
     "json-schema-empty": "^1.1.1",
-    "json-schema-ref-parser": "^6.0.3",
+    "json-schema-ref-parser": "^6.1.0",
     "json-schema-to-markdown-table": "https://github.com/etclabscore/json-schema-to-markdown-table.git",
     "jsonschema": "^1.2.4",
     "lodash": "^4.17.11",
