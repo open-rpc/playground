@@ -16,7 +16,7 @@ export default class MonacoJSONEditor extends React.Component {
     let model;
 
     if (!existingModels) {
-      const schema = await fetchUrlSchemaFile('https://raw.githubusercontent.com/open-rpc/meta-schema/master/schema.json');
+      let schema = await fetchUrlSchemaFile('https://raw.githubusercontent.com/open-rpc/meta-schema/b6a4e119e80db1a66cfd3a38dd6fee95bc3e9906/schema.json');
       this.metaSchema = schema;
       let defaultV = _.isEmpty(this.props.defaultValue) ? null : JSON.stringify(this.props.defaultValue, undefined, '  ');
       const emptySchema = JSON.stringify(empty(schema), undefined, '\t');
