@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",
+    "@open-rpc/docs-react": "^1.0.3",
     "@open-rpc/examples": "^1.2.1",
     "@open-rpc/meta-schema": "^1.1.0",
     "ajv": "^6.10.0",

@@ -3,7 +3,7 @@ import JSONValidationErrorList from "./JSONValidationErrorList";
 import MonacoJSONEditor from "./MonacoJSONEditor";
 import refParser from "json-schema-ref-parser";
 import * as monaco from "monaco-editor";
-import Documentation from "./Documentation";
+import Documentation from "@open-rpc/docs-react";
 import { debounce } from "lodash";
 import "./App.css";
 import fetchUrlSchemaFile from "./fetchUrlSchemaFile";
@@ -157,9 +157,9 @@ export default class App extends React.Component<{}, IState> {
           }
           <div className="docs">
             <Documentation
-              schema={this.state.parsedSchema}
+              schema={this.state.parsedSchema as types.OpenRPC}
               uiSchema={this.state.uiSchema}
-              reactJsonOptions={this.state.reactJsonOptions} />
+              />
           </div>
         </div>
       </>
