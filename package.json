@@ -114,7 +114,7 @@
     "case-sensitive-paths-webpack-plugin": "2.2.0",
     "css-loader": "2.1.1",
     "dotenv": "6.0.0",
-    "dotenv-expand": "4.2.0",
+    "dotenv-expand": "5.1.0",
     "eslint": "5.15.1",
     "eslint-config-react-app": "^3.0.7",
     "eslint-loader": "2.1.1",
