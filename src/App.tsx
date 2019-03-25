@@ -31,7 +31,7 @@ export default class App extends React.Component<{}, IState> {
       markers: [],
       parsedSchema: {} as types.OpenRPC,
       reactJsonOptions: {
-        collapseStringsAfterLength: 15,
+        collapseStringsAfterLength: 25,
         displayDataTypes: false,
         displayObjectSize: false,
         indentWidth: 2,
@@ -159,6 +159,7 @@ export default class App extends React.Component<{}, IState> {
             <Documentation
               schema={this.state.parsedSchema as types.OpenRPC}
               uiSchema={this.state.uiSchema}
+              reactJsonOptions={this.state.reactJsonOptions}
               />
           </div>
         </div>
