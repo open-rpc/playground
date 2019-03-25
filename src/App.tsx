@@ -148,7 +148,7 @@ export default class App extends React.Component<{}, IState> {
           onChangeUrl={this.handleUrlChange} />
         <div style={{ height: "100%", display: "flex", flexDirection: "row" }}>
           { this.state.uiSchema.appBar["ui:splitView"] &&
-            <div style={{ display: "flex", flexDirection: "column", height: "100%", width: "100%" }} >
+            <div style={{ display: "flex", flexDirection: "column", height: "100%", width: "50%" }} >
               <JSONValidationErrorList markers={this.state.markers} />
               <MonacoJSONEditor
                 defaultValue={this.state.defaultValue}
