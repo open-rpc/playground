@@ -8,6 +8,7 @@ import * as monaco from "monaco-editor";
 import fetchUrlSchemaFile from "./fetchUrlSchemaFile";
 import _ from "lodash";
 import { JSONSchema4 } from "json-schema";
+import schema from "@open-rpc/meta-schema";
 
 interface IProps {
   defaultValue?: string;
@@ -37,14 +38,20 @@ export default class MonacoJSONEditor extends React.Component<IProps> {
 
     if (!existingModels) {
       /* tslint:disable */
-      const schema = await fetchUrlSchemaFile("https://raw.githubusercontent.com/open-rpc/meta-schema/b6a4e119e80db1a66cfd3a38dd6fee95bc3e9906/schema.json");
       /* tslint:enable */
       const modelUri = monaco.Uri.parse(`inmemory:/${Math.random()}/model/userSpec.json`);
 
-      this.metaSchema = schema;
+      this.metaSchema = schema as JSONSchema4;
       const defaultV = _.isEmpty(this.props.defaultValue) ? null
         : JSON.stringify(this.props.defaultValue, undefined, "  ");
-      const emptySchema = JSON.stringify(empty(schema), undefined, "\t");
+      const emptySchema = JSON.stringify({
+        openrpc: "1.0.0-rc1",
+        info: {
+          title: "",
+          version: "",
+        },
+        methods: [],
+      }, undefined, "\t");
       const localStorageSchema = window.localStorage.getItem("schema");
       const defaultValue = defaultV || localStorageSchema || emptySchema;
 
@@ -80,7 +87,7 @@ export default class MonacoJSONEditor extends React.Component<IProps> {
         ...options,
       });
       this.editorInstance.setModel(model);
-      this.editorInstance.setSelection(new monaco.Selection(3, 13, 3, 13));
+      this.editorInstance.setSelection(new monaco.Selection(4, 13, 4, 13));
 
       this.editorInstance.focus();
       window.onresize = () => this.editorInstance && this.editorInstance.layout();
@@ -103,34 +110,6 @@ export default class MonacoJSONEditor extends React.Component<IProps> {
     // reset editor to empty schema
 
     /* tslint:disable */
-    editor.addAction({
-      // An unique identifier of the contributed action.
-      id: "empty-schema",
-
-      // A label of the action that will be presented to the user.
-      label: "Reset to Empty Schema",
-
-      // An optional array of keybindings for the action.
-      keybindings: [
-        monaco.KeyMod.chord(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_K, monaco.KeyMod.CtrlCmd | monaco.KeyCode.Backspace),
-      ],
-      // Method that will be executed when the action is triggered.
-      // @param editor The editor instance is passed in as a convinience
-      run: (ed) => {
-        let emptySchema;
-        try {
-          emptySchema = JSON.stringify(empty(this.metaSchema), undefined, "\t");
-        } catch (e) {
-          if (JSON.stringify(this.metaSchema) === "{}") {
-            emptySchema = "{\n\t\n}";
-          } else {
-            emptySchema = JSON.stringify(this.metaSchema, undefined, "\t");
-          }
-        }
-        this.editorInstance && this.editorInstance.setValue(emptySchema);
-      },
-    });
-
     // replace schema:
     // Press Chord Ctrl-K, Ctrl-R => the action will run if it is enabled
 
