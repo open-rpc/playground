@@ -1,0 +1,20 @@
+{
+  "tagFormat": "${version}",
+  "release": {
+    "branch": "master",
+    "verifyConditions": [
+      "@semantic-release/changelog",
+      "@semantic-release/git",
+      "@qiwi/semantic-release-gh-pages-plugin"
+    ],
+    "publish": [
+      "@semantic-release/github",
+      {
+        "path": "@qiwi/semantic-release-gh-pages-plugin",
+        "msg": "deploy: new playground gh-pages release",
+        "src": "build",
+        "branch": "gh-pages"
+      }
+    ]
+  }
+}
