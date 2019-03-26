@@ -1,6 +1,6 @@
 import React, { Component, ChangeEvent } from "react";
 import { AppBar, Toolbar, Typography, Grid, Paper, FormControlLabel, Checkbox, InputBase } from "@material-ui/core";
-import { IUISchema } from "../uiSchema";
+import { IUISchema } from "../UISchema";
 
 interface IProps {
   uiSchema?: IUISchema;

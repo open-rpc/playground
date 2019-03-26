@@ -11,7 +11,7 @@ import fetchSchemaFromRpcDiscover from "./fetchSchemaFromRpcDiscover";
 import AppBar from "./AppBar/AppBar";
 import * as qs from "qs";
 import { types } from "@open-rpc/meta-schema";
-import { IUISchema } from "./uiSchema";
+import { IUISchema } from "./UISchema";
 
 interface IState {
   markers: any[];
