@@ -5,10 +5,10 @@ aliases:
   #      ALIASES: Caches
   # -------------------------
   - &restore-deps-cache
-    key: deps-cache-{{ checksum "package.json" }}
+    key: deps-cache-{{ checksum "package-lock.json" }}
 
   - &save-deps-cache
-    key: deps-cache-{{ checksum "package.json" }}
+    key: deps-cache-{{ checksum "package-lock.json" }}
     paths:
       - ~/playground/node_modules
 
