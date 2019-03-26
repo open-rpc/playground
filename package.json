@@ -1,6 +1,6 @@
 {
   "name": "playground",
-  "version": "0.1.0",
+  "version": "0.0.0-development",
   "homepage": "https://playground.open-rpc.org/",
   "dependencies": {
     "@material-ui/core": "^3.9.2",
@@ -95,6 +95,10 @@
     "@babel/plugin-proposal-class-properties": "^7.3.0",
     "@babel/plugin-transform-react-jsx": "^7.3.0",
     "@babel/preset-stage-2": "^7.0.0",
+    "@qiwi/semantic-release-gh-pages-plugin": "^1.6.0",
+    "@semantic-release/changelog": "^3.0.2",
+    "@semantic-release/git": "^7.0.8",
+    "@semantic-release/npm": "^5.1.4",
     "@svgr/webpack": "4.1.0",
     "@types/jest": "^24.0.11",
     "@types/json-schema": "^7.0.3",
@@ -142,6 +146,7 @@
     "react-dev-utils": "^7.0.3",
     "resolve": "^1.10.0",
     "sass-loader": "7.1.0",
+    "semantic-release": "^15.13.3",
     "style-loader": "0.23.1",
     "terser-webpack-plugin": "1.2.2",
     "ts-jest": "^24.0.0",
