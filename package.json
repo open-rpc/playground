@@ -6,6 +6,9 @@
     "type": "git",
     "url": "https://github.com/open-rpc/playground.git"
   },
+  "bin": {
+    "open-rpc-playground": "./bin/cli.js"
+  },
   "bugs": "https://github.com/open-rpc/playground/issues",
   "license": "Apache-2.0",
   "dependencies": {
@@ -14,7 +17,9 @@
     "@open-rpc/docs-react": "^1.0.6",
     "@open-rpc/examples": "^1.2.1",
     "@open-rpc/meta-schema": "^1.2.1",
+    "@open-rpc/schema-utils-js": "^1.5.1",
     "ajv": "^6.10.0",
+    "commander": "^2.19.0",
     "isomorphic-fetch": "^2.2.1",
     "json-schema-empty": "^1.1.1",
     "json-schema-ref-parser": "^6.1.0",
@@ -23,7 +28,8 @@
     "monaco-editor": "^0.15.6",
     "monaco-editor-webpack-plugin": "^1.7.0",
     "monaco-vim": "0.0.10",
-    "qs": "^6.6.0",
+    "open": "^6.0.0",
+    "qs": "^6.7.0",
     "react": "^16.8.4",
     "react-app-polyfill": "^0.2.1",
     "react-dom": "^16.8.4",
