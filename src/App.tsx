@@ -100,9 +100,36 @@ export default class App extends React.Component<{}, IState> {
   }
 
   public async componentDidMount() {
-    const urlParams = qs.parse(window.location.search, { ignoreQueryPrefix: true });
+    const urlParams = qs.parse(window.location.search, {
+      ignoreQueryPrefix: true,
+      depth: 100,
+      decoder(str) {
+        if (/^(\d+|\d*\.\d+)$/.test(str)) {
+          return parseFloat(str);
+        }
+
+        if (str === "false") {
+          return false;
+        }
+        if (str === "true") {
+          return true;
+        }
+        return decodeURIComponent(str);
+      },
+    });
     if (urlParams.schemaUrl) {
       this.dHandleUrlChange(urlParams.schemaUrl);
+    }
+    if (urlParams.schema) {
+      monaco.editor.getModels()[0].setValue(JSON.stringify(urlParams.schema, undefined, " "));
+    }
+    if (urlParams.uiSchema) {
+      this.setState({
+        uiSchema: {
+          ...this.state.uiSchema,
+          ...urlParams.uiSchema,
+        },
+      });
     }
     setTimeout(this.refreshEditorData, 300);
     setTimeout(this.refreshEditorData, 2000);
@@ -147,7 +174,7 @@ export default class App extends React.Component<{}, IState> {
           onSplitViewChange={this.handleUISchemaAppBarChange("ui:splitView")}
           onChangeUrl={this.handleUrlChange} />
         <div style={{ height: "100%", display: "flex", flexDirection: "row" }}>
-          { this.state.uiSchema.appBar["ui:splitView"] &&
+          {this.state.uiSchema.appBar["ui:splitView"] &&
             <div style={{ display: "flex", flexDirection: "column", height: "100%", width: "50%" }} >
               <JSONValidationErrorList markers={this.state.markers} />
               <MonacoJSONEditor
@@ -160,7 +187,7 @@ export default class App extends React.Component<{}, IState> {
               schema={this.state.parsedSchema as types.OpenRPC}
               uiSchema={this.state.uiSchema}
               reactJsonOptions={this.state.reactJsonOptions}
-              />
+            />
           </div>
         </div>
       </>
