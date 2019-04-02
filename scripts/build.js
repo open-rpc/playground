@@ -1,4 +1,4 @@
-'use strict';
+
 
 // Do this as the first thing so that any code reading it knows the right env.
 process.env.BABEL_ENV = 'production';
@@ -66,6 +66,7 @@ checkBrowsers(paths.appPath, isInteractive)
     fs.emptyDirSync(paths.appBuild);
     // Merge with the public folder
     copyPublicFolder();
+    copyCNAME();
     // Start the webpack build
     return build(previousFileSizes);
   })
@@ -189,4 +190,10 @@ function copyPublicFolder() {
     dereference: true,
     filter: file => file !== paths.appHtml,
   });
+}
+
+function copyCNAME() {
+  fs.copySync(`${paths.appPath}/CNAME`, `${paths.appBuild}/CNAME`,
+  {dereference: true}
+  );
 }
