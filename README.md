@@ -30,6 +30,27 @@ Navigate to [playground.open-rpc.org](https://playground.open-rpc.org/) and star
 - `CMD + K + V` - toggle vim mode
 - `CMD + K + R` - replace meta schema
 
+## Configuration via Query String Parameters
+The query string parameters can be used to configure the playground in different ways.
+
+###### `uiSchema`
+`uiSchema` is used for UI layer configuration. here is its interface:
+
+![image](https://user-images.githubusercontent.com/364566/55295551-338b3500-53c3-11e9-8096-39bbc78a93e4.png)
+
+###### `schemaUrl`
+`schemaUrl` - fetch schema by URL and display it as the content of the playground on startup.
+
+###### `schema`
+`schema`  - JSON String used to  display it as the content of the playground on startup.
+
+examples:
+
+- set splitView to false
+  - `http://playground.open-rpg.org/?uiSchema[appBar][ui:splitView]=false`
+- provide custom name and logo
+- `http://playground.open-rpg.org/?uiSchema[appBar][ui:title]=My Site&uiSchema[appBar][ui:logoUrl]=https://github.com/open-rpc/design/raw/master/icons/open-rpc-logo-noText/open-rpc-logo-noText%20(PNG)/128x128.png`
+
 ## Resources and Inspirations
 
 - [open-rpc/spec](https://github.com/open-rpc/spec)
