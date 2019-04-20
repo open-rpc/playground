@@ -54,7 +54,7 @@ examples:
 ## Resources and Inspirations
 
 - [open-rpc/spec](https://github.com/open-rpc/spec)
-- [open-rpc/generator-docs](https://github.com/open-rpc/generator-docs)
+- [open-rpc/docs-react](https://github.com/open-rpc/docs-react)
 - [Swagger Editor](https://editor.swagger.io/)
 - [Marvel Interactive Documentation](https://developer.marvel.com/docs)
 - [apiary.io](https://apiary.io/)
