@@ -67,7 +67,7 @@ class ApplicationBar extends Component<IProps> {
                 </Paper>
               </Grid>
             </Hidden>
-            <Grid item xs={6} sm={2} alignItems="flex-end">
+            <Grid item xs={6} sm={2} alignItems="flex-end" container>
               <FormControlLabel
                 style={{ marginLeft: "30px", height: "30px" }}
                 control={
