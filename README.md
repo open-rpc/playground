@@ -1,4 +1,5 @@
 # OpenRPC Playground
+
 A place to play around with OpenRPC.
 
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=open-rpc/playground)](https://dependabot.com)
