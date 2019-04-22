@@ -26,7 +26,7 @@ Navigate to [playground.open-rpc.org](https://playground.open-rpc.org/) and star
 ##### Chords
 
 - `CMD + K + BACKSPACE` - reset to empty schema
-- `CMD + K + I` - pop up tooltip under cursor (this one is tricky, you have to hold `CMD`)
+- `CMD + K + I` - pop up tooltip under cursor
 - `CMD + K + V` - toggle vim mode
 - `CMD + K + R` - replace meta schema
 
