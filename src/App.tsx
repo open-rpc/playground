@@ -4,7 +4,7 @@ import MonacoJSONEditor from "./MonacoJSONEditor";
 import refParser from "json-schema-ref-parser";
 import * as monaco from "monaco-editor";
 import Documentation from "@open-rpc/docs-react";
-import { debounce } from "lodash";
+import { debounce, isEmpty } from "lodash";
 import "./App.css";
 import fetchUrlSchemaFile from "./fetchUrlSchemaFile";
 import fetchSchemaFromRpcDiscover from "./fetchSchemaFromRpcDiscover";
@@ -12,9 +12,11 @@ import AppBar from "./AppBar/AppBar";
 import * as qs from "qs";
 import { types } from "@open-rpc/meta-schema";
 import { IUISchema } from "./UISchema";
+import {SnackBar, ISnackBarNotification, NotificationType} from "./SnackBar/SnackBar";
 
 interface IState {
   markers: any[];
+  notification: ISnackBarNotification;
   defaultValue: string;
   parsedSchema: types.OpenRPC;
   reactJsonOptions: any;
@@ -29,6 +31,7 @@ export default class App extends React.Component<{}, IState> {
     this.state = {
       defaultValue: "",
       markers: [],
+      notification: {} as ISnackBarNotification,
       parsedSchema: {} as types.OpenRPC,
       reactJsonOptions: {
         collapseStringsAfterLength: 25,
@@ -57,14 +60,30 @@ export default class App extends React.Component<{}, IState> {
     this.refreshEditorData = this.refreshEditorData.bind(this);
     this.setMarkers = debounce(this.setMarkers.bind(this), 300);
     this.debouncedHandleUrlChange = debounce(this.dHandleUrlChange.bind(this), 300);
+    this.handleSnackbarClose = this.handleSnackbarClose.bind(this);
   }
+
+  public setNotification = (notification: ISnackBarNotification) => {
+      this.setState({notification});
+  }
+  public setErrorNotification = (message: string) => {
+    this.setNotification({message, type: NotificationType.error});
+  }
+
+  public handleSnackbarClose() {
+    this.setState({ notification: {} as ISnackBarNotification });
+  }
+
   public dHandleUrlChange = async (jsonOrRPC: string) => {
     let newSchema;
+    if (isEmpty(jsonOrRPC)) {return; }
     if (jsonOrRPC.match(/\.json$/)) {
       try {
         newSchema = await fetchUrlSchemaFile(jsonOrRPC);
       } catch (e) {
-        console.error(`error fetching schema for: ${jsonOrRPC}`, e);
+        const msg = `Error fetching schema for: ${jsonOrRPC}`;
+        console.error(msg, e);
+        this.setErrorNotification(msg);
         return;
       }
     } else {
@@ -72,7 +91,9 @@ export default class App extends React.Component<{}, IState> {
         const rpcResult = await fetchSchemaFromRpcDiscover(jsonOrRPC);
         newSchema = rpcResult.result;
       } catch (e) {
-        console.error(`error fetching rpc.discover for: ${jsonOrRPC}`, e);
+        const msg = `Error fetching rpc.discover for: ${jsonOrRPC}`;
+        console.error(msg, e);
+        this.setErrorNotification(msg);
         return;
       }
     }
@@ -166,6 +187,7 @@ export default class App extends React.Component<{}, IState> {
   public setMarkers() {
     this.refreshEditorData();
   }
+
   public render() {
     return (
       <>
@@ -190,6 +212,7 @@ export default class App extends React.Component<{}, IState> {
             />
           </div>
         </div>
+        <SnackBar close={this.handleSnackbarClose} notification={this.state.notification}/>
       </>
     );
   }
