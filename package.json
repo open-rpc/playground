@@ -105,7 +105,7 @@
   },
   "devDependencies": {
     "@babel/core": "7.2.2",
-    "@babel/plugin-proposal-class-properties": "^7.3.0",
+    "@babel/plugin-proposal-class-properties": "^7.4.0",
     "@babel/plugin-transform-react-jsx": "^7.3.0",
     "@babel/preset-stage-2": "^7.0.0",
     "@qiwi/semantic-release-gh-pages-plugin": "^1.6.1",
