@@ -48,7 +48,7 @@ The query string parameters can be used to configure the playground in different
 examples:
 
 - set splitView to false
-  - `http://playground.open-rpg.org/?uiSchema[appBar][ui:splitView]=false`
+  - `http://playground.open-rpc.org/?uiSchema[appBar][ui:splitView]=false`
 - provide custom name and logo
 - `http://playground.open-rpc.org/?uiSchema[appBar][ui:title]=My Site&uiSchema[appBar][ui:logoUrl]=https://github.com/open-rpc/design/raw/master/icons/open-rpc-logo-noText/open-rpc-logo-noText%20(PNG)/128x128.png`
 
