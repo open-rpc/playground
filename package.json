@@ -1,5 +1,5 @@
 {
-  "name": "playground",
+  "name": "@open-rpc/playground",
   "version": "0.0.0-development",
   "homepage": "https://playground.open-rpc.org/",
   "repository": {
