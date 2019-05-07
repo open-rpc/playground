@@ -10,7 +10,7 @@ import fetchUrlSchemaFile from "./fetchUrlSchemaFile";
 import fetchSchemaFromRpcDiscover from "./fetchSchemaFromRpcDiscover";
 import AppBar from "./AppBar/AppBar";
 import * as qs from "qs";
-import { types } from "@open-rpc/meta-schema";
+import { OpenRPC } from "@open-rpc/meta-schema";
 import { IUISchema } from "./UISchema";
 import {SnackBar, ISnackBarNotification, NotificationType} from "./SnackBar/SnackBar";
 
@@ -18,7 +18,7 @@ interface IState {
   markers: any[];
   notification: ISnackBarNotification;
   defaultValue: string;
-  parsedSchema: types.OpenRPC;
+  parsedSchema: OpenRPC;
   reactJsonOptions: any;
   uiSchema: IUISchema;
 }
@@ -32,7 +32,7 @@ export default class App extends React.Component<{}, IState> {
       defaultValue: "",
       markers: [],
       notification: {} as ISnackBarNotification,
-      parsedSchema: {} as types.OpenRPC,
+      parsedSchema: {} as OpenRPC,
       reactJsonOptions: {
         collapseStringsAfterLength: 25,
         displayDataTypes: false,
@@ -167,7 +167,7 @@ export default class App extends React.Component<{}, IState> {
   public async refreshEditorData() {
     let parsedSchema;
     try {
-      parsedSchema = await refParser.dereference(JSON.parse(monaco.editor.getModels()[0].getValue())) as types.OpenRPC;
+      parsedSchema = await refParser.dereference(JSON.parse(monaco.editor.getModels()[0].getValue())) as OpenRPC;
     } catch (e) {
       console.error("error parsing schema", e);
     }
@@ -206,7 +206,7 @@ export default class App extends React.Component<{}, IState> {
           }
           <div className="docs">
             <Documentation
-              schema={this.state.parsedSchema as types.OpenRPC}
+              schema={this.state.parsedSchema as OpenRPC}
               uiSchema={this.state.uiSchema}
               reactJsonOptions={this.state.reactJsonOptions}
             />

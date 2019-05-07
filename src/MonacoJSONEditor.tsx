@@ -5,7 +5,6 @@ empty = empty.default;
 const { initVimMode } = require("monaco-vim");
 /* tslint:enable */
 import * as monaco from "monaco-editor";
-import fetchUrlSchemaFile from "./fetchUrlSchemaFile";
 import _ from "lodash";
 import { JSONSchema4 } from "json-schema";
 import schema from "@open-rpc/meta-schema";
