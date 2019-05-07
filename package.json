@@ -162,7 +162,7 @@
     "sass-loader": "7.1.0",
     "semantic-release": "^15.13.3",
     "style-loader": "0.23.1",
-    "terser-webpack-plugin": "1.2.2",
+    "terser-webpack-plugin": "1.2.3",
     "ts-jest": "^24.0.2",
     "tslint": "^5.16.0",
     "typescript": "^3.4.5",
