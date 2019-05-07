@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import {SnackBar, SnackBarNotification, NotificationType} from "./SnackBar";
+import {SnackBar, NotificationType} from "./SnackBar";
 it("renders notifications", () => {
   const div = document.createElement("div");
   for (const notificationType in NotificationType) {

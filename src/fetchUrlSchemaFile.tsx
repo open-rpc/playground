@@ -1,5 +1,3 @@
-import { types } from "@open-rpc/meta-schema";
-
 export default async (schemaUrl: string) => {
   try {
     const response = await fetch(schemaUrl);
