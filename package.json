@@ -116,7 +116,7 @@
     "@types/classnames": "^2.2.7",
     "@types/jest": "^24.0.11",
     "@types/json-schema": "^7.0.3",
-    "@types/lodash": "^4.14.123",
+    "@types/lodash": "^4.14.124",
     "@types/qs": "^6.5.2",
     "@types/react": "^16.8.17",
     "@types/react-dom": "^16.8.4",
