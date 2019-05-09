@@ -118,7 +118,7 @@
     "@types/json-schema": "^7.0.3",
     "@types/lodash": "^4.14.123",
     "@types/qs": "^6.5.2",
-    "@types/react": "^16.8.8",
+    "@types/react": "^16.8.17",
     "@types/react-dom": "^16.8.4",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "9.0.0",
