@@ -5,12 +5,12 @@ A place to play around with OpenRPC.
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=open-rpc/playground)](https://dependabot.com)
 
 ## For Non-developers
-This is a tool for editing, validating and previewing [OpenRPC documents](https://github.com/open-rpc/spec#openrpc-document).
+This is a tool for editing, validating and previewing [OpenRPC documents](https://spec.open-rpc.org/#openrpc-document).
 
 ## What is it?
-This is meant to be an all-in-one developer portal for [OpenRPC documents](https://github.com/open-rpc/spec#openrpc-document). It includes an editor and a live-preview of the documentation.
+This is meant to be an all-in-one developer portal for [OpenRPC documents](https://spec.open-rpc.org/#openrpc-document). It includes an editor and a live-preview of the documentation.
 
-This helps developers visualize the OpenRPC and iterate very quickly on creating [OpenRPC documents](https://github.com/open-rpc/spec#openrpc-document) via the built in editor tooling.
+This helps developers visualize the OpenRPC and iterate very quickly on creating [OpenRPC documents]https://spec.open-rpc.org/#openrpc-document) via the built in editor tooling.
 
 ## Usage
 
