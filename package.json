@@ -20,7 +20,7 @@
     "@open-rpc/schema-utils-js": "^1.5.1",
     "ajv": "^6.10.0",
     "classnames": "^2.2.6",
-    "commander": "^2.19.0",
+    "commander": "^2.20.0",
     "isomorphic-fetch": "^2.2.1",
     "json-schema-empty": "^1.1.1",
     "json-schema-ref-parser": "^6.1.0",
