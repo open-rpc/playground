@@ -35,7 +35,7 @@
     "react-app-polyfill": "^1.0.0",
     "react-dom": "^16.8.6",
     "react-json-view": "^1.19.1",
-    "react-markdown": "^4.0.6",
+    "react-markdown": "^4.0.8",
     "react-monaco-editor": "^0.25.1"
   },
   "scripts": {
