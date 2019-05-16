@@ -158,7 +158,7 @@
     "postcss-safe-parser": "4.0.1",
     "raw-loader": "^1.0.0",
     "react-dev-utils": "^7.0.3",
-    "resolve": "^1.10.0",
+    "resolve": "^1.11.0",
     "sass-loader": "7.1.0",
     "semantic-release": "^15.13.12",
     "style-loader": "0.23.1",
