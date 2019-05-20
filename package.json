@@ -108,7 +108,7 @@
     "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/plugin-transform-react-jsx": "^7.3.0",
     "@babel/preset-stage-2": "^7.0.0",
-    "@qiwi/semantic-release-gh-pages-plugin": "^1.8.0",
+    "@qiwi/semantic-release-gh-pages-plugin": "^1.9.0",
     "@semantic-release/changelog": "^3.0.2",
     "@semantic-release/git": "^7.0.8",
     "@semantic-release/npm": "^5.1.7",
