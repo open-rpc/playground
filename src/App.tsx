@@ -12,7 +12,8 @@ import AppBar from "./AppBar/AppBar";
 import * as qs from "qs";
 import { OpenRPC } from "@open-rpc/meta-schema";
 import { IUISchema } from "./UISchema";
-import {SnackBar, ISnackBarNotification, NotificationType} from "./SnackBar/SnackBar";
+import { SnackBar, ISnackBarNotification, NotificationType } from "./SnackBar/SnackBar";
+import SplitPane from "react-split-pane";
 
 interface IState {
   markers: any[];
@@ -25,6 +26,7 @@ interface IState {
 
 export default class App extends React.Component<{}, IState> {
   private debouncedHandleUrlChange: any;
+  private editorInstance?: monaco.editor.IStandaloneCodeEditor;
 
   constructor(props: {}) {
     super(props);
@@ -64,10 +66,10 @@ export default class App extends React.Component<{}, IState> {
   }
 
   public setNotification = (notification: ISnackBarNotification) => {
-      this.setState({notification});
+    this.setState({ notification });
   }
   public setErrorNotification = (message: string) => {
-    this.setNotification({message, type: NotificationType.error});
+    this.setNotification({ message, type: NotificationType.error });
   }
 
   public handleSnackbarClose() {
@@ -76,7 +78,7 @@ export default class App extends React.Component<{}, IState> {
 
   public dHandleUrlChange = async (jsonOrRPC: string) => {
     let newSchema;
-    if (isEmpty(jsonOrRPC)) {return; }
+    if (isEmpty(jsonOrRPC)) { return; }
     if (jsonOrRPC.match(/\.json$/)) {
       try {
         newSchema = await fetchUrlSchemaFile(jsonOrRPC);
@@ -195,25 +197,52 @@ export default class App extends React.Component<{}, IState> {
           uiSchema={this.state.uiSchema}
           onSplitViewChange={this.handleUISchemaAppBarChange("ui:splitView")}
           onChangeUrl={this.handleUrlChange} />
-        <div style={{ height: "100%", display: "flex", flexDirection: "row" }}>
-          {this.state.uiSchema.appBar["ui:splitView"] &&
-            <div style={{ display: "flex", flexDirection: "column", height: "100%", width: "50%" }} >
-              <JSONValidationErrorList markers={this.state.markers} />
-              <MonacoJSONEditor
-                defaultValue={this.state.defaultValue}
-                onChange={this.setMarkers.bind(this)} />
-            </div>
-          }
-          <div className="docs">
-            <Documentation
-              schema={this.state.parsedSchema as OpenRPC}
-              uiSchema={this.state.uiSchema}
-              reactJsonOptions={this.state.reactJsonOptions}
-            />
-          </div>
-        </div>
-        <SnackBar close={this.handleSnackbarClose} notification={this.state.notification}/>
+        {this.getPlayground()}
+        <SnackBar close={this.handleSnackbarClose} notification={this.state.notification} />
       </>
     );
   }
+
+  private getSplitPane() {
+    return (
+      <SplitPane
+        split="vertical"
+        minSize={100}
+        maxSize={-100}
+        defaultSize={window.innerWidth / 2}
+        onChange={(size) => this.editorInstance && this.editorInstance.layout()}>
+        <div key={1} style={{ display: "flex", flexDirection: "column", height: "100%" }} >
+          <JSONValidationErrorList markers={this.state.markers} />
+          <MonacoJSONEditor
+            onCreate={(editorInstance: monaco.editor.IStandaloneCodeEditor) => this.editorInstance = editorInstance}
+            defaultValue={this.state.defaultValue}
+            onChange={this.setMarkers.bind(this)} />
+        </div>
+        <div className="docs" key={2}>
+          <Documentation
+            schema={this.state.parsedSchema as OpenRPC}
+            uiSchema={this.state.uiSchema}
+            reactJsonOptions={this.state.reactJsonOptions}
+          />
+        </div>
+      </SplitPane>
+    );
+  }
+
+  private getPlayground = () => {
+    if (!this.state.uiSchema.appBar["ui:splitView"]) {
+      return (
+        <div className="docs" key={2}>
+          <Documentation
+            schema={this.state.parsedSchema as OpenRPC}
+            uiSchema={this.state.uiSchema}
+            reactJsonOptions={this.state.reactJsonOptions}
+          />
+        </div>
+      );
+    } else {
+      return this.getSplitPane();
+    }
+  }
+
 }
