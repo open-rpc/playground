@@ -31,7 +31,7 @@ class ApplicationBar extends Component<IProps> {
   public render() {
     const { uiSchema, classes } = this.props;
     return (
-      <AppBar position="static" color="default">
+      <AppBar position="static" color="default" elevation={0}>
         <Toolbar>
           <Grid justify="space-evenly" alignItems="center" container spacing={24}>
             <Grid item xs={6} sm={3} direction="row" justify="flex-start" container>
