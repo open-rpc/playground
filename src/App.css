@@ -1,7 +1,7 @@
 .docs {
   height: calc(100% - 84px);
   padding: 10px;
-  overflow: scroll;
+  overflow-y: scroll;
   width: 100%;
 }
 .Resizer {
