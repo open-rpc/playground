@@ -12,6 +12,7 @@ import schema from "@open-rpc/meta-schema";
 interface IProps {
   defaultValue?: string;
   onChangeMarkers?: any;
+  onCreate?: any;
   onChange?: any;
 }
 
@@ -99,6 +100,7 @@ export default class MonacoJSONEditor extends React.Component<IProps> {
           this.props.onChange(changedSchema);
         }
       });
+      this.props.onCreate(this.editorInstance);
     }
 
     this.addCommands(this.editorInstance);
