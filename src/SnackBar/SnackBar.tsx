@@ -31,7 +31,7 @@ const styleSnackBar = (theme: Theme) => ({
     marginLeft: theme.spacing.unit,
   },
   close: {
-    padding: theme.spacing.unit / 2,
+    padding: theme.spacing.unit,
   },
   margin: {
     margin: theme.spacing.unit,
@@ -59,17 +59,17 @@ const styleSnackBarContent = (theme: Theme) => ({
   },
   iconVariant: {
     opacity: 0.9,
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing(2),
   },
   message: {
     display: "flex",
     alignItems: "center",
   },
   close: {
-    padding: theme.spacing.unit / 2,
+    padding: theme.spacing(1),
   },
   margin: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(2),
   },
 
 });

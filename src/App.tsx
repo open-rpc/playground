@@ -224,7 +224,7 @@ export default class App extends React.Component<{}, IState> {
             uiSchema={this.state.uiSchema}
             reactJsonOptions={this.state.reactJsonOptions}
           />
-        </div>
+        </Paper>
       </SplitPane>
     );
   }
@@ -232,13 +232,13 @@ export default class App extends React.Component<{}, IState> {
   private getPlayground = () => {
     if (!this.state.uiSchema.appBar["ui:splitView"]) {
       return (
-        <div className="docs" key={2}>
+        <Paper className="docs" elevation={0} key={2}>
           <Documentation
             schema={this.state.parsedSchema as OpenRPC}
             uiSchema={this.state.uiSchema}
             reactJsonOptions={this.state.reactJsonOptions}
           />
-        </div>
+        </Paper>
       );
     } else {
       return this.getSplitPane();
