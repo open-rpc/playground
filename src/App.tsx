@@ -116,16 +116,6 @@ export default class App extends React.Component<{}, IState> {
   public handleUISchemaAppBarChange = (name: string) => (value: any) => {
     if (name === "ui:darkMode") {
       monaco.editor.setTheme(value ? "vs-dark" : "vs");
-      return this.setState({
-        ...this.state,
-        uiSchema: {
-          ...this.state.uiSchema,
-          appBar: {
-            ...this.state.uiSchema.appBar,
-            [name]: value,
-          },
-        },
-      });
     }
 
     this.setState({
@@ -134,7 +124,7 @@ export default class App extends React.Component<{}, IState> {
         ...this.state.uiSchema,
         appBar: {
           ...this.state.uiSchema.appBar,
-          [name]: value.target.checked,
+          [name]: value,
         },
       },
     });
