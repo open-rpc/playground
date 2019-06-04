@@ -13,7 +13,10 @@ import * as qs from "qs";
 import { OpenRPC } from "@open-rpc/meta-schema";
 import { IUISchema } from "./UISchema";
 import { SnackBar, ISnackBarNotification, NotificationType } from "./SnackBar/SnackBar";
+import { MuiThemeProvider } from "@material-ui/core/styles";
+import { lightTheme, darkTheme } from "./themes/openrpcTheme";
 import SplitPane from "react-split-pane";
+import { Paper, CssBaseline } from "@material-ui/core";
 
 interface IState {
   markers: any[];
@@ -192,14 +195,23 @@ export default class App extends React.Component<{}, IState> {
 
   public render() {
     return (
+<<<<<<< HEAD
       <>
+=======
+      <MuiThemeProvider theme={this.state.uiSchema.appBar["ui:darkMode"] ? darkTheme : lightTheme}>
+        <CssBaseline />
+>>>>>>> fix: use old material ui version and add initial openrpc theme
         <AppBar
           uiSchema={this.state.uiSchema}
           onSplitViewChange={this.handleUISchemaAppBarChange("ui:splitView")}
           onChangeUrl={this.handleUrlChange} />
         {this.getPlayground()}
         <SnackBar close={this.handleSnackbarClose} notification={this.state.notification} />
+<<<<<<< HEAD
       </>
+=======
+      </MuiThemeProvider>
+>>>>>>> fix: use old material ui version and add initial openrpc theme
     );
   }
 
@@ -224,7 +236,7 @@ export default class App extends React.Component<{}, IState> {
             uiSchema={this.state.uiSchema}
             reactJsonOptions={this.state.reactJsonOptions}
           />
-        </Paper>
+        </div>
       </SplitPane>
     );
   }
