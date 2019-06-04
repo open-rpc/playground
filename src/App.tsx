@@ -13,7 +13,10 @@ import * as qs from "qs";
 import { OpenRPC } from "@open-rpc/meta-schema";
 import { IUISchema } from "./UISchema";
 import { SnackBar, ISnackBarNotification, NotificationType } from "./SnackBar/SnackBar";
+import { MuiThemeProvider } from "@material-ui/core/styles";
+import { lightTheme, darkTheme } from "./themes/openrpcTheme";
 import SplitPane from "react-split-pane";
+import { Paper, CssBaseline } from "@material-ui/core";
 
 interface IState {
   markers: any[];
@@ -49,6 +52,7 @@ export default class App extends React.Component<{}, IState> {
           "ui:logoUrl": "https://github.com/open-rpc/design/raw/master/icons/open-rpc-logo-noText/open-rpc-logo-noText%20(PNG)/128x128.png",
           /* tslint:enable */
           "ui:splitView": true,
+          "ui:darkMode": false,
           "ui:title": "OpenRPC Playground",
         },
         methods: {
@@ -109,14 +113,18 @@ export default class App extends React.Component<{}, IState> {
 
   public handleUrlChange = (event: any) => this.debouncedHandleUrlChange(event.target.value);
 
-  public handleUISchemaAppBarChange = (name: string) => (event: any) => {
+  public handleUISchemaAppBarChange = (name: string) => (value: any) => {
+    if (name === "ui:darkMode") {
+      monaco.editor.setTheme(value ? "vs-dark" : "vs");
+    }
+
     this.setState({
       ...this.state,
       uiSchema: {
         ...this.state.uiSchema,
         appBar: {
           ...this.state.uiSchema.appBar,
-          [name]: event.target.checked,
+          [name]: value,
         },
       },
     });
@@ -192,14 +200,16 @@ export default class App extends React.Component<{}, IState> {
 
   public render() {
     return (
-      <>
+      <MuiThemeProvider theme={this.state.uiSchema.appBar["ui:darkMode"] ? darkTheme : lightTheme}>
+        <CssBaseline />
         <AppBar
           uiSchema={this.state.uiSchema}
           onSplitViewChange={this.handleUISchemaAppBarChange("ui:splitView")}
+          onDarkModeChange={this.handleUISchemaAppBarChange("ui:darkMode")}
           onChangeUrl={this.handleUrlChange} />
         {this.getPlayground()}
         <SnackBar close={this.handleSnackbarClose} notification={this.state.notification} />
-      </>
+      </MuiThemeProvider>
     );
   }
 
@@ -214,6 +224,7 @@ export default class App extends React.Component<{}, IState> {
         <div key={1} style={{ display: "flex", flexDirection: "column", height: "100%" }} >
           <JSONValidationErrorList markers={this.state.markers} />
           <MonacoJSONEditor
+            uiSchema={this.state.uiSchema}
             onCreate={(editorInstance: monaco.editor.IStandaloneCodeEditor) => this.editorInstance = editorInstance}
             defaultValue={this.state.defaultValue}
             onChange={this.setMarkers.bind(this)} />
@@ -232,13 +243,13 @@ export default class App extends React.Component<{}, IState> {
   private getPlayground = () => {
     if (!this.state.uiSchema.appBar["ui:splitView"]) {
       return (
-        <div className="docs" key={2}>
+        <Paper className="docs" elevation={0} key={2}>
           <Documentation
             schema={this.state.parsedSchema as OpenRPC}
             uiSchema={this.state.uiSchema}
             reactJsonOptions={this.state.reactJsonOptions}
           />
-        </div>
+        </Paper>
       );
     } else {
       return this.getSplitPane();

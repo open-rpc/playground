@@ -8,10 +8,12 @@ import * as monaco from "monaco-editor";
 import _ from "lodash";
 import { JSONSchema4 } from "json-schema";
 import schema from "@open-rpc/meta-schema";
+import { IUISchema } from "./UISchema";
 
 interface IProps {
   defaultValue?: string;
   onChangeMarkers?: any;
+  uiSchema: IUISchema;
   onCreate?: any;
   onChange?: any;
 }
@@ -79,7 +81,7 @@ export default class MonacoJSONEditor extends React.Component<IProps> {
         formatOnPaste: true,
         formatOnType: true,
       },
-      theme: "vs-dark",
+      theme: this.props.uiSchema.appBar["ui:darkMode"] ? "vs-dark" : "vs",
     };
 
     if (this.monaco && this.monaco.current) {

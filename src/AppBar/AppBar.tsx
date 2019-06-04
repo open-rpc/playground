@@ -4,15 +4,18 @@ import {
   Toolbar,
   Typography,
   Grid,
+  IconButton,
   Paper,
-  FormControlLabel,
-  Checkbox,
   InputBase,
   Theme,
   WithStyles,
   withStyles,
   Hidden,
 } from "@material-ui/core";
+import VerticalSplitIcon from "@material-ui/icons/VerticalSplit";
+import FullscreenIcon from "@material-ui/icons/Fullscreen";
+import WbSunnyIcon from "@material-ui/icons/WbSunny";
+import Brightness3Icon from "@material-ui/icons/Brightness3";
 import { IUISchema } from "../UISchema";
 
 const styles = (theme: Theme) => ({
@@ -20,24 +23,24 @@ const styles = (theme: Theme) => ({
     marginLeft: theme.spacing.unit,
   },
   appBar: {
-    background: "white",
   },
 });
 
 interface IProps extends WithStyles<typeof styles> {
   uiSchema?: IUISchema;
   onChangeUrl?: any;
+  onDarkModeChange?: any;
   onSplitViewChange?: any;
 }
 
 class ApplicationBar extends Component<IProps> {
   public render() {
-    const { uiSchema, classes } = this.props;
+    const { uiSchema, classes, onSplitViewChange, onDarkModeChange } = this.props;
     return (
       <AppBar position="static" color="default" elevation={0} className={classes.appBar}>
         <Toolbar>
-          <Grid justify="space-evenly" alignItems="center" container spacing={24}>
-            <Grid item xs={6} sm={3} direction="row" justify="flex-start" container>
+          <Grid  alignItems="center" container spacing={24}>
+            <Grid item xs={6} sm={3} direction="row" container>
               {this.props.uiSchema && this.props.uiSchema.appBar && this.props.uiSchema.appBar["ui:logoUrl"] &&
                 <Grid>
                   <img
@@ -67,19 +70,21 @@ class ApplicationBar extends Component<IProps> {
                 </Paper>
               </Grid>
             </Hidden>
-            <Grid item xs={6} sm={2} alignItems="flex-end" container>
-              <FormControlLabel
-                style={{ marginLeft: "30px", height: "30px" }}
-                control={
-                  <Checkbox
-                    checked={this.props.uiSchema && !!this.props.uiSchema.appBar["ui:splitView"]}
-                    onChange={this.props.onSplitViewChange}
-                    value="splitView"
-                    color="primary"
-                  />
+            <Grid item xs={6} sm={2} container justify="flex-end">
+              <IconButton>
+                {uiSchema && uiSchema.appBar["ui:splitView"] ?
+                  <FullscreenIcon onClick={() => onSplitViewChange(false)} />
+                  :
+                  <VerticalSplitIcon onClick={() => onSplitViewChange(true)} />
                 }
-                label="Split View"
-              />
+              </IconButton>
+              <IconButton>
+                {uiSchema && uiSchema.appBar["ui:darkMode"] ?
+                  <Brightness3Icon onClick={() => onDarkModeChange(false)} />
+                  :
+                  <WbSunnyIcon onClick={() => onDarkModeChange(true)} />
+                }
+              </IconButton>
             </Grid>
           </Grid>
         </Toolbar>
