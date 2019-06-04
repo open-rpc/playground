@@ -52,6 +52,7 @@ export default class App extends React.Component<{}, IState> {
           "ui:logoUrl": "https://github.com/open-rpc/design/raw/master/icons/open-rpc-logo-noText/open-rpc-logo-noText%20(PNG)/128x128.png",
           /* tslint:enable */
           "ui:splitView": true,
+          "ui:darkMode": false,
           "ui:title": "OpenRPC Playground",
         },
         methods: {
@@ -112,14 +113,28 @@ export default class App extends React.Component<{}, IState> {
 
   public handleUrlChange = (event: any) => this.debouncedHandleUrlChange(event.target.value);
 
-  public handleUISchemaAppBarChange = (name: string) => (event: any) => {
+  public handleUISchemaAppBarChange = (name: string) => (value: any) => {
+    if (name === "ui:darkMode") {
+      monaco.editor.setTheme(value ? "vs-dark" : "vs");
+      return this.setState({
+        ...this.state,
+        uiSchema: {
+          ...this.state.uiSchema,
+          appBar: {
+            ...this.state.uiSchema.appBar,
+            [name]: value,
+          },
+        },
+      });
+    }
+
     this.setState({
       ...this.state,
       uiSchema: {
         ...this.state.uiSchema,
         appBar: {
           ...this.state.uiSchema.appBar,
-          [name]: event.target.checked,
+          [name]: value.target.checked,
         },
       },
     });
@@ -195,23 +210,16 @@ export default class App extends React.Component<{}, IState> {
 
   public render() {
     return (
-<<<<<<< HEAD
-      <>
-=======
       <MuiThemeProvider theme={this.state.uiSchema.appBar["ui:darkMode"] ? darkTheme : lightTheme}>
         <CssBaseline />
->>>>>>> fix: use old material ui version and add initial openrpc theme
         <AppBar
           uiSchema={this.state.uiSchema}
           onSplitViewChange={this.handleUISchemaAppBarChange("ui:splitView")}
+          onDarkModeChange={this.handleUISchemaAppBarChange("ui:darkMode")}
           onChangeUrl={this.handleUrlChange} />
         {this.getPlayground()}
         <SnackBar close={this.handleSnackbarClose} notification={this.state.notification} />
-<<<<<<< HEAD
-      </>
-=======
       </MuiThemeProvider>
->>>>>>> fix: use old material ui version and add initial openrpc theme
     );
   }
 
@@ -226,6 +234,7 @@ export default class App extends React.Component<{}, IState> {
         <div key={1} style={{ display: "flex", flexDirection: "column", height: "100%" }} >
           <JSONValidationErrorList markers={this.state.markers} />
           <MonacoJSONEditor
+            uiSchema={this.state.uiSchema}
             onCreate={(editorInstance: monaco.editor.IStandaloneCodeEditor) => this.editorInstance = editorInstance}
             defaultValue={this.state.defaultValue}
             onChange={this.setMarkers.bind(this)} />
