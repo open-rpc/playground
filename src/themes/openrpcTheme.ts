@@ -9,7 +9,9 @@ export const lightTheme = createMuiTheme({
     },
   },
   palette: {
-
+    background: {
+      default: "white",
+    },
   },
 });
 
