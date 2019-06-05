@@ -31,8 +31,6 @@ interface IProps extends WithStyles<typeof styles> {
   onSplitViewChange?: any;
 }
 
-// placeholder={this.props.uiSchema && this.props.uiSchema.appBar["ui:inputPlaceholder"]} //tslint:disable-line
-
 function getSuggestion(query: string | null) {
   const suggestions = [
     {
@@ -86,6 +84,7 @@ class SearchBar extends Component<IProps> {
             <div>
               <InputBase
                 {...getInputProps()}
+                placeholder={uiSchema && uiSchema.appBar["ui:inputPlaceholder"]}
                 style={{ width: "100%" }}
               />
               <div {...getMenuProps()} style={{ position: "absolute", zIndex: 1 }}>
@@ -124,4 +123,3 @@ class SearchBar extends Component<IProps> {
   }
 }
 export default withStyles(styles)(SearchBar);
-
