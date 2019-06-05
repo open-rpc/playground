@@ -39,6 +39,7 @@ export default class App extends React.Component<{}, IState> {
       notification: {} as ISnackBarNotification,
       parsedSchema: {} as OpenRPC,
       reactJsonOptions: {
+        theme: "summerfruit:inverted",
         collapseStringsAfterLength: 25,
         displayDataTypes: false,
         displayObjectSize: false,
@@ -114,12 +115,18 @@ export default class App extends React.Component<{}, IState> {
   public handleUrlChange = (event: any) => this.debouncedHandleUrlChange(event.target.value);
 
   public handleUISchemaAppBarChange = (name: string) => (value: any) => {
+    let reactJsonOptions = this.state.reactJsonOptions;
     if (name === "ui:darkMode") {
       monaco.editor.setTheme(value ? "vs-dark" : "vs");
-    }
+      reactJsonOptions = {
+        ...this.state.reactJsonOptions,
+        theme: value ? "summerfruit" : "summerfruit:inverted",
+      };
+    };
 
     this.setState({
       ...this.state,
+      reactJsonOptions,
       uiSchema: {
         ...this.state.uiSchema,
         appBar: {
