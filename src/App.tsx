@@ -112,7 +112,7 @@ export default class App extends React.Component<{}, IState> {
     });
   }
 
-  public handleUrlChange = (event: any) => this.debouncedHandleUrlChange(event.target.value);
+  public handleUrlChange = (value: any) => this.debouncedHandleUrlChange(value);
 
   public handleUISchemaAppBarChange = (name: string) => (value: any) => {
     let reactJsonOptions = this.state.reactJsonOptions;
@@ -122,7 +122,7 @@ export default class App extends React.Component<{}, IState> {
         ...this.state.reactJsonOptions,
         theme: value ? "summerfruit" : "summerfruit:inverted",
       };
-    };
+    }
 
     this.setState({
       ...this.state,

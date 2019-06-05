@@ -17,6 +17,7 @@ import FullscreenIcon from "@material-ui/icons/Fullscreen";
 import WbSunnyIcon from "@material-ui/icons/WbSunny";
 import Brightness3Icon from "@material-ui/icons/Brightness3";
 import { IUISchema } from "../UISchema";
+import SearchBar from "../SearchBar/SearchBar";
 
 const styles = (theme: Theme) => ({
   title: {
@@ -62,11 +63,7 @@ class ApplicationBar extends Component<IProps> {
                   padding: "0px 10px 0px 10px",
                   width: "100%",
                 }} elevation={0}>
-                  <InputBase
-                    style={{ width: "100%" }}
-                    onChange={this.props.onChangeUrl}
-                    placeholder={this.props.uiSchema && this.props.uiSchema.appBar["ui:inputPlaceholder"]}
-                  />
+                  <SearchBar onChangeUrl={this.props.onChangeUrl} />
                 </Paper>
               </Grid>
             </Hidden>
