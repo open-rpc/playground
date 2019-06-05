@@ -4,13 +4,13 @@ export const lightTheme = createMuiTheme({
   overrides: {
     MuiAppBar: {
       root: {
-        background: "white !important",
+        background: "#fff !important",
       },
     },
   },
   palette: {
     background: {
-      default: "white",
+      default: "#fff",
     },
   },
 });
@@ -31,7 +31,7 @@ export const darkTheme = createMuiTheme({
     },
     MuiTypography: {
       root: {
-        color: "white",
+        color: "#fff",
       },
     },
   },
