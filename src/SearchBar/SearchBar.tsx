@@ -70,7 +70,7 @@ class SearchBar extends Component<IProps> {
   public render() {
     const { uiSchema, classes, onSplitViewChange, onDarkModeChange } = this.props;
     return (
-      <Downshift onChange={this.props.onChangeUrl} id="downshift">
+      <Downshift onInputValueChange={this.props.onChangeUrl} id="downshift">
         {({
           getInputProps,
           getItemProps,
