@@ -80,10 +80,12 @@ class SearchBar extends Component<IProps> {
           inputValue,
           highlightedIndex,
           selectedItem,
+          openMenu,
         }) => (
             <div>
               <InputBase
                 {...getInputProps()}
+                onFocus={(event: any) => openMenu()}
                 placeholder={uiSchema && uiSchema.appBar["ui:inputPlaceholder"]}
                 style={{ width: "100%" }}
               />

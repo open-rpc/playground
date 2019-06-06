@@ -49,6 +49,8 @@ examples:
 
 - set splitView to false
   - `http://playground.open-rpc.org/?uiSchema[appBar][ui:splitView]=false`
+- hide appbar input bar
+  - `http://playground.open-rpc.org/?uiSchema[appBar][ui:input]=false`
 - provide custom name and logo
 - `http://playground.open-rpc.org/?uiSchema[appBar][ui:title]=My Site&uiSchema[appBar][ui:logoUrl]=https://github.com/open-rpc/design/raw/master/icons/open-rpc-logo-noText/open-rpc-logo-noText%20(PNG)/128x128.png`
 
