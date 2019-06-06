@@ -81,17 +81,24 @@ class SearchBar extends Component<IProps> {
           highlightedIndex,
           selectedItem,
           openMenu,
+          clearSelection,
         }) => (
             <div>
               <InputBase
-                {...getInputProps()}
+                {...getInputProps({
+                  onChange: (e) => {
+                    if (e.target.value === "") {
+                      clearSelection();
+                    }
+                  },
+                })}
                 onFocus={(event: any) => openMenu()}
                 placeholder={uiSchema && uiSchema.appBar["ui:inputPlaceholder"]}
                 style={{ width: "100%" }}
               />
               <div {...getMenuProps()} style={{ position: "absolute", zIndex: 1 }}>
                 {isOpen ? (
-                  <Paper style={{maxWidth: "640px"}}>
+                  <Paper style={{ maxWidth: "640px" }}>
                     {getSuggestion(inputValue).map((suggestion: any, index: number) => {
                       const isSelected = highlightedIndex === index;
                       return (
