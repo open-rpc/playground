@@ -48,6 +48,7 @@ export default class App extends React.Component<{}, IState> {
       },
       uiSchema: {
         appBar: {
+          "ui:input": true,
           "ui:inputPlaceholder": "Enter OpenRPC Document Url or rpc.discover Endpoint",
           /* tslint:disable */
           "ui:logoUrl": "https://github.com/open-rpc/design/raw/master/icons/open-rpc-logo-noText/open-rpc-logo-noText%20(PNG)/128x128.png",
@@ -112,7 +113,7 @@ export default class App extends React.Component<{}, IState> {
     });
   }
 
-  public handleUrlChange = (event: any) => this.debouncedHandleUrlChange(event.target.value);
+  public handleUrlChange = (value: any) => this.debouncedHandleUrlChange(value);
 
   public handleUISchemaAppBarChange = (name: string) => (value: any) => {
     let reactJsonOptions = this.state.reactJsonOptions;
@@ -122,7 +123,7 @@ export default class App extends React.Component<{}, IState> {
         ...this.state.reactJsonOptions,
         theme: value ? "summerfruit" : "summerfruit:inverted",
       };
-    };
+    }
 
     this.setState({
       ...this.state,
@@ -164,8 +165,18 @@ export default class App extends React.Component<{}, IState> {
     if (urlParams.uiSchema) {
       this.setState({
         uiSchema: {
-          ...this.state.uiSchema,
-          ...urlParams.uiSchema,
+          appBar: {
+            ...this.state.uiSchema.appBar,
+            ...urlParams.uiSchema.appBar || {},
+          },
+          methods: {
+            ...this.state.uiSchema.methods,
+            ...urlParams.uiSchema.methods || {},
+          },
+          params: {
+            ...this.state.uiSchema.params,
+            ...urlParams.uiSchema.params || {},
+          },
         },
       });
     }

@@ -17,6 +17,7 @@ import FullscreenIcon from "@material-ui/icons/Fullscreen";
 import WbSunnyIcon from "@material-ui/icons/WbSunny";
 import Brightness3Icon from "@material-ui/icons/Brightness3";
 import { IUISchema } from "../UISchema";
+import SearchBar from "../SearchBar/SearchBar";
 
 const styles = (theme: Theme) => ({
   title: {
@@ -39,7 +40,7 @@ class ApplicationBar extends Component<IProps> {
     return (
       <AppBar position="static" color="default" elevation={0} className={classes.appBar}>
         <Toolbar>
-          <Grid  alignItems="center" container spacing={24}>
+          <Grid alignItems="center" container spacing={24}>
             <Grid item xs={6} sm={3} direction="row" container>
               {this.props.uiSchema && this.props.uiSchema.appBar && this.props.uiSchema.appBar["ui:logoUrl"] &&
                 <Grid>
@@ -57,17 +58,15 @@ class ApplicationBar extends Component<IProps> {
             </Grid>
             <Hidden only="xs">
               <Grid item sm={7}>
-                <Paper style={{
-                  background: "rgba(0, 0, 0, 0.1)",
-                  padding: "0px 10px 0px 10px",
-                  width: "100%",
-                }} elevation={0}>
-                  <InputBase
-                    style={{ width: "100%" }}
-                    onChange={this.props.onChangeUrl}
-                    placeholder={this.props.uiSchema && this.props.uiSchema.appBar["ui:inputPlaceholder"]}
-                  />
-                </Paper>
+                {this.props.uiSchema && this.props.uiSchema.appBar && this.props.uiSchema.appBar["ui:input"] &&
+                  <Paper style={{
+                    background: "rgba(0, 0, 0, 0.1)",
+                    padding: "0px 10px 0px 10px",
+                    width: "100%",
+                  }} elevation={0}>
+                    <SearchBar onChangeUrl={this.props.onChangeUrl} uiSchema={uiSchema} />
+                  </Paper>
+                }
               </Grid>
             </Hidden>
             <Grid item xs={6} sm={2} container justify="flex-end">
