@@ -34,6 +34,7 @@ it("renders uiSchema inputPlaceholder", () => {
   const div = document.createElement("div");
   ReactDOM.render(<AppBar uiSchema={{
     appBar: {
+      "ui:input": true,
       "ui:inputPlaceholder": "enter url",
     },
   } as any} />, div);
