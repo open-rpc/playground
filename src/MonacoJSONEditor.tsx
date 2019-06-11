@@ -9,6 +9,7 @@ import _ from "lodash";
 import { JSONSchema4 } from "json-schema";
 import schema from "@open-rpc/meta-schema";
 import { IUISchema } from "./UISchema";
+import examplesList from "./examplesList";
 
 interface IProps {
   defaultValue?: string;
@@ -46,16 +47,14 @@ export default class MonacoJSONEditor extends React.Component<IProps> {
       this.metaSchema = schema as JSONSchema4;
       const defaultV = _.isEmpty(this.props.defaultValue) ? null
         : JSON.stringify(this.props.defaultValue, undefined, "  ");
-      const emptySchema = JSON.stringify({
-        openrpc: "1.0.0-rc1",
-        info: {
-          title: "",
-          version: "",
-        },
-        methods: [],
-      }, undefined, "\t");
+      const ex = examplesList.find((e) => e.name! === "petstore");
+      const defaultSchema = await fetch(ex!.url).then((res) => res.text());
       const localStorageSchema = window.localStorage.getItem("schema");
-      const defaultValue = defaultV || localStorageSchema || emptySchema;
+      let defaultValue = (defaultV || localStorageSchema || defaultSchema).trim();
+
+      if (defaultValue === "{}" || defaultValue === "") {
+        defaultValue = defaultSchema;
+      }
 
       model = monaco.editor.createModel(defaultValue, "json", modelUri);
       monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
