@@ -39,8 +39,7 @@
     "react-json-view": "^1.19.1",
     "react-markdown": "^4.0.8",
     "react-monaco-editor": "^0.25.1",
-    "react-split-pane": "^0.1.87",
-    "use-query-params": "^0.3.3"
+    "react-split-pane": "^0.1.87"
   },
   "scripts": {
     "lint": "tslint --fix -p .",
