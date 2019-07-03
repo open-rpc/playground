@@ -35,7 +35,7 @@ const App: React.FC = () => {
   }, 5000);
 
   useEffect(() => {
-    if (results) {
+    if (results && editor) {
       editor.setValue(results);
       setParsedSchema(results);
     }
@@ -86,7 +86,7 @@ const App: React.FC = () => {
   };
   const [editor, updateDimensions] = useMonaco(
     monacoEl,
-    undefined,
+    UISchema.appBar["ui:darkMode"],
     _.debounce(handleMonacoEditorOnChange, 500),
     [UISchema],
   );
