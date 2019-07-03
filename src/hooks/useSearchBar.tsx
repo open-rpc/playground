@@ -27,8 +27,7 @@ const useSearchBar = (defaultValue: string | undefined): [string | undefined, IS
           console.error(msg, e);
           setError(msg);
         });
-    }
-    else {
+    } else {
       fetchSchemaFromRpcDiscover(searchUrl)
         .then(setResults)
         .catch((e) => {

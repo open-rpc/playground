@@ -42,69 +42,68 @@ function getSuggestion(query: string | null) {
   });
 }
 
-class SearchBar extends Component<IProps> {
-  public render() {
-    const { uiSchema, classes, onSplitViewChange, onDarkModeChange, searchBarUrl } = this.props;
-    return (
-      <Downshift initialInputValue={searchBarUrl} onInputValueChange={this.props.onChangeUrl} id="downshift">
-        {({
-          getInputProps,
-          getItemProps,
-          getLabelProps,
-          getMenuProps,
-          isOpen,
-          inputValue,
-          highlightedIndex,
-          selectedItem,
-          openMenu,
-          clearSelection,
-        }) => (
-            <div>
-              <InputBase
-                {...getInputProps({
-                  onChange: (e) => {
-                    if (e.target.value === "") {
-                      clearSelection();
-                    }
-                  },
-                })}
-                onFocus={(event: any) => openMenu()}
-                placeholder={uiSchema && uiSchema.appBar["ui:inputPlaceholder"]}
-                style={{ width: "100%" }}
-              />
-              <div {...getMenuProps()} style={{ position: "absolute", zIndex: 1 }}>
-                {isOpen ? (
-                  <Paper style={{ maxWidth: "640px" }}>
-                    {getSuggestion(inputValue).map((suggestion: any, index: number) => {
-                      const isSelected = highlightedIndex === index;
-                      return (
-                        <MenuItem
-                          {...getItemProps({ item: suggestion.url })}
-                          key={suggestion.url}
-                          selected={isSelected}
-                          component="div"
-                          style={{
-                            fontWeight: isSelected ? 500 : 400,
-                          }}
-                        >
-                          <Grid container spacing={0}>
-                            <Grid item xs={12}>
-                              <Typography variant="subheading">{suggestion.name}</Typography>
-                            </Grid>
-                            <Grid item xs={12}>
-                              <Typography variant="caption">{suggestion.url}</Typography>
-                            </Grid>
+const SearchBar: React.FC<IProps> = (props) => {
+  const { uiSchema,  searchBarUrl, onChangeUrl } = props;
+  return (
+    <Downshift initialInputValue={searchBarUrl} onInputValueChange={onChangeUrl} id="downshift">
+      {({
+        getInputProps,
+        getItemProps,
+        getLabelProps,
+        getMenuProps,
+        isOpen,
+        inputValue,
+        highlightedIndex,
+        selectedItem,
+        openMenu,
+        clearSelection,
+      }) => (
+          <div>
+            <InputBase
+              {...getInputProps({
+                onChange: (e) => {
+                  if (e.target.value === "") {
+                    clearSelection();
+                  }
+                },
+              })}
+              onFocus={(event: any) => openMenu()}
+              placeholder={uiSchema && uiSchema.appBar["ui:inputPlaceholder"]}
+              style={{ width: "100%" }}
+            />
+            <div {...getMenuProps()} style={{ position: "absolute", zIndex: 1 }}>
+              {isOpen ? (
+                <Paper style={{ maxWidth: "640px" }}>
+                  {getSuggestion(inputValue).map((suggestion: any, index: number) => {
+                    const isSelected = highlightedIndex === index;
+                    return (
+                      <MenuItem
+                        {...getItemProps({ item: suggestion.url })}
+                        key={suggestion.url}
+                        selected={isSelected}
+                        component="div"
+                        style={{
+                          fontWeight: isSelected ? 500 : 400,
+                        }}
+                      >
+                        <Grid container spacing={0}>
+                          <Grid item xs={12}>
+                            <Typography variant="subheading">{suggestion.name}</Typography>
                           </Grid>
-                        </MenuItem>
-                      );
-                    })}
-                  </Paper>
-                ) : null}
-              </div>
+                          <Grid item xs={12}>
+                            <Typography variant="caption">{suggestion.url}</Typography>
+                          </Grid>
+                        </Grid>
+                      </MenuItem>
+                    );
+                  })}
+                </Paper>
+              ) : null}
             </div>
-          )}
-      </Downshift>
-    );
-  }
-}
+          </div>
+        )}
+    </Downshift>
+  );
+};
+
 export default withStyles(styles)(SearchBar);
