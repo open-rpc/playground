@@ -162,7 +162,7 @@
     "react-dev-utils": "^7.0.3",
     "resolve": "^1.11.0",
     "sass-loader": "7.1.0",
-    "semantic-release": "^15.13.12",
+    "semantic-release": "^15.13.18",
     "style-loader": "0.23.1",
     "terser-webpack-plugin": "1.2.3",
     "ts-jest": "^24.0.2",
