@@ -117,6 +117,9 @@ const App: React.FC = () => {
             key: "ui:darkMode",
             section: "appBar",
           });
+          if (editor) {
+            monaco.editor.setTheme(value ? "vs-dark" : "vs");
+          }
         }}
         onChangeUrl={_.debounce(setSearchUrl, 500)} />
       <PlaygroundSplitPane
