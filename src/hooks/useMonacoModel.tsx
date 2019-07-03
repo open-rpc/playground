@@ -9,12 +9,6 @@ const useMonacoModel = (
   const [model, setModel] = useState();
   const [position, setPosition] = useState([4, 13, 4, 13]);
   useEffect(() => {
-    // const existingModel = monaco.editor.getModels()[0];
-    // if (!model && existingModel && editor) {
-    //   editor.setModel(existingModel);
-    //   setModel(existingModel);
-    //   return;
-    // }
     if (editor) {
       const modelUri = monaco.Uri.parse(`inmemory:/${Math.random()}/model/userSpec.json`);
       const m = monaco.editor.createModel(defaultValue || "", "json", modelUri);
