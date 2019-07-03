@@ -3,9 +3,21 @@ class Selection {
 };
 
 const monaco = {
+  addAction() {
+
+  },
+  getModels() {
+    return []
+  },
   Uri: {
     parse(f) {
       return f;
+    }
+  },
+  KeyCode: {},
+  KeyMod: {
+    chord() {
+
     }
   },
   get editor() {
