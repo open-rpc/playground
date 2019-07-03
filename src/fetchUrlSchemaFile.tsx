@@ -1,8 +1,7 @@
 export default async (schemaUrl: string) => {
-  try {
-    const response = await fetch(schemaUrl);
-    return await response.json();
-  } catch (e) {
-    throw new Error(`Unable to download openrpc.json file located at the url: ${schemaUrl}`);
+  const response = await fetch(schemaUrl);
+  if (response.status === 404) {
+    throw new Error("404: Not Found");
   }
+  return response.text();
 };

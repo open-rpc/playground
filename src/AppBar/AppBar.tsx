@@ -6,7 +6,6 @@ import {
   Grid,
   IconButton,
   Paper,
-  InputBase,
   Theme,
   WithStyles,
   withStyles,
@@ -29,9 +28,10 @@ const styles = (theme: Theme) => ({
 
 interface IProps extends WithStyles<typeof styles> {
   uiSchema?: IUISchema;
+  searchBarUrl: string | undefined;
   onChangeUrl?: any;
   onDarkModeChange?: any;
-  onSplitViewChange?: any;
+  onSplitViewChange: (split: boolean) => any;
 }
 
 class ApplicationBar extends Component<IProps> {
@@ -64,7 +64,10 @@ class ApplicationBar extends Component<IProps> {
                     padding: "0px 10px 0px 10px",
                     width: "100%",
                   }} elevation={0}>
-                    <SearchBar onChangeUrl={this.props.onChangeUrl} uiSchema={uiSchema} />
+                    <SearchBar
+                      searchBarUrl={this.props.searchBarUrl}
+                      onChangeUrl={this.props.onChangeUrl} uiSchema={uiSchema}
+                    />
                   </Paper>
                 }
               </Grid>
