@@ -3,7 +3,7 @@ import * as monaco from "monaco-editor";
 
 const useMonaco = (
   monacoRef: React.RefObject<HTMLElement>,
-  didMount?: (editor: monaco.editor.IStandaloneCodeEditor) => any,
+  darkMode: boolean,
   onChange?: (event: monaco.editor.IModelContentChangedEvent, schema: string) => any,
   watchers?: any[],
 ) => {
@@ -16,11 +16,10 @@ const useMonaco = (
   useEffect(() => {
     let onChangeRef: monaco.IDisposable;
     if (monacoRef && monacoRef.current) {
-      const e = monaco.editor.create(monacoRef.current);
+      const e = monaco.editor.create(monacoRef.current, {
+        theme: darkMode ? "vs-dark" : "vs",
+      });
       setEditor(e);
-      if (didMount) {
-        didMount(editor);
-      }
       onChangeRef = e.onDidChangeModelContent((event: monaco.editor.IModelContentChangedEvent) => {
         if (onChange) {
           const v = e.getValue();
