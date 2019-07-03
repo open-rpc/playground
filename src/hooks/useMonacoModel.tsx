@@ -28,7 +28,7 @@ const useMonacoModel = (
       editor.setModel(m);
       const [selectionStartLineNumber, selectionStartColumn, positionLineNumber, positionColumn] = position;
       editor.setSelection(
-        new monaco.Selection(selectionStartLineNumber, selectionStartColumn, positionLineNumber, positionColumn)
+        new monaco.Selection(selectionStartLineNumber, selectionStartColumn, positionLineNumber, positionColumn),
       );
       editor.focus();
     }

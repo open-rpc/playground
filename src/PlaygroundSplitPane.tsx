@@ -6,7 +6,7 @@ interface IProps {
   onChange?: (size: number) => any;
   left: JSX.Element;
   right: JSX.Element;
-  split: boolean;
+  split?: boolean | undefined;
 }
 
 const PlaygroundSplitPane: React.FC<IProps> = (props) => {
@@ -25,8 +25,7 @@ const PlaygroundSplitPane: React.FC<IProps> = (props) => {
   }
 
   return (
-    <SplitPane
-      split="vertical"
+    <SplitPane split="vertical"
       minSize={100}
       maxSize={-100}
       defaultSize={window.innerWidth / 2}
