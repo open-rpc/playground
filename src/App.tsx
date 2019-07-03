@@ -20,6 +20,7 @@ import useUISchema from "./hooks/useUISchema";
 import useDefaultEditorValue from "./hooks/useDefaultEditorValue";
 import useSearchBar from "./hooks/useSearchBar";
 import useMonacoVimMode from "./hooks/useMonacoVimMode";
+import useMonacoReplaceMetaSchema from "./hooks/useMonacoReplaceMetaSchema";
 import useQueryParams from "./hooks/useQueryParams";
 
 const App: React.FC = () => {
@@ -88,9 +89,11 @@ const App: React.FC = () => {
     _.debounce(handleMonacoEditorOnChange, 500),
     [UISchema],
   );
+  const [metaSchema] = useMonacoReplaceMetaSchema(editor);
   const [model, setPosition] = useMonacoModel(
     parsedSchema ? JSON.stringify(parsedSchema, null, 2) : defaultValue,
     editor,
+    metaSchema,
   );
   const [vimMode] = useMonacoVimMode(editor);
 
