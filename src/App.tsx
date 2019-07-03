@@ -3,11 +3,9 @@ import JSONValidationErrorList from "./JSONValidationErrorList";
 import * as monaco from "monaco-editor";
 import _ from "lodash";
 import Documentation from "@open-rpc/docs-react";
-import { debounce } from "lodash";
 import useInterval from "@use-it/interval";
 import "./App.css";
 import AppBar from "./AppBar/AppBar";
-import * as qs from "qs";
 import { OpenRPC } from "@open-rpc/meta-schema";
 import { IUISchema } from "./UISchema";
 import { SnackBar, ISnackBarNotification, NotificationType } from "./SnackBar/SnackBar";
@@ -21,30 +19,8 @@ import useParsedSchema from "./hooks/useParsedSchema";
 import useUISchema from "./hooks/useUISchema";
 import useDefaultEditorValue from "./hooks/useDefaultEditorValue";
 import useSearchBar from "./hooks/useSearchBar";
-
-const useQueryParams = () => {
-  const parse = () => {
-    return qs.parse(window.location.search, {
-      ignoreQueryPrefix: true,
-      depth: 100,
-      decoder(str) {
-        if (/^(\d+|\d*\.\d+)$/.test(str)) {
-          return parseFloat(str);
-        }
-
-        if (str === "false") {
-          return false;
-        }
-        if (str === "true") {
-          return true;
-        }
-        return decodeURIComponent(str);
-      },
-    });
-  };
-  const [query] = useState(parse());
-  return [query];
-};
+import useMonacoVimMode from "./hooks/useMonacoVimMode";
+import useQueryParams from "./hooks/useQueryParams";
 
 const App: React.FC = () => {
   const [query] = useQueryParams();
@@ -59,6 +35,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (results) {
+      editor.setValue(results);
       setParsedSchema(results);
     }
   }, [results]);
@@ -115,6 +92,7 @@ const App: React.FC = () => {
     parsedSchema ? JSON.stringify(parsedSchema, null, 2) : defaultValue,
     editor,
   );
+  const [vimMode] = useMonacoVimMode(editor);
 
   return (
     <MuiThemeProvider theme={UISchema.appBar["ui:darkMode"] ? darkTheme : lightTheme}>

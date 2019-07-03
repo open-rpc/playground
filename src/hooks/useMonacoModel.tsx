@@ -38,7 +38,7 @@ const useMonacoModel = (
         model.dispose();
       }
     };
-  }, [editor, defaultValue]);
+  }, [editor]);
   return [model, setPosition];
 };
 

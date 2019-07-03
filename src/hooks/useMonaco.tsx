@@ -23,10 +23,7 @@ const useMonaco = (
       }
       onChangeRef = e.onDidChangeModelContent((event: monaco.editor.IModelContentChangedEvent) => {
         if (onChange) {
-          const timerLabel = "monaco editor getValue";
-          console.time(timerLabel);
           const v = e.getValue();
-          console.timeEnd(timerLabel);
           onChange(event, v);
         }
       });
