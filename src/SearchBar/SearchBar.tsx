@@ -27,11 +27,11 @@ const styles = (theme: Theme) => ({
 
 interface IProps extends WithStyles<typeof styles> {
   uiSchema?: IUISchema;
+  searchBarUrl: string | undefined;
   onChangeUrl?: any;
   onDarkModeChange?: any;
   onSplitViewChange?: any;
 }
-
 
 function getSuggestion(query: string | null) {
   if (!query) {
@@ -44,9 +44,9 @@ function getSuggestion(query: string | null) {
 
 class SearchBar extends Component<IProps> {
   public render() {
-    const { uiSchema, classes, onSplitViewChange, onDarkModeChange } = this.props;
+    const { uiSchema, classes, onSplitViewChange, onDarkModeChange, searchBarUrl } = this.props;
     return (
-      <Downshift onInputValueChange={this.props.onChangeUrl} id="downshift">
+      <Downshift initialInputValue={searchBarUrl} onInputValueChange={this.props.onChangeUrl} id="downshift">
         {({
           getInputProps,
           getItemProps,
