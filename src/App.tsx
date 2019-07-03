@@ -1,13 +1,11 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import JSONValidationErrorList from "./JSONValidationErrorList";
-import MonacoJSONEditor from "./MonacoJSONEditor";
-import refParser from "json-schema-ref-parser";
 import * as monaco from "monaco-editor";
+import _ from "lodash";
 import Documentation from "@open-rpc/docs-react";
-import { debounce, isEmpty } from "lodash";
+import { debounce } from "lodash";
+import useInterval from "@use-it/interval";
 import "./App.css";
-import fetchUrlSchemaFile from "./fetchUrlSchemaFile";
-import fetchSchemaFromRpcDiscover from "./fetchSchemaFromRpcDiscover";
 import AppBar from "./AppBar/AppBar";
 import * as qs from "qs";
 import { OpenRPC } from "@open-rpc/meta-schema";
@@ -15,131 +13,18 @@ import { IUISchema } from "./UISchema";
 import { SnackBar, ISnackBarNotification, NotificationType } from "./SnackBar/SnackBar";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { lightTheme, darkTheme } from "./themes/openrpcTheme";
-import SplitPane from "react-split-pane";
-import { Paper, CssBaseline } from "@material-ui/core";
+import { CssBaseline } from "@material-ui/core";
+import PlaygroundSplitPane from "./PlaygroundSplitPane";
+import useMonaco from "./hooks/useMonaco";
+import useMonacoModel from "./hooks/useMonacoModel";
+import useParsedSchema from "./hooks/useParsedSchema";
+import useUISchema from "./hooks/useUISchema";
+import useDefaultEditorValue from "./hooks/useDefaultEditorValue";
+import useSearchBar from "./hooks/useSearchBar";
 
-interface IState {
-  markers: any[];
-  notification: ISnackBarNotification;
-  defaultValue: string;
-  parsedSchema: OpenRPC;
-  reactJsonOptions: any;
-  uiSchema: IUISchema;
-}
-
-export default class App extends React.Component<{}, IState> {
-  private debouncedHandleUrlChange: any;
-  private editorInstance?: monaco.editor.IStandaloneCodeEditor;
-
-  constructor(props: {}) {
-    super(props);
-    this.state = {
-      defaultValue: "",
-      markers: [],
-      notification: {} as ISnackBarNotification,
-      parsedSchema: {} as OpenRPC,
-      reactJsonOptions: {
-        theme: "summerfruit:inverted",
-        collapseStringsAfterLength: 25,
-        displayDataTypes: false,
-        displayObjectSize: false,
-        indentWidth: 2,
-        name: false,
-      },
-      uiSchema: {
-        appBar: {
-          "ui:input": true,
-          "ui:inputPlaceholder": "Enter OpenRPC Document Url or rpc.discover Endpoint",
-          /* tslint:disable */
-          "ui:logoUrl": "https://github.com/open-rpc/design/raw/master/icons/open-rpc-logo-noText/open-rpc-logo-noText%20(PNG)/128x128.png",
-          /* tslint:enable */
-          "ui:splitView": true,
-          "ui:darkMode": false,
-          "ui:title": "OpenRPC Playground",
-        },
-        methods: {
-          "ui:defaultExpanded": false,
-        },
-        params: {
-          "ui:defaultExpanded": false,
-        },
-      },
-    };
-    this.refreshEditorData = this.refreshEditorData.bind(this);
-    this.setMarkers = debounce(this.setMarkers.bind(this), 300);
-    this.debouncedHandleUrlChange = debounce(this.dHandleUrlChange.bind(this), 300);
-    this.handleSnackbarClose = this.handleSnackbarClose.bind(this);
-  }
-
-  public setNotification = (notification: ISnackBarNotification) => {
-    this.setState({ notification });
-  }
-  public setErrorNotification = (message: string) => {
-    this.setNotification({ message, type: NotificationType.error });
-  }
-
-  public handleSnackbarClose() {
-    this.setState({ notification: {} as ISnackBarNotification });
-  }
-
-  public dHandleUrlChange = async (jsonOrRPC: string) => {
-    let newSchema;
-    if (isEmpty(jsonOrRPC)) { return; }
-    if (jsonOrRPC.match(/\.json$/)) {
-      try {
-        newSchema = await fetchUrlSchemaFile(jsonOrRPC);
-      } catch (e) {
-        const msg = `Error fetching schema for: ${jsonOrRPC}`;
-        console.error(msg, e);
-        this.setErrorNotification(msg);
-        return;
-      }
-    } else {
-      try {
-        const rpcResult = await fetchSchemaFromRpcDiscover(jsonOrRPC);
-        newSchema = rpcResult.result;
-      } catch (e) {
-        const msg = `Error fetching rpc.discover for: ${jsonOrRPC}`;
-        console.error(msg, e);
-        this.setErrorNotification(msg);
-        return;
-      }
-    }
-    monaco.editor.getModels()[0].setValue(JSON.stringify(newSchema, undefined, " "));
-    this.refreshEditorData();
-    this.setState({
-      ...this.state,
-      defaultValue: newSchema,
-    });
-  }
-
-  public handleUrlChange = (value: any) => this.debouncedHandleUrlChange(value);
-
-  public handleUISchemaAppBarChange = (name: string) => (value: any) => {
-    let reactJsonOptions = this.state.reactJsonOptions;
-    if (name === "ui:darkMode") {
-      monaco.editor.setTheme(value ? "vs-dark" : "vs");
-      reactJsonOptions = {
-        ...this.state.reactJsonOptions,
-        theme: value ? "summerfruit" : "summerfruit:inverted",
-      };
-    }
-
-    this.setState({
-      ...this.state,
-      reactJsonOptions,
-      uiSchema: {
-        ...this.state.uiSchema,
-        appBar: {
-          ...this.state.uiSchema.appBar,
-          [name]: value,
-        },
-      },
-    });
-  }
-
-  public async componentDidMount() {
-    const urlParams = qs.parse(window.location.search, {
+const useQueryParams = () => {
+  const parse = () => {
+    return qs.parse(window.location.search, {
       ignoreQueryPrefix: true,
       depth: 100,
       decoder(str) {
@@ -156,122 +41,123 @@ export default class App extends React.Component<{}, IState> {
         return decodeURIComponent(str);
       },
     });
-    if (urlParams.schemaUrl) {
-      this.dHandleUrlChange(urlParams.schemaUrl);
+  };
+  const [query] = useState(parse());
+  return [query];
+};
+
+const App: React.FC = () => {
+  const [query] = useQueryParams();
+  const [defaultValue, setDefaultValue] = useDefaultEditorValue();
+  const [markers, setMarkers] = useState<monaco.editor.IMarker[]>([] as monaco.editor.IMarker[]);
+  const [searchUrl, { results, error }, setSearchUrl] = useSearchBar(query.schemaUrl);
+  const [notification, setNotification] = useState<ISnackBarNotification | undefined>();
+
+  useInterval(() => {
+    setMarkers(monaco.editor.getModelMarkers({}));
+  }, 5000);
+
+  useEffect(() => {
+    if (results) {
+      setParsedSchema(results);
     }
-    if (urlParams.schema) {
-      monaco.editor.getModels()[0].setValue(JSON.stringify(urlParams.schema, undefined, " "));
-    }
-    if (urlParams.uiSchema) {
-      this.setState({
-        uiSchema: {
-          appBar: {
-            ...this.state.uiSchema.appBar,
-            ...urlParams.uiSchema.appBar || {},
-          },
-          methods: {
-            ...this.state.uiSchema.methods,
-            ...urlParams.uiSchema.methods || {},
-          },
-          params: {
-            ...this.state.uiSchema.params,
-            ...urlParams.uiSchema.params || {},
-          },
-        },
+  }, [results]);
+
+  useEffect(() => {
+    if (error) {
+      setNotification({
+        type: NotificationType.error,
+        message: error,
       });
     }
-    setTimeout(this.refreshEditorData, 300);
-    setTimeout(this.refreshEditorData, 2000);
-  }
+  }, [error]);
 
-  public refeshMarkers() {
-    setTimeout(() => {
-      const markers = monaco.editor.getModelMarkers({});
-      this.setState({
-        markers,
-      });
-    }, 1000);
-  }
-  public async refreshEditorData() {
-    let parsedSchema;
-    try {
-      parsedSchema = await refParser.dereference(JSON.parse(monaco.editor.getModels()[0].getValue())) as OpenRPC;
-    } catch (e) {
-      console.error("error parsing schema", e);
-    }
+  const [parsedSchema, setParsedSchema] = useParsedSchema(defaultValue ? JSON.parse(defaultValue) : null);
+  const [reactJsonOptions, setReactJsonOptions] = useState({
+    theme: "summerfruit:inverted",
+    collapseStringsAfterLength: 25,
+    displayDataTypes: false,
+    displayObjectSize: false,
+    indentWidth: 2,
+    name: false,
+  });
+  const [UISchema, setUISchemaBySection] = useUISchema({
+    appBar: {
+      "ui:input": true,
+      "ui:inputPlaceholder": "Enter OpenRPC Document Url or rpc.discover Endpoint",
+      /* tslint:disable */
+      "ui:logoUrl": "https://github.com/open-rpc/design/raw/master/icons/open-rpc-logo-noText/open-rpc-logo-noText%20(PNG)/128x128.png",
+      /* tslint:enable */
+      "ui:splitView": true,
+      "ui:darkMode": false,
+      "ui:title": "OpenRPC Playground",
+    },
+    methods: {
+      "ui:defaultExpanded": false,
+    },
+    params: {
+      "ui:defaultExpanded": false,
+    },
+  });
+  const monacoEl = useRef(null);
+  const handleMonacoEditorOnChange = (event: monaco.editor.IModelContentChangedEvent, value: string) => {
+    setParsedSchema(value);
+    const changes = event.changes[0].range;
+    setPosition([changes.startLineNumber, changes.startColumn, changes.endLineNumber, changes.endColumn]);
+  };
+  const [editor, updateDimensions] = useMonaco(
+    monacoEl,
+    undefined,
+    _.debounce(handleMonacoEditorOnChange, 500),
+    [UISchema],
+  );
+  const [model, setPosition] = useMonacoModel(
+    parsedSchema ? JSON.stringify(parsedSchema, null, 2) : defaultValue,
+    editor,
+  );
 
-    if (!parsedSchema) {
-      this.refeshMarkers();
-      return;
-    }
-
-    this.setState({
-      ...this.state,
-      parsedSchema: parsedSchema || this.state.parsedSchema,
-    });
-
-    this.refeshMarkers();
-  }
-  public setMarkers() {
-    this.refreshEditorData();
-  }
-
-  public render() {
-    return (
-      <MuiThemeProvider theme={this.state.uiSchema.appBar["ui:darkMode"] ? darkTheme : lightTheme}>
-        <CssBaseline />
-        <AppBar
-          uiSchema={this.state.uiSchema}
-          onSplitViewChange={this.handleUISchemaAppBarChange("ui:splitView")}
-          onDarkModeChange={this.handleUISchemaAppBarChange("ui:darkMode")}
-          onChangeUrl={this.handleUrlChange} />
-        {this.getPlayground()}
-        <SnackBar close={this.handleSnackbarClose} notification={this.state.notification} />
-      </MuiThemeProvider>
-    );
-  }
-
-  private getSplitPane() {
-    return (
-      <SplitPane
-        split="vertical"
-        minSize={100}
-        maxSize={-100}
-        defaultSize={window.innerWidth / 2}
-        onChange={(size) => this.editorInstance && this.editorInstance.layout()}>
-        <div key={1} style={{ display: "flex", flexDirection: "column", height: "100%" }} >
-          <JSONValidationErrorList markers={this.state.markers} />
-          <MonacoJSONEditor
-            uiSchema={this.state.uiSchema}
-            onCreate={(editorInstance: monaco.editor.IStandaloneCodeEditor) => this.editorInstance = editorInstance}
-            defaultValue={this.state.defaultValue}
-            onChange={this.setMarkers.bind(this)} />
-        </div>
-        <div className="docs" key={2}>
+  return (
+    <MuiThemeProvider theme={UISchema.appBar["ui:darkMode"] ? darkTheme : lightTheme}>
+      <CssBaseline />
+      <AppBar
+        searchBarUrl={searchUrl}
+        uiSchema={UISchema}
+        onSplitViewChange={(value) => {
+          setUISchemaBySection({
+            value,
+            key: "ui:splitView",
+            section: "appBar",
+          });
+        }}
+        onDarkModeChange={(value: boolean) => {
+          setUISchemaBySection({
+            value,
+            key: "ui:darkMode",
+            section: "appBar",
+          });
+        }}
+        onChangeUrl={_.debounce(setSearchUrl, 500)} />
+      <PlaygroundSplitPane
+        split={UISchema.appBar["ui:splitView"]}
+        onChange={updateDimensions as any}
+        left={
+          <>
+            <JSONValidationErrorList markers={markers} />
+            <div key={"editor"} style={{ height: "100%" }} ref={monacoEl} />
+          </>
+        }
+        right={
           <Documentation
-            schema={this.state.parsedSchema as OpenRPC}
-            uiSchema={this.state.uiSchema}
-            reactJsonOptions={this.state.reactJsonOptions}
+            schema={parsedSchema as OpenRPC}
+            uiSchema={UISchema}
+            reactJsonOptions={reactJsonOptions}
           />
-        </div>
-      </SplitPane>
-    );
-  }
-
-  private getPlayground = () => {
-    if (!this.state.uiSchema.appBar["ui:splitView"]) {
-      return (
-        <div className="docs" key={2}>
-          <Documentation
-            schema={this.state.parsedSchema as OpenRPC}
-            uiSchema={this.state.uiSchema}
-            reactJsonOptions={this.state.reactJsonOptions}
-          />
-        </div>
-      );
-    } else {
-      return this.getSplitPane();
-    }
-  }
-
-}
+        }
+      />
+      <SnackBar
+        close={() => setNotification({} as ISnackBarNotification)}
+        notification={notification as ISnackBarNotification} />
+    </MuiThemeProvider>
+  );
+};
+export default App;

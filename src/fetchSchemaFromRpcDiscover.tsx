@@ -11,7 +11,7 @@ export default async (url: string) => {
       headers: {"Content-Type": "application/json"},
       method: "POST",
     });
-    return await response.json();
+    return await response.text();
   } catch (e) {
     throw new Error(`Unable to call rpc.discover at: ${url}`);
   }
