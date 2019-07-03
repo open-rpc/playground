@@ -7,7 +7,7 @@ import useInterval from "@use-it/interval";
 import "./App.css";
 import AppBar from "./AppBar/AppBar";
 import { OpenRPC } from "@open-rpc/meta-schema";
-import { IUISchema } from "./UISchema";
+import { mergeUISchema } from "./UISchema";
 import { SnackBar, ISnackBarNotification, NotificationType } from "./SnackBar/SnackBar";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { lightTheme, darkTheme } from "./themes/openrpcTheme";
@@ -59,7 +59,7 @@ const App: React.FC = () => {
     indentWidth: 2,
     name: false,
   });
-  const [UISchema, setUISchemaBySection] = useUISchema({
+  const defaultUISchema = {
     appBar: {
       "ui:input": true,
       "ui:inputPlaceholder": "Enter OpenRPC Document Url or rpc.discover Endpoint",
@@ -76,7 +76,8 @@ const App: React.FC = () => {
     params: {
       "ui:defaultExpanded": false,
     },
-  });
+  };
+  const [UISchema, setUISchemaBySection] = useUISchema(mergeUISchema(defaultUISchema, query.uiSchema));
   const monacoEl = useRef(null);
   const handleMonacoEditorOnChange = (event: monaco.editor.IModelContentChangedEvent, value: string) => {
     setParsedSchema(value);

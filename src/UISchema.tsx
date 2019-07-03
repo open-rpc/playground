@@ -14,3 +14,24 @@ export interface IUISchema {
     ["ui:defaultExpanded"]: boolean,
   };
 }
+
+export const mergeUISchema = (a: IUISchema, b: IUISchema) => {
+  if (a && b) {
+    return {
+      appBar: {
+        ...a.appBar,
+        ...b.appBar || {},
+      },
+      methods: {
+        ...a.methods,
+        ...b.methods || {},
+      },
+      params: {
+        ...a.params,
+        ...b.params || {},
+      },
+    };
+  } else {
+    return a || b;
+  }
+};
