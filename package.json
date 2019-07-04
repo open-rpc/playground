@@ -126,7 +126,7 @@
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-react-app": "^7.0.2",
     "babel-preset-stage-2": "^6.24.1",
-    "bfj": "6.1.1",
+    "bfj": "6.1.2",
     "case-sensitive-paths-webpack-plugin": "2.2.0",
     "css-loader": "2.1.1",
     "dotenv": "8.0.0",
