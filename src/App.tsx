@@ -36,7 +36,9 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (results && editor) {
-      editor.setValue(results);
+      editor.setValue(results)
+    }
+    if (results) {
       setParsedSchema(results);
     }
   }, [results]);
