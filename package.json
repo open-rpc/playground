@@ -27,7 +27,7 @@
     "json-schema-empty": "^1.1.1",
     "json-schema-ref-parser": "^6.1.0",
     "jsonschema": "^1.2.4",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "monaco-editor": "^0.17.1",
     "monaco-editor-webpack-plugin": "^1.7.0",
     "monaco-vim": "0.0.14",
