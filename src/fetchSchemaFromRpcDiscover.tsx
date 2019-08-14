@@ -14,5 +14,5 @@ export default async (url: string) => {
     throw new Error("404: Not Found");
   }
   const responseJSON = await response.json();
-  return responseJSON.result;
+  return JSON.stringify(responseJSON.result, null, 2);
 };
