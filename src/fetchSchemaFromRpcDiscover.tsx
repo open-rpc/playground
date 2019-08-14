@@ -1,5 +1,5 @@
 let idCounter = 0;
-export default async (url: string): string => {
+export default async (url: string) => {
   const response = await fetch(url, {
     body: JSON.stringify({
       id: idCounter++,
@@ -14,5 +14,5 @@ export default async (url: string): string => {
     throw new Error("404: Not Found");
   }
   const responseJSON = await response.json();
-  return responseJSON.result.toString();
+  return JSON.stringify(responseJSON.result, null, 2);
 };
