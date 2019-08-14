@@ -13,5 +13,6 @@ export default async (url: string) => {
   if (response.status === 404) {
     throw new Error("404: Not Found");
   }
-  return response.text();
+  const responseJSON = await response.json();
+  return responseJSON.result;
 };
