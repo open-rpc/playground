@@ -2,12 +2,12 @@ import React, { useState, useRef, useEffect } from "react";
 import JSONValidationErrorList from "./JSONValidationErrorList";
 import * as monaco from "monaco-editor";
 import _ from "lodash";
-import Documentation from "@open-rpc/docs-react";
+import { Documentation } from "@open-rpc/docs-react";
 import useInterval from "@use-it/interval";
 import "./App.css";
 import AppBar from "./AppBar/AppBar";
 import { OpenRPC } from "@open-rpc/meta-schema";
-import { mergeUISchema } from "./UISchema";
+import { mergeUISchema, IUISchema } from "./UISchema";
 import { SnackBar, ISnackBarNotification, NotificationType } from "./SnackBar/SnackBar";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { lightTheme, darkTheme } from "./themes/openrpcTheme";
@@ -16,19 +16,26 @@ import PlaygroundSplitPane from "./PlaygroundSplitPane";
 import useMonaco from "./hooks/useMonaco";
 import useMonacoModel from "./hooks/useMonacoModel";
 import useParsedSchema from "./hooks/useParsedSchema";
-import useUISchema from "./hooks/useUISchema";
 import useDefaultEditorValue from "./hooks/useDefaultEditorValue";
-import useSearchBar from "./hooks/useSearchBar";
 import useMonacoVimMode from "./hooks/useMonacoVimMode";
 import useMonacoReplaceMetaSchema from "./hooks/useMonacoReplaceMetaSchema";
-import useQueryParams from "./hooks/useQueryParams";
+import InspectorPlugin from "./plugins/InspectorPlugin";
+import UISchemaStore from "./stores/UISchemaStore";
+import searchBarStore from "./stores/searchBarStore";
 
 const App: React.FC = () => {
-  const [query] = useQueryParams();
   const [defaultValue, setDefaultValue] = useDefaultEditorValue();
   const [markers, setMarkers] = useState<monaco.editor.IMarker[]>([] as monaco.editor.IMarker[]);
-  const [searchUrl, { results, error }, setSearchUrl] = useSearchBar(query.schemaUrl);
+  const [searchUrl, { results, error }, setSearchUrl] = searchBarStore();
   const [notification, setNotification] = useState<ISnackBarNotification | undefined>();
+  const [UISchema, setUISchemaBySection]: [IUISchema, any] = UISchemaStore();
+  const [monacoTheme, setMonacoTheme] = useState();
+
+  useEffect(() => {
+    if (editor) {
+      monaco.editor.setTheme(UISchema.appBar["ui:darkMode"] ? "vs-dark" : "vs");
+    }
+  }, [UISchema.appBar["ui:darkMode"]]);
 
   useInterval(() => {
     setMarkers(monaco.editor.getModelMarkers({}));
@@ -36,7 +43,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (results && editor) {
-      editor.setValue(results)
+      editor.setValue(results);
     }
     if (results) {
       setParsedSchema(results);
@@ -53,6 +60,9 @@ const App: React.FC = () => {
   }, [error]);
 
   const [parsedSchema, setParsedSchema] = useParsedSchema(defaultValue ? JSON.parse(defaultValue) : null);
+  useEffect(() => {
+    setParsedSchema(defaultValue);
+  }, [defaultValue]);
   const [reactJsonOptions, setReactJsonOptions] = useState({
     theme: "summerfruit:inverted",
     collapseStringsAfterLength: 25,
@@ -61,30 +71,11 @@ const App: React.FC = () => {
     indentWidth: 2,
     name: false,
   });
-  const defaultUISchema = {
-    appBar: {
-      "ui:input": true,
-      "ui:inputPlaceholder": "Enter OpenRPC Document Url or rpc.discover Endpoint",
-      /* tslint:disable */
-      "ui:logoUrl": "https://github.com/open-rpc/design/raw/master/icons/open-rpc-logo-noText/open-rpc-logo-noText%20(PNG)/128x128.png",
-      /* tslint:enable */
-      "ui:splitView": true,
-      "ui:darkMode": false,
-      "ui:title": "OpenRPC Playground",
-    },
-    methods: {
-      "ui:defaultExpanded": false,
-    },
-    params: {
-      "ui:defaultExpanded": false,
-    },
-  };
-  const [UISchema, setUISchemaBySection] = useUISchema(mergeUISchema(defaultUISchema, query.uiSchema));
   const monacoEl = useRef(null);
   const handleMonacoEditorOnChange = (event: monaco.editor.IModelContentChangedEvent, value: string) => {
     setParsedSchema(value);
     const changes = event.changes[0].range;
-    setPosition([changes.startLineNumber, changes.startColumn, changes.endLineNumber, changes.endColumn]);
+    setPosition([changes.startLineNumber, changes.startColumn, changes.startLineNumber, changes.startColumn]);
   };
   const [editor, updateDimensions] = useMonaco(
     monacoEl,
@@ -119,11 +110,12 @@ const App: React.FC = () => {
             key: "ui:darkMode",
             section: "appBar",
           });
-          if (editor) {
-            monaco.editor.setTheme(value ? "vs-dark" : "vs");
-          }
+          setReactJsonOptions({
+            ...reactJsonOptions,
+            theme: value ? "summerfruit" : "summerfruit:inverted",
+          });
         }}
-        onChangeUrl={_.debounce(setSearchUrl, 500)} />
+        onChangeUrl={setSearchUrl} />
       <PlaygroundSplitPane
         split={UISchema.appBar["ui:splitView"]}
         onChange={updateDimensions as any}
@@ -135,9 +127,14 @@ const App: React.FC = () => {
         }
         right={
           <Documentation
-            schema={parsedSchema as OpenRPC}
+            schema={parsedSchema as any}
             uiSchema={UISchema}
             reactJsonOptions={reactJsonOptions}
+            methodPlugins={
+              UISchema.methods["ui:methodPlugins"]
+                ? [InspectorPlugin]
+                : undefined
+            }
           />
         }
       />
