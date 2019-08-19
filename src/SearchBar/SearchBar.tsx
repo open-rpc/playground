@@ -55,12 +55,16 @@ const SearchBar: React.FC<IProps> = (props) => {
         inputValue,
         highlightedIndex,
         selectedItem,
+        selectItem,
         openMenu,
         clearSelection,
       }) => (
           <div>
             <InputBase
               {...getInputProps({
+                onBlur: (e: any) => {
+                  selectItem(e.target.value);
+                },
                 onChange: (e) => {
                   if (e.target.value === "") {
                     clearSelection();

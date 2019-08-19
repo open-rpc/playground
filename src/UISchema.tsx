@@ -9,6 +9,7 @@ export interface IUISchema {
   };
   methods: {
     ["ui:defaultExpanded"]: boolean,
+    ["ui:methodPlugins"]: boolean,
   };
   params: {
     ["ui:defaultExpanded"]: boolean,
