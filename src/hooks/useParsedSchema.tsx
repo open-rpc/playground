@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import _ from "lodash";
 import refParser from "json-schema-ref-parser";
 
 const useParsedSchema = (defaultValue: object | any) => {
-  const [parsedSchema, setParsedSchema] = useState(defaultValue);
+  const [parsedSchema, setParsedSchema] = useState();
   const validateAndSetSchema = (schema: string) => {
     let maybeSchema;
     try {
@@ -19,6 +19,11 @@ const useParsedSchema = (defaultValue: object | any) => {
       _.defer(() => window.localStorage.setItem("schema", schema));
     });
   };
+  useEffect(() => {
+    if (defaultValue) {
+      validateAndSetSchema(defaultValue);
+    }
+  }, []);
   return [parsedSchema, validateAndSetSchema];
 };
 

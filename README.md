@@ -39,7 +39,7 @@ The query string parameters can be used to configure the playground in different
 ###### `uiSchema`
 `uiSchema` is used for UI layer configuration. here is its interface:
 
-![image](https://user-images.githubusercontent.com/364566/55295551-338b3500-53c3-11e9-8096-39bbc78a93e4.png)
+![image](https://user-images.githubusercontent.com/364566/63297271-d6b2ed00-c285-11e9-83ff-920e77b3c182.png)
 
 ###### `schemaUrl`
 `schemaUrl` - fetch schema by URL and display it as the content of the playground on startup.
