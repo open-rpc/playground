@@ -35,6 +35,10 @@ const App: React.FC = () => {
     if (editor) {
       monaco.editor.setTheme(UISchema.appBar["ui:darkMode"] ? "vs-dark" : "vs");
     }
+    setReactJsonOptions({
+      ...reactJsonOptions,
+      theme: UISchema.appBar["ui:darkMode"] ? "summerfruit" : "summerfruit:inverted",
+    });
   }, [UISchema.appBar["ui:darkMode"]]);
 
   useInterval(() => {
@@ -109,10 +113,6 @@ const App: React.FC = () => {
             value,
             key: "ui:darkMode",
             section: "appBar",
-          });
-          setReactJsonOptions({
-            ...reactJsonOptions,
-            theme: value ? "summerfruit" : "summerfruit:inverted",
           });
         }}
         onChangeUrl={setSearchUrl} />
