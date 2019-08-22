@@ -50,7 +50,7 @@ const App: React.FC = () => {
       editor.setValue(results);
     }
     if (results) {
-      setParsedSchema(results);
+      validateAndSetSchema(results);
     }
   }, [results]);
 
@@ -63,9 +63,9 @@ const App: React.FC = () => {
     }
   }, [error]);
 
-  const [parsedSchema, setParsedSchema] = useParsedSchema(defaultValue ? JSON.parse(defaultValue) : null);
+  const [parsedSchema, schema, validateAndSetSchema] = useParsedSchema(null);
   useEffect(() => {
-    setParsedSchema(defaultValue);
+    validateAndSetSchema(defaultValue);
   }, [defaultValue]);
   const [reactJsonOptions, setReactJsonOptions] = useState({
     theme: "summerfruit:inverted",
@@ -77,7 +77,7 @@ const App: React.FC = () => {
   });
   const monacoEl = useRef(null);
   const handleMonacoEditorOnChange = (event: monaco.editor.IModelContentChangedEvent, value: string) => {
-    setParsedSchema(value);
+    validateAndSetSchema(value);
     const changes = event.changes[0].range;
     setPosition([changes.startLineNumber, changes.startColumn, changes.startLineNumber, changes.startColumn]);
   };
@@ -89,7 +89,7 @@ const App: React.FC = () => {
   );
   const [metaSchema] = useMonacoReplaceMetaSchema(editor);
   const [model, setPosition] = useMonacoModel(
-    parsedSchema ? JSON.stringify(parsedSchema, null, 2) : defaultValue,
+    parsedSchema ? JSON.stringify(schema, null, 2) : defaultValue,
     editor,
     metaSchema,
   );

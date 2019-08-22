@@ -4,19 +4,21 @@ import refParser from "json-schema-ref-parser";
 
 const useParsedSchema = (defaultValue: object | any) => {
   const [parsedSchema, setParsedSchema] = useState();
-  const validateAndSetSchema = (schema: string) => {
-    let maybeSchema;
+  const [schema, setSchema] = useState();
+  const validateAndSetSchema = (schemaToValidate: string) => {
+    let maybeSchema: any;
     try {
-      maybeSchema = JSON.parse(schema);
+      maybeSchema = JSON.parse(schemaToValidate);
     } catch (e) {
       //
     }
     if (!maybeSchema) {
       return;
     }
+    setSchema(maybeSchema);
     refParser.dereference(maybeSchema).then((dereferencedSchema) => {
       setParsedSchema(dereferencedSchema);
-      _.defer(() => window.localStorage.setItem("schema", schema));
+      _.defer(() => window.localStorage.setItem("schema", schemaToValidate));
     });
   };
   useEffect(() => {
@@ -24,7 +26,7 @@ const useParsedSchema = (defaultValue: object | any) => {
       validateAndSetSchema(defaultValue);
     }
   }, []);
-  return [parsedSchema, validateAndSetSchema];
+  return [parsedSchema, schema, validateAndSetSchema];
 };
 
 export default useParsedSchema;
