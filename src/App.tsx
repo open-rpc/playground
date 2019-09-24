@@ -22,6 +22,7 @@ import useMonacoReplaceMetaSchema from "./hooks/useMonacoReplaceMetaSchema";
 import InspectorPlugin from "./plugins/InspectorPlugin";
 import UISchemaStore from "./stores/UISchemaStore";
 import searchBarStore from "./stores/searchBarStore";
+import examples from "./examplesList";
 
 const App: React.FC = () => {
   const [defaultValue, setDefaultValue] = useDefaultEditorValue();
@@ -30,6 +31,13 @@ const App: React.FC = () => {
   const [notification, setNotification] = useState<ISnackBarNotification | undefined>();
   const [UISchema, setUISchemaBySection]: [IUISchema, any] = UISchemaStore();
   const [monacoTheme, setMonacoTheme] = useState();
+
+  useEffect(() => {
+    const defaultExample = examples.find((e) => e.name === "petstore");
+    if (!defaultValue && !searchUrl && defaultExample) {
+      setSearchUrl(defaultExample.url);
+    }
+  }, [defaultValue]);
 
   useEffect(() => {
     if (editor) {
