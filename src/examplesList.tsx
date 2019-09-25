@@ -23,4 +23,8 @@ export default [
     name: "simple-math",
     url: "https://raw.githubusercontent.com/open-rpc/examples/master/service-descriptions/simple-math-openrpc.json", //tslint:disable-line
   },
+  {
+    name: "ethereum-json-rpc-specification",
+    url: "https://raw.githubusercontent.com/etclabscore/ethereum-json-rpc-specification/master/openrpc.json", //tslint:disable-line
+  },
 ];
