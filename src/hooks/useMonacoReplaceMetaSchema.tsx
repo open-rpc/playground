@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import * as monaco from "monaco-editor";
 import schema from "@open-rpc/meta-schema";
-const { initVimMode } = require("monaco-vim"); //tslint:disable-line
 
 // Monaco Replace Meta Schema:
 // Press Chord Ctrl-K, Ctrl-R => the action will run if it is enabled

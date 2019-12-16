@@ -1,13 +1,11 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import JSONValidationErrorList from "./JSONValidationErrorList";
 import * as monaco from "monaco-editor";
-import _ from "lodash";
 import { Documentation } from "@open-rpc/docs-react";
 import useInterval from "@use-it/interval";
 import "./App.css";
 import AppBar from "./AppBar/AppBar";
-import { OpenRPC } from "@open-rpc/meta-schema";
-import { mergeUISchema, IUISchema } from "./UISchema";
+import { IUISchema } from "./UISchema";
 import { SnackBar, ISnackBarNotification, NotificationType } from "./SnackBar/SnackBar";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { lightTheme, darkTheme } from "./themes/openrpcTheme";
@@ -24,7 +22,7 @@ import useMonacoReplaceMetaSchema from "./hooks/useMonacoReplaceMetaSchema";
 import useMonacoVimMode from "./hooks/useMonacoVimMode";
 
 const App: React.FC = () => {
-  const [defaultValue, setDefaultValue] = useDefaultEditorValue();
+  const [defaultValue] = useDefaultEditorValue();
   const [markers, setMarkers] = useState<monaco.editor.IMarker[]>([] as monaco.editor.IMarker[]);
   const [searchUrl, { results, error }, setSearchUrl] = searchBarStore();
   const [notification, setNotification] = useState<ISnackBarNotification | undefined>();
@@ -42,6 +40,7 @@ const App: React.FC = () => {
     if (!defaultValue && !searchUrl && defaultExample) {
       setSearchUrl(defaultExample.url);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValue]);
 
   useEffect(() => {
@@ -49,6 +48,7 @@ const App: React.FC = () => {
       ...reactJsonOptions,
       theme: UISchema.appBar["ui:darkMode"] ? "summerfruit" : "summerfruit:inverted",
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [UISchema.appBar["ui:darkMode"]]);
 
   useInterval(() => {
@@ -67,6 +67,7 @@ const App: React.FC = () => {
     if (results) {
       setParsedSchema(results);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [results]);
 
   useEffect(() => {
@@ -81,6 +82,7 @@ const App: React.FC = () => {
   const [parsedSchema, setParsedSchema] = useParsedSchema(defaultValue ? JSON.parse(defaultValue) : null);
   useEffect(() => {
     setParsedSchema(defaultValue);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValue]);
   const [reactJsonOptions, setReactJsonOptions] = useState({
     theme: "summerfruit:inverted",

@@ -5,7 +5,7 @@ import {
   withStyles,
   Theme,
 } from "@material-ui/core";
-import React, { Component, ChangeEvent } from "react";
+import React, { Component } from "react";
 import classNames from "classnames";
 import { IUISchema } from "../UISchema";
 import {isEmpty} from "lodash";

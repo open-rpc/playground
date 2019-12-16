@@ -2,13 +2,11 @@ import React from "react";
 import Inspector from "@open-rpc/inspector";
 import { Grid } from "@material-ui/core";
 import { IMethodPluginProps } from "@open-rpc/docs-react/build/Methods/Methods";
-import UISchemaStore from "../stores/UISchemaStore";
-import { IUISchema } from "../UISchema";
 import searchBarStore from "../stores/searchBarStore";
 import { ExamplePairingObject, ExampleObject } from "@open-rpc/meta-schema";
 
 const InspectorPlugin: React.FC<IMethodPluginProps> = (props) => {
-  const [searchUrl, { results, error }, setSearchUrl] = searchBarStore();
+  const [searchUrl] = searchBarStore();
   const method = props.openrpcMethodObject;
   const examplePosition = 0;
   let example;

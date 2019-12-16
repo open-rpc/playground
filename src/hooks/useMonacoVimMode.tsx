@@ -31,6 +31,7 @@ const useMonacoVimMode = (editor: monaco.editor.IStandaloneCodeEditor) => {
         vimMode.dispose();
       }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editor]);
 
   return [editor, vimMode];

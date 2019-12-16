@@ -23,6 +23,7 @@ const useParsedSchema = (defaultValue: object | any) => {
     if (defaultValue) {
       validateAndSetSchema(defaultValue);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return [parsedSchema, validateAndSetSchema];
 };

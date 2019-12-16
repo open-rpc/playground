@@ -6,12 +6,8 @@ import {
   WithStyles,
   withStyles,
   Paper,
-  Menu,
   MenuItem,
-  Card,
-  CardHeader,
   Typography,
-  CardContent,
   Grid,
 } from "@material-ui/core";
 import { IUISchema } from "../UISchema";
