@@ -1,4 +1,4 @@
-import React, { Component, ChangeEvent } from "react";
+import React from "react";
 import Downshift from "downshift";
 import {
   InputBase,
@@ -19,7 +19,7 @@ import suggestions from "../examplesList";
 
 const styles = (theme: Theme) => ({
   title: {
-    marginLeft: theme.spacing.unit,
+    marginLeft: theme.spacing(2),
   },
   appBar: {
   },
@@ -65,12 +65,12 @@ const SearchBar: React.FC<IProps> = (props) => {
                 onBlur: (e: any) => {
                   selectItem(e.target.value);
                 },
-                onChange: (e) => {
+                onChange: (e: any) => {
                   if (e.target.value === "") {
                     clearSelection();
                   }
                 },
-              })}
+              } as any)}
               onFocus={(event: any) => openMenu()}
               placeholder={uiSchema && uiSchema.appBar["ui:inputPlaceholder"]}
               style={{ width: "100%" }}
@@ -92,7 +92,7 @@ const SearchBar: React.FC<IProps> = (props) => {
                       >
                         <Grid container spacing={0}>
                           <Grid item xs={12}>
-                            <Typography variant="subheading">{suggestion.name}</Typography>
+                            <Typography variant="subtitle1">{suggestion.name}</Typography>
                           </Grid>
                           <Grid item xs={12}>
                             <Typography variant="caption">{suggestion.url}</Typography>

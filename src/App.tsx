@@ -13,16 +13,15 @@ import { MuiThemeProvider } from "@material-ui/core/styles";
 import { lightTheme, darkTheme } from "./themes/openrpcTheme";
 import { CssBaseline } from "@material-ui/core";
 import PlaygroundSplitPane from "./PlaygroundSplitPane";
-import useMonaco from "./hooks/useMonaco";
-import useMonacoModel from "./hooks/useMonacoModel";
 import useParsedSchema from "./hooks/useParsedSchema";
 import useDefaultEditorValue from "./hooks/useDefaultEditorValue";
-import useMonacoVimMode from "./hooks/useMonacoVimMode";
-import useMonacoReplaceMetaSchema from "./hooks/useMonacoReplaceMetaSchema";
 import InspectorPlugin from "./plugins/InspectorPlugin";
 import UISchemaStore from "./stores/UISchemaStore";
 import searchBarStore from "./stores/searchBarStore";
 import examples from "./examplesList";
+import OpenRPCEditor from "./OpenRPCEditor";
+import useMonacoReplaceMetaSchema from "./hooks/useMonacoReplaceMetaSchema";
+import useMonacoVimMode from "./hooks/useMonacoVimMode";
 
 const App: React.FC = () => {
   const [defaultValue, setDefaultValue] = useDefaultEditorValue();
@@ -30,7 +29,13 @@ const App: React.FC = () => {
   const [searchUrl, { results, error }, setSearchUrl] = searchBarStore();
   const [notification, setNotification] = useState<ISnackBarNotification | undefined>();
   const [UISchema, setUISchemaBySection]: [IUISchema, any] = UISchemaStore();
-  const [monacoTheme, setMonacoTheme] = useState();
+  const [editor, setEditor] = useState();
+  useMonacoReplaceMetaSchema(editor);
+  useMonacoVimMode(editor);
+
+  const handleEditorDidMount = (__: any, ed: any) => {
+    setEditor(ed);
+  };
 
   useEffect(() => {
     const defaultExample = examples.find((e) => e.name === "petstore");
@@ -40,9 +45,6 @@ const App: React.FC = () => {
   }, [defaultValue]);
 
   useEffect(() => {
-    if (editor) {
-      monaco.editor.setTheme(UISchema.appBar["ui:darkMode"] ? "vs-dark" : "vs");
-    }
     setReactJsonOptions({
       ...reactJsonOptions,
       theme: UISchema.appBar["ui:darkMode"] ? "summerfruit" : "summerfruit:inverted",
@@ -50,7 +52,12 @@ const App: React.FC = () => {
   }, [UISchema.appBar["ui:darkMode"]]);
 
   useInterval(() => {
-    setMarkers(monaco.editor.getModelMarkers({}));
+    const modelUriString = "inmemory://openrpc-playground.json";
+    const modelUri = monaco.Uri.parse(modelUriString);
+    const mk = monaco.editor.getModelMarkers({
+      resource: modelUri,
+    });
+    setMarkers(mk);
   }, 5000);
 
   useEffect(() => {
@@ -83,26 +90,6 @@ const App: React.FC = () => {
     indentWidth: 2,
     name: false,
   });
-  const monacoEl = useRef(null);
-  const handleMonacoEditorOnChange = (event: monaco.editor.IModelContentChangedEvent, value: string) => {
-    setParsedSchema(value);
-    const changes = event.changes[0].range;
-    setPosition([changes.startLineNumber, changes.startColumn, changes.startLineNumber, changes.startColumn]);
-  };
-  const [editor, updateDimensions] = useMonaco(
-    monacoEl,
-    UISchema.appBar["ui:darkMode"],
-    _.debounce(handleMonacoEditorOnChange, 500),
-    [UISchema],
-  );
-  const [metaSchema] = useMonacoReplaceMetaSchema(editor);
-  const [model, setPosition] = useMonacoModel(
-    parsedSchema ? JSON.stringify(parsedSchema, null, 2) : defaultValue,
-    editor,
-    metaSchema,
-  );
-  const [vimMode] = useMonacoVimMode(editor);
-
   return (
     <MuiThemeProvider theme={UISchema.appBar["ui:darkMode"] ? darkTheme : lightTheme}>
       <CssBaseline />
@@ -117,6 +104,7 @@ const App: React.FC = () => {
           });
         }}
         onDarkModeChange={(value: boolean) => {
+          monaco.editor.setTheme(value ? "vs-dark" : "vs");
           setUISchemaBySection({
             value,
             key: "ui:darkMode",
@@ -126,11 +114,16 @@ const App: React.FC = () => {
         onChangeUrl={setSearchUrl} />
       <PlaygroundSplitPane
         split={UISchema.appBar["ui:splitView"]}
-        onChange={updateDimensions as any}
         left={
           <>
             <JSONValidationErrorList markers={markers} />
-            <div key={"editor"} style={{ height: "100%" }} ref={monacoEl} />
+            <OpenRPCEditor
+              editorDidMount={handleEditorDidMount}
+              onChange={(val) => {
+                setParsedSchema(val);
+              }}
+              value={defaultValue || ""}
+            />
           </>
         }
         right={

@@ -1,4 +1,4 @@
-import React, { Component, ChangeEvent } from "react";
+import React, { Component } from "react";
 import {
   AppBar,
   Toolbar,
@@ -20,7 +20,7 @@ import SearchBar from "../SearchBar/SearchBar";
 
 const styles = (theme: Theme) => ({
   title: {
-    marginLeft: theme.spacing.unit,
+    marginLeft: theme.spacing(2),
   },
   appBar: {
   },
@@ -40,7 +40,7 @@ class ApplicationBar extends Component<IProps> {
     return (
       <AppBar position="static" color="default" elevation={0} className={classes.appBar}>
         <Toolbar>
-          <Grid alignItems="center" container spacing={24}>
+          <Grid alignItems="center" container spacing={10}>
             <Grid item xs={6} sm={3} direction="row" container>
               {this.props.uiSchema && this.props.uiSchema.appBar && this.props.uiSchema.appBar["ui:logoUrl"] &&
                 <Grid>

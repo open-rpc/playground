@@ -8,7 +8,6 @@ import searchBarStore from "../stores/searchBarStore";
 import { ExamplePairingObject, ExampleObject } from "@open-rpc/meta-schema";
 
 const InspectorPlugin: React.FC<IMethodPluginProps> = (props) => {
-  const [UISchema]: [IUISchema] = UISchemaStore();
   const [searchUrl, { results, error }, setSearchUrl] = searchBarStore();
   const method = props.openrpcMethodObject;
   const examplePosition = 0;
@@ -23,9 +22,8 @@ const InspectorPlugin: React.FC<IMethodPluginProps> = (props) => {
       <Inspector
         request={{ method: method.name, params: exampleParams || [] }}
         url={searchUrl && searchUrl.includes(".json") ? null : searchUrl}
-        darkMode={UISchema.appBar["ui:darkMode"]}
+        openrpcMethodObject={method}
         hideToggleTheme={true}
-        reactJsonTheme={UISchema.appBar["ui:darkMode"] ? "summerfruit" : "summerfruit:inverted"}
       />
     </Grid>
   );
