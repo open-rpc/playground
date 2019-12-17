@@ -17,6 +17,7 @@ import WbSunnyIcon from "@material-ui/icons/WbSunny";
 import Brightness3Icon from "@material-ui/icons/Brightness3";
 import { IUISchema } from "../UISchema";
 import SearchBar from "../SearchBar/SearchBar";
+import ExampleDocumentsDropdown, { IExample } from "../ExampleDocumentsDropdown/ExampleDocumentsDropdown";
 
 const styles = (theme: Theme) => ({
   title: {
@@ -28,15 +29,24 @@ const styles = (theme: Theme) => ({
 
 interface IProps extends WithStyles<typeof styles> {
   uiSchema?: IUISchema;
-  searchBarUrl: string | undefined;
+  examples?: IExample[];
+  searchBarUrl?: string | undefined;
   onChangeUrl?: any;
   onDarkModeChange?: any;
-  onSplitViewChange: (split: boolean) => any;
+  onSplitViewChange?: (split: boolean) => any;
+  onExampleDocumentsDropdownChange?: (example: IExample) => any;
 }
 
 class ApplicationBar extends Component<IProps> {
   public render() {
-    const { uiSchema, classes, onSplitViewChange, onDarkModeChange } = this.props;
+    const {
+      uiSchema,
+      classes,
+      onSplitViewChange,
+      onDarkModeChange,
+      examples,
+      onExampleDocumentsDropdownChange,
+    } = this.props;
     return (
       <AppBar position="static" color="default" elevation={0} className={classes.appBar}>
         <Toolbar>
@@ -57,7 +67,7 @@ class ApplicationBar extends Component<IProps> {
               </Grid>
             </Grid>
             <Hidden only="xs">
-              <Grid item sm={7}>
+              <Grid item sm={6}>
                 {this.props.uiSchema && this.props.uiSchema.appBar && this.props.uiSchema.appBar["ui:input"] &&
                   <Paper style={{
                     background: "rgba(0, 0, 0, 0.1)",
@@ -66,18 +76,28 @@ class ApplicationBar extends Component<IProps> {
                   }} elevation={0}>
                     <SearchBar
                       searchBarUrl={this.props.searchBarUrl}
-                      onChangeUrl={this.props.onChangeUrl} uiSchema={uiSchema}
+                      onChangeUrl={this.props.onChangeUrl}
+                      uiSchema={uiSchema}
                     />
                   </Paper>
                 }
               </Grid>
             </Hidden>
-            <Grid item xs={6} sm={2} container justify="flex-end">
+            <Grid item xs={6} sm={3} container justify="flex-end">
+              <ExampleDocumentsDropdown examples={examples} onChange={onExampleDocumentsDropdownChange} />
               <IconButton>
                 {uiSchema && uiSchema.appBar["ui:splitView"] ?
-                  <FullscreenIcon onClick={() => onSplitViewChange(false)} />
+                  <FullscreenIcon onClick={() => {
+                    if (onSplitViewChange) {
+                      onSplitViewChange(false);
+                    }
+                  }} />
                   :
-                  <VerticalSplitIcon onClick={() => onSplitViewChange(true)} />
+                  <VerticalSplitIcon onClick={() => {
+                    if (onSplitViewChange) {
+                      onSplitViewChange(true);
+                    }
+                  }} />
                 }
               </IconButton>
               <IconButton>

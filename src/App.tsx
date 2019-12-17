@@ -20,6 +20,7 @@ import examples from "./examplesList";
 import OpenRPCEditor from "./OpenRPCEditor";
 import useMonacoReplaceMetaSchema from "./hooks/useMonacoReplaceMetaSchema";
 import useMonacoVimMode from "./hooks/useMonacoVimMode";
+import { IExample } from "./ExampleDocumentsDropdown/ExampleDocumentsDropdown";
 
 const App: React.FC = () => {
   const [defaultValue] = useDefaultEditorValue();
@@ -98,6 +99,8 @@ const App: React.FC = () => {
       <AppBar
         searchBarUrl={searchUrl}
         uiSchema={UISchema}
+        examples={examples as IExample[]}
+        onExampleDocumentsDropdownChange={(example: IExample) => setSearchUrl(example.url)}
         onSplitViewChange={(value) => {
           setUISchemaBySection({
             value,
@@ -113,7 +116,8 @@ const App: React.FC = () => {
             section: "appBar",
           });
         }}
-        onChangeUrl={setSearchUrl} />
+        onChangeUrl={setSearchUrl}
+        />
       <PlaygroundSplitPane
         split={UISchema.appBar["ui:splitView"]}
         left={

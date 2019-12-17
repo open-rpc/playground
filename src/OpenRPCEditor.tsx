@@ -14,6 +14,7 @@ interface IProps {
 const OpenRPCEditor: React.FC<IProps> = (props) => {
   const editorRef = useRef();
   const windowSize = useWindowSize();
+  let model: any;
 
   useEffect(() => {
     if (editorRef !== undefined && editorRef.current !== undefined) {
@@ -21,11 +22,20 @@ const OpenRPCEditor: React.FC<IProps> = (props) => {
     }
   }, [windowSize]);
 
+  useEffect(() => {
+    return function cleanup() {
+      if (model) {
+        model.dispose();
+      }
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   function handleEditorDidMount(_: any, editor: any) {
     editorRef.current = editor;
-    const modelUriString = `inmemory://openrpc-playground.json`;
+    const modelUriString = "inmemory://openrpc-playground.json";
     const modelUri = monaco.Uri.parse(modelUriString);
-    const model = monaco.editor.createModel(props.value || "", "json", modelUri);
+    model = monaco.editor.createModel(props.value || "", "json", modelUri);
     editor.setModel(model);
     addDiagnostics(modelUri.toString(), schema, monaco);
     if (props.editorDidMount) {
@@ -41,7 +51,7 @@ const OpenRPCEditor: React.FC<IProps> = (props) => {
 
   return (
     <MonacoEditor
-      height="100vh"
+      height="93vh"
       value={props.value}
       editorDidMount={handleEditorDidMount}
       language="json"
