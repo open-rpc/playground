@@ -15,6 +15,7 @@ it("renders uiSchema inputPlaceholder", () => {
       "ui:inputPlaceholder": "enter url",
     },
   } as any} />, div);
+
   expect(div.innerHTML.includes("enter url")).toBe(true);
   ReactDOM.unmountComponentAtNode(div);
 });

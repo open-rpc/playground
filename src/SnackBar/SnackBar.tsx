@@ -5,7 +5,7 @@ import {
   withStyles,
   Theme,
 } from "@material-ui/core";
-import React, { Component, ChangeEvent } from "react";
+import React, { Component } from "react";
 import classNames from "classnames";
 import { IUISchema } from "../UISchema";
 import {isEmpty} from "lodash";
@@ -28,13 +28,13 @@ const variantIcon = {
 
 const styleSnackBar = (theme: Theme) => ({
   title: {
-    marginLeft: theme.spacing.unit,
+    marginLeft: theme.spacing(2),
   },
   close: {
-    padding: theme.spacing.unit / 2,
+    padding: theme.spacing(1),
   },
   margin: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(2),
   },
 });
 
@@ -59,17 +59,17 @@ const styleSnackBarContent = (theme: Theme) => ({
   },
   iconVariant: {
     opacity: 0.9,
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing(2),
   },
   message: {
     display: "flex",
     alignItems: "center",
   },
   close: {
-    padding: theme.spacing.unit / 2,
+    padding: theme.spacing(1),
   },
   margin: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(2),
   },
 
 });

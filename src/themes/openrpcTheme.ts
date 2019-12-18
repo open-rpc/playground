@@ -11,6 +11,12 @@ export const lightTheme = createMuiTheme({
     },
   },
   overrides: {
+    MuiPaper: {
+      root: {
+        zIndex: 1,
+        opacity: 1,
+      },
+    },
     MuiToolbar: {
       root: {
         background: "transparent !important",
@@ -40,18 +46,21 @@ export const darkTheme = createMuiTheme({
     MuiAppBar: {
       position: "sticky",
     },
-    MuiCard: {
-      elevation: 0,
-    },
   },
   palette: {
     type: "dark",
     background: {
       default: grey[900],
-      paper: "transparent",
+      paper: grey[900],
     },
   },
   overrides: {
+    MuiPaper: {
+      root: {
+        zIndex: 1,
+        opacity: 1,
+      },
+    },
     MuiAppBar: {
       root: {
         background: "transparent !important",

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import * as monaco from "monaco-editor";
 const { initVimMode } = require("monaco-vim"); //tslint:disable-line
 
@@ -31,6 +31,7 @@ const useMonacoVimMode = (editor: monaco.editor.IStandaloneCodeEditor) => {
         vimMode.dispose();
       }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editor]);
 
   return [editor, vimMode];

@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import * as monaco from "monaco-editor";
-const { initVimMode } = require("monaco-vim"); //tslint:disable-line
 import schema from "@open-rpc/meta-schema";
 
 // Monaco Replace Meta Schema:

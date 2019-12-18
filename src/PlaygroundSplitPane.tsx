@@ -1,6 +1,5 @@
 import SplitPane from "react-split-pane";
-import React, { useState } from "react";
-import { Component } from "react";
+import React from "react";
 
 interface IProps {
   onChange?: (size: number) => any;
