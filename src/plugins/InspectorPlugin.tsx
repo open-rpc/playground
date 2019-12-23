@@ -16,7 +16,7 @@ const InspectorPlugin: React.FC<IMethodPluginProps> = (props) => {
     exampleParams = (example.params as ExampleObject[]).map((p) => p.value);
   }
   return (
-    <Grid style={{ height: "300px", width: "100%", overflowY: "auto" }}>
+    <Grid style={{ height: "300px", width: "100%", overflowY: "hidden" }}>
       <Inspector
         request={{ method: method.name, params: exampleParams || [] }}
         url={searchUrl && searchUrl.includes(".json") ? null : searchUrl}
