@@ -31,7 +31,7 @@
     "jsonschema": "^1.2.4",
     "lodash": "^4.17.15",
     "monaco-editor": "^0.18.1",
-    "monaco-vim": "0.0.14",
+    "monaco-vim": "0.1.5",
     "open": "^6.4.0",
     "qs": "^6.7.0",
     "react": "^16.12.0",
