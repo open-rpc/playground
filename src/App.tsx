@@ -9,7 +9,7 @@ import { IUISchema } from "./UISchema";
 import { SnackBar, ISnackBarNotification, NotificationType } from "./SnackBar/SnackBar";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { lightTheme, darkTheme } from "./themes/openrpcTheme";
-import { CssBaseline } from "@material-ui/core";
+import { CssBaseline, Container } from "@material-ui/core";
 import PlaygroundSplitPane from "./PlaygroundSplitPane";
 import useParsedSchema from "./hooks/useParsedSchema";
 import useDefaultEditorValue from "./hooks/useDefaultEditorValue";
@@ -41,7 +41,7 @@ const App: React.FC = () => {
     if (!defaultValue && !searchUrl && defaultExample) {
       setSearchUrl(defaultExample.url);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValue]);
 
   useEffect(() => {
@@ -49,7 +49,7 @@ const App: React.FC = () => {
       ...reactJsonOptions,
       theme: UISchema.appBar["ui:darkMode"] ? "summerfruit" : "summerfruit:inverted",
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [UISchema.appBar["ui:darkMode"]]);
 
   useInterval(() => {
@@ -68,7 +68,7 @@ const App: React.FC = () => {
     if (results) {
       setParsedSchema(results);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [results]);
 
   useEffect(() => {
@@ -83,7 +83,7 @@ const App: React.FC = () => {
   const [parsedSchema, setParsedSchema] = useParsedSchema(defaultValue ? JSON.parse(defaultValue) : null);
   useEffect(() => {
     setParsedSchema(defaultValue);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValue]);
   const [reactJsonOptions, setReactJsonOptions] = useState({
     theme: "summerfruit:inverted",
@@ -117,7 +117,7 @@ const App: React.FC = () => {
           });
         }}
         onChangeUrl={setSearchUrl}
-        />
+      />
       <PlaygroundSplitPane
         split={UISchema.appBar["ui:splitView"]}
         left={
@@ -133,16 +133,18 @@ const App: React.FC = () => {
           </>
         }
         right={
-          <Documentation
-            schema={parsedSchema as any}
-            uiSchema={UISchema}
-            reactJsonOptions={reactJsonOptions}
-            methodPlugins={
-              UISchema.methods["ui:methodPlugins"]
-                ? [InspectorPlugin]
-                : undefined
-            }
-          />
+          <Container>
+            <Documentation
+              schema={parsedSchema as any}
+              uiSchema={UISchema}
+              reactJsonOptions={reactJsonOptions}
+              methodPlugins={
+                UISchema.methods["ui:methodPlugins"]
+                  ? [InspectorPlugin]
+                  : undefined
+              }
+            />
+          </Container>
         }
       />
       <SnackBar
