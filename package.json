@@ -16,7 +16,7 @@
     "@etclabscore/react-monaco-editor": "^1.0.3",
     "@material-ui/core": "^4.7.2",
     "@material-ui/icons": "^3.0.2",
-    "@open-rpc/docs-react": "^1.1.4",
+    "@open-rpc/docs-react": "^1.1.5",
     "@open-rpc/examples": "^1.3.3",
     "@open-rpc/inspector": "^1.2.8",
     "@open-rpc/meta-schema": "^1.4.3",
