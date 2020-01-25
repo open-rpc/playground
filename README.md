@@ -10,7 +10,7 @@ This is a tool for editing, validating and previewing [OpenRPC documents](https:
 ## What is it?
 This is meant to be an all-in-one developer portal for [OpenRPC documents](https://spec.open-rpc.org/#openrpc-document). It includes an editor and a live-preview of the documentation.
 
-This helps developers visualize the OpenRPC and iterate very quickly on creating [OpenRPC documents]https://spec.open-rpc.org/#openrpc-document) via the built in editor tooling.
+This helps developers visualize the OpenRPC and iterate very quickly on creating [OpenRPC documents](https://spec.open-rpc.org/#openrpc-document) via the built in editor tooling.
 
 ## Usage
 
