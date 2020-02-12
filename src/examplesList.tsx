@@ -23,4 +23,8 @@ export default [
     name: "simple-math",
     url: "https://raw.githubusercontent.com/open-rpc/examples/master/service-descriptions/simple-math-openrpc.json", //tslint:disable-line
   },
+  {
+    name: "empty-document",
+    url: "https://raw.githubusercontent.com/open-rpc/examples/master/service-descriptions/empty-openrpc.json", //tslint:disable-line
+  },
 ];
