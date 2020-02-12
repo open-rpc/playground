@@ -1,11 +1,8 @@
 # OpenRPC Playground
 
-A place to play around with OpenRPC.
+This is a tool for editing, validating and previewing [OpenRPC documents](https://spec.open-rpc.org/#openrpc-document).
 
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=open-rpc/playground)](https://dependabot.com)
-
-## For Non-developers
-This is a tool for editing, validating and previewing [OpenRPC documents](https://spec.open-rpc.org/#openrpc-document).
 
 ## What is it?
 This is meant to be an all-in-one developer portal for [OpenRPC documents](https://spec.open-rpc.org/#openrpc-document). It includes an editor and a live-preview of the documentation.
