@@ -52,6 +52,14 @@ const OpenRPCEditor: React.FC<IProps> = (props) => {
   return (
     <MonacoEditor
       height="93vh"
+      editorOptions={{
+        useShadows: false,
+        minimap: {
+          enabled: false,
+        },
+        scrollBeyondLastLine: false,
+        lineNumbers: "on",
+      }}
       value={props.value}
       editorDidMount={handleEditorDidMount}
       language="json"

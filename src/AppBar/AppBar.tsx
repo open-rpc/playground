@@ -48,7 +48,7 @@ class ApplicationBar extends Component<IProps> {
       onExampleDocumentsDropdownChange,
     } = this.props;
     return (
-      <AppBar position="static" color="default" elevation={0} className={classes.appBar}>
+      <AppBar position="fixed" color="default" elevation={0} className={classes.appBar}>
         <Toolbar>
           <Grid alignItems="center" container spacing={10}>
             <Grid item xs={6} sm={3} direction="row" container>
