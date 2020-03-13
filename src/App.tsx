@@ -33,7 +33,7 @@ const App: React.FC = () => {
   const [notification, setNotification] = useState<ISnackBarNotification | undefined>();
   const [UISchema, setUISchemaBySection]: [IUISchema, any] = UISchemaStore();
   const [editor, setEditor] = useState();
-  const [horizontalSplit, privateSetHorizontalSplit] = useState(true);
+  const [horizontalSplit, privateSetHorizontalSplit] = useState(false);
   const setHorizontalSplit = (val: boolean) => {
     if (editor) {
       setTimeout(() => {
