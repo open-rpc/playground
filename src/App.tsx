@@ -42,7 +42,7 @@ const App: React.FC = () => {
     }
     privateSetHorizontalSplit(val);
   };
-  const [inspectorContents, setInspectorContents] = useInspectorActionStore();
+  const [inspectorContents] = useInspectorActionStore();
   useMonacoReplaceMetaSchema(editor);
   useMonacoVimMode(editor);
 
@@ -112,6 +112,7 @@ const App: React.FC = () => {
     if (inspectorContents) {
       setHorizontalSplit(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inspectorContents]);
   return (
     <MuiThemeProvider theme={currentTheme}>

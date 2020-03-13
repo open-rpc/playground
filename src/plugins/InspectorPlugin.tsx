@@ -1,6 +1,5 @@
 import React from "react";
-import Inspector from "@open-rpc/inspector";
-import { Grid, Button, Tooltip } from "@material-ui/core";
+import { Button, Tooltip } from "@material-ui/core";
 import { IMethodPluginProps } from "@open-rpc/docs-react/build/Methods/Methods";
 import searchBarStore from "../stores/searchBarStore";
 import { ExamplePairingObject, ExampleObject } from "@open-rpc/meta-schema";
@@ -8,7 +7,7 @@ import useInspectorActionStore from "../stores/inspectorActionStore";
 
 const InspectorPlugin: React.FC<IMethodPluginProps> = (props) => {
   const [searchUrl] = searchBarStore();
-  const [inspectorContents, setInspectorContents] = useInspectorActionStore();
+  const [, setInspectorContents] = useInspectorActionStore();
   const method = props.openrpcMethodObject;
   const examplePosition = 0;
   let example;
@@ -28,7 +27,8 @@ const InspectorPlugin: React.FC<IMethodPluginProps> = (props) => {
           method: method.name,
           params: exampleParams || [],
         },
-      })}>🕵️‍♂️ Try It Now</Button>
+      })}><span role="img" aria-label="try-it-inspector">🕵️‍♂️</span>️️ Try It Now</Button>
+
     </Tooltip>
   );
 };
