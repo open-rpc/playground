@@ -51,7 +51,7 @@ const OpenRPCEditor: React.FC<IProps> = (props) => {
 
   return (
     <MonacoEditor
-      height="93vh"
+      height="100%"
       editorOptions={{
         useShadows: false,
         minimap: {

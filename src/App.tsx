@@ -163,8 +163,7 @@ const App: React.FC = () => {
             onlyRenderSplit={true}
             split={UISchema.appBar["ui:splitView"]}
             leftStyle={{
-              marginTop: "58px",
-              paddingBottom: "25px",
+              paddingTop: "58px",
               height: "100%",
               width: "100%",
             }}
@@ -172,7 +171,7 @@ const App: React.FC = () => {
               height: "100%",
               width: "100%",
               overflowY: "auto",
-              marginTop: "58px",
+              paddingTop: "58px",
             }}
             onChange={() => editor && editor.layout()}
             left={
