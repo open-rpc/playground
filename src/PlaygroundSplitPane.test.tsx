@@ -36,6 +36,7 @@ it("renders playground without left when split is false", () => {
   const div = document.createElement("div");
   ReactDOM.render(<PlaygroundSplitPane
     split={false}
+    onlyRenderSplit={true}
     left={
       <div>Foo</div>
     }

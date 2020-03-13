@@ -1,11 +1,18 @@
 import SplitPane from "react-split-pane";
 import React from "react";
+import { CSSProperties } from "@material-ui/core/styles/withStyles";
 
 interface IProps {
   onChange?: (size: number) => any;
-  left: JSX.Element;
-  right: JSX.Element;
-  split?: boolean | undefined;
+  left: any;
+  right: any;
+  leftStyle?: CSSProperties;
+  rightStyle?: CSSProperties;
+  style?: CSSProperties;
+  direction?: "horizontal" | "vertical";
+  splitLeft?: boolean;
+  split?: boolean;
+  onlyRenderSplit?: boolean;
 }
 
 const PlaygroundSplitPane: React.FC<IProps> = (props) => {
@@ -15,27 +22,37 @@ const PlaygroundSplitPane: React.FC<IProps> = (props) => {
     }
   };
 
-  if (props.split === false) {
+  if (props.split === false && props.onlyRenderSplit) {
     return (
-      <div className="docs" key={2}>
-        {props.right}
+      <div key={2} style={props.splitLeft ? props.leftStyle : props.rightStyle}>
+        {props.splitLeft ? props.left : props.right}
       </div>
     );
   }
 
+  const dir = props.direction || "vertical";
+  const defaultSize = !props.split
+    ? dir === "horizontal" ? window.innerHeight : window.innerWidth
+    : dir === "horizontal" ? window.innerHeight / 2 : window.innerWidth / 2;
   return (
-    <SplitPane split="vertical"
+    <SplitPane split={dir}
+      style={props.style}
+      className={"playground-splitview"}
       minSize={100}
-      maxSize={-100}
-      defaultSize={window.innerWidth / 2}
+      maxSize={0}
+      defaultSize={defaultSize}
+      size={defaultSize}
       onChange={handleChange}>
-      <div key={1} style={{ display: "flex", flexDirection: "column", height: "100%" }} >
+      <div style={
+        props.leftStyle ? { ...props.leftStyle, ...{ display: "flex", flexDirection: "column", height: "100%" } }
+          : { display: "flex", flexDirection: "column", height: "100%" }
+      } key={1}>
         {props.left}
       </div>
-      <div className="docs" key={2}>
+      <div key={2} style={props.rightStyle}>
         {props.right}
       </div>
-    </SplitPane>
+    </SplitPane >
   );
 };
 

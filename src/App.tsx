@@ -9,7 +9,9 @@ import { IUISchema } from "./UISchema";
 import { SnackBar, ISnackBarNotification, NotificationType } from "./SnackBar/SnackBar";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { lightTheme, darkTheme } from "./themes/openrpcTheme";
-import { CssBaseline, Container } from "@material-ui/core";
+import ExpandMore from "@material-ui/icons/ExpandMore";
+import ExpandLess from "@material-ui/icons/ExpandLess";
+import { CssBaseline, Container, Tab, Typography, IconButton, Tooltip, Tabs } from "@material-ui/core";
 import PlaygroundSplitPane from "./PlaygroundSplitPane";
 import useParsedSchema from "./hooks/useParsedSchema";
 import useDefaultEditorValue from "./hooks/useDefaultEditorValue";
@@ -21,6 +23,8 @@ import OpenRPCEditor from "./OpenRPCEditor";
 import useMonacoReplaceMetaSchema from "./hooks/useMonacoReplaceMetaSchema";
 import useMonacoVimMode from "./hooks/useMonacoVimMode";
 import { IExample } from "./ExampleDocumentsDropdown/ExampleDocumentsDropdown";
+import Inspector from "@open-rpc/inspector";
+import useInspectorActionStore from "./stores/inspectorActionStore";
 
 const App: React.FC = () => {
   const [defaultValue] = useDefaultEditorValue();
@@ -29,6 +33,16 @@ const App: React.FC = () => {
   const [notification, setNotification] = useState<ISnackBarNotification | undefined>();
   const [UISchema, setUISchemaBySection]: [IUISchema, any] = UISchemaStore();
   const [editor, setEditor] = useState();
+  const [horizontalSplit, privateSetHorizontalSplit] = useState(true);
+  const setHorizontalSplit = (val: boolean) => {
+    if (editor) {
+      setTimeout(() => {
+        editor.layout();
+      }, 0);
+    }
+    privateSetHorizontalSplit(val);
+  };
+  const [inspectorContents] = useInspectorActionStore();
   useMonacoReplaceMetaSchema(editor);
   useMonacoVimMode(editor);
 
@@ -93,8 +107,15 @@ const App: React.FC = () => {
     indentWidth: 2,
     name: false,
   });
+  const currentTheme = UISchema.appBar["ui:darkMode"] ? darkTheme : lightTheme;
+  useEffect(() => {
+    if (inspectorContents) {
+      setHorizontalSplit(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inspectorContents]);
   return (
-    <MuiThemeProvider theme={UISchema.appBar["ui:darkMode"] ? darkTheme : lightTheme}>
+    <MuiThemeProvider theme={currentTheme}>
       <CssBaseline />
       <AppBar
         searchBarUrl={searchUrl}
@@ -119,32 +140,101 @@ const App: React.FC = () => {
         onChangeUrl={setSearchUrl}
       />
       <PlaygroundSplitPane
-        split={UISchema.appBar["ui:splitView"]}
-        left={
+        direction="horizontal"
+        splitLeft={true}
+        split={horizontalSplit}
+        leftStyle={{
+          width: "100%",
+          height: "100%",
+        }}
+        right={
           <>
-            <JSONValidationErrorList markers={markers} />
-            <OpenRPCEditor
-              editorDidMount={handleEditorDidMount}
-              onChange={(val) => {
-                setParsedSchema(val);
-              }}
-              value={defaultValue || ""}
+            <Inspector hideToggleTheme={true} url={
+              searchUrl && searchUrl.includes(".json") ? null : searchUrl
+            }
+              request={inspectorContents && inspectorContents.request}
+              openrpcDocument={parsedSchema}
             />
           </>
         }
-        right={
-          <Container>
-            <Documentation
-              schema={parsedSchema as any}
-              uiSchema={UISchema}
-              reactJsonOptions={reactJsonOptions}
-              methodPlugins={
-                UISchema.methods["ui:methodPlugins"]
-                  ? [InspectorPlugin]
-                  : undefined
-              }
-            />
-          </Container>
+        onChange={() => editor && editor.layout()}
+        left={
+          <PlaygroundSplitPane
+            onlyRenderSplit={true}
+            split={UISchema.appBar["ui:splitView"]}
+            leftStyle={{
+              marginTop: "58px",
+              paddingBottom: "25px",
+              height: "100%",
+              width: "100%",
+            }}
+            rightStyle={{
+              height: "100%",
+              width: "100%",
+              overflowY: "auto",
+              marginTop: "58px",
+            }}
+            onChange={() => editor && editor.layout()}
+            left={
+              <>
+                <JSONValidationErrorList markers={markers} />
+                <OpenRPCEditor
+                  editorDidMount={handleEditorDidMount}
+                  onChange={(val) => {
+                    setParsedSchema(val);
+                  }}
+                  value={defaultValue || ""}
+                />
+              </>
+            }
+            right={
+              <>
+                <Container >
+                  <Documentation
+                    schema={parsedSchema as any}
+                    uiSchema={UISchema}
+                    reactJsonOptions={reactJsonOptions}
+                    methodPlugins={
+                      UISchema.methods["ui:methodPlugins"]
+                        ? [InspectorPlugin]
+                        : undefined
+                    }
+                  />
+                </Container>
+                <Tabs
+                  variant="scrollable"
+                  indicatorColor="primary"
+                  value={0}
+                  style={{ position: "absolute", bottom: "0", right: "25px", zIndex: 1, marginBottom: "0px" }}
+                >
+                  <Tab
+                    onClick={() => setHorizontalSplit(!horizontalSplit)}
+                    style={{
+                      background: currentTheme.palette.background.default,
+                      width: "165px",
+                      paddingRight: "30px",
+                      border: `1px solid ${currentTheme.palette.text.hint}`,
+                    }}
+                    label={
+                      <div>
+                        <Typography
+                          variant="body1"><span role="img" aria-label="inspector">🕵️‍♂️</span>️ Inspector</Typography>
+                        <Tooltip title="Toggle Inspector">
+                          <IconButton style={{ position: "absolute", right: "5px", top: "20%" }} size="small">
+                            {horizontalSplit
+                              ? <ExpandMore />
+                              : <ExpandLess />
+                            }
+                          </IconButton>
+                        </Tooltip>
+                      </div>
+                    }>
+                  </Tab>
+                </Tabs>
+              </>
+            }
+          />
+
         }
       />
       <SnackBar
