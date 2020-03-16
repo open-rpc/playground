@@ -10,11 +10,12 @@ import {
   WithStyles,
   withStyles,
   Hidden,
+  Tooltip,
 } from "@material-ui/core";
-import VerticalSplitIcon from "@material-ui/icons/VerticalSplit";
 import FullscreenIcon from "@material-ui/icons/Fullscreen";
 import WbSunnyIcon from "@material-ui/icons/WbSunny";
 import Brightness3Icon from "@material-ui/icons/Brightness3";
+import EditIcon from "@material-ui/icons/Edit";
 import { IUISchema } from "../UISchema";
 import SearchBar from "../SearchBar/SearchBar";
 import ExampleDocumentsDropdown, { IExample } from "../ExampleDocumentsDropdown/ExampleDocumentsDropdown";
@@ -50,8 +51,8 @@ class ApplicationBar extends Component<IProps> {
     return (
       <AppBar position="fixed" color="default" elevation={0} className={classes.appBar}>
         <Toolbar>
-          <Grid alignItems="center" container spacing={10}>
-            <Grid item xs={6} sm={3} direction="row" container>
+          <Grid alignItems="center" container>
+            <Grid item xs={6} sm={6} md={3} direction="row" container>
               {this.props.uiSchema && this.props.uiSchema.appBar && this.props.uiSchema.appBar["ui:logoUrl"] &&
                 <Grid>
                   <img
@@ -60,57 +61,67 @@ class ApplicationBar extends Component<IProps> {
                     src={this.props.uiSchema.appBar["ui:logoUrl"]} />
                 </Grid>
               }
-              <Grid>
+              <Grid style={{ overflow: "hidden" }}>
                 <Typography className={classes.title} variant="h6">
                   {uiSchema && uiSchema.appBar["ui:title"]}
                 </Typography>
               </Grid>
             </Grid>
-            <Hidden only="xs">
-              <Grid item sm={6}>
-                {this.props.uiSchema && this.props.uiSchema.appBar && this.props.uiSchema.appBar["ui:input"] &&
-                  <Paper style={{
-                    background: "rgba(0, 0, 0, 0.1)",
-                    padding: "0px 10px 0px 10px",
-                    width: "100%",
-                  }} elevation={0}>
-                    <SearchBar
-                      searchBarUrl={this.props.searchBarUrl}
-                      onChangeUrl={this.props.onChangeUrl}
-                      uiSchema={uiSchema}
-                    />
-                  </Paper>
-                }
+            <Hidden smDown>
+              <Grid item container justify="center" alignItems="center" sm={6} >
+                <Grid item sm={9}>
+                  {this.props.uiSchema && this.props.uiSchema.appBar && this.props.uiSchema.appBar["ui:input"] &&
+                    <Paper style={{
+                      background: "rgba(0, 0, 0, 0.1)",
+                      padding: "0px 10px 0px 10px",
+                      width: "100%",
+                    }} elevation={0}>
+                      <SearchBar
+                        searchBarUrl={this.props.searchBarUrl}
+                        onChangeUrl={this.props.onChangeUrl}
+                        uiSchema={uiSchema}
+                      />
+                    </Paper>
+                  }
+                </Grid>
+                <ExampleDocumentsDropdown examples={examples} onChange={onExampleDocumentsDropdownChange} />
               </Grid>
             </Hidden>
-            <Grid item xs={6} sm={3} container justify="flex-end">
-              <ExampleDocumentsDropdown examples={examples} onChange={onExampleDocumentsDropdownChange} />
-              <IconButton>
-                {uiSchema && uiSchema.appBar["ui:splitView"] ?
-                  <FullscreenIcon onClick={() => {
+            <Grid item xs={6} sm={6} md={3} container justify="flex-end" alignItems="center">
+              {uiSchema && uiSchema.appBar["ui:splitView"] ?
+                <Tooltip title={"Full Screen"}>
+                  <IconButton onClick={() => {
                     if (onSplitViewChange) {
                       onSplitViewChange(false);
                     }
-                  }} />
-                  :
-                  <VerticalSplitIcon onClick={() => {
+                  }}>
+                    <FullscreenIcon />
+                  </IconButton>
+                </Tooltip>
+                :
+                <Tooltip title={"Edit"}>
+                  <IconButton onClick={() => {
                     if (onSplitViewChange) {
                       onSplitViewChange(true);
                     }
-                  }} />
-                }
-              </IconButton>
-              <IconButton>
-                {uiSchema && uiSchema.appBar["ui:darkMode"] ?
-                  <Brightness3Icon onClick={() => onDarkModeChange(false)} />
-                  :
-                  <WbSunnyIcon onClick={() => onDarkModeChange(true)} />
-                }
-              </IconButton>
+                  }}>
+                    <EditIcon />
+                  </IconButton>
+                </Tooltip>
+              }
+              <Tooltip title="Toggle Dark Theme">
+                <IconButton>
+                  {uiSchema && uiSchema.appBar["ui:darkMode"] ?
+                    <Brightness3Icon onClick={() => onDarkModeChange(false)} />
+                    :
+                    <WbSunnyIcon onClick={() => onDarkModeChange(true)} />
+                  }
+                </IconButton>
+              </Tooltip>
             </Grid>
           </Grid>
         </Toolbar>
-      </AppBar>
+      </AppBar >
     );
   }
 }
