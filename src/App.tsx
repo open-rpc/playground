@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Dispatch } from "react";
 import JSONValidationErrorList from "./JSONValidationErrorList";
 import * as monaco from "monaco-editor";
 import { Documentation } from "@open-rpc/docs-react";
@@ -32,8 +32,11 @@ const App: React.FC = () => {
   const [searchUrl, { results, error }, setSearchUrl] = searchBarStore();
   const [notification, setNotification] = useState<ISnackBarNotification | undefined>();
   const [UISchema, setUISchemaBySection]: [IUISchema, any] = UISchemaStore();
-  const [editor, setEditor] = useState();
+  const [editor, setEditor]: [any, Dispatch<{}>] = useState();
   const [horizontalSplit, privateSetHorizontalSplit] = useState(false);
+  const [parsedSchema, setParsedSchema] = useParsedSchema(
+    defaultValue ? JSON.parse(defaultValue) : null,
+  );
   const setHorizontalSplit = (val: boolean) => {
     if (editor) {
       setTimeout(() => {
@@ -80,7 +83,7 @@ const App: React.FC = () => {
       editor.setValue(results);
     }
     if (results) {
-      setParsedSchema(results);
+      setParsedSchema(results!);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [results]);
@@ -94,9 +97,8 @@ const App: React.FC = () => {
     }
   }, [error]);
 
-  const [parsedSchema, setParsedSchema] = useParsedSchema(defaultValue ? JSON.parse(defaultValue) : null);
   useEffect(() => {
-    setParsedSchema(defaultValue);
+    setParsedSchema(defaultValue || "");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValue]);
   const [reactJsonOptions, setReactJsonOptions] = useState({

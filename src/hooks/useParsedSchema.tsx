@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Dispatch } from "react";
 import _ from "lodash";
 import refParser from "json-schema-ref-parser";
+import { OpenrpcDocument } from "@open-rpc/meta-schema";
 
-const useParsedSchema = (defaultValue: object | any) => {
-  const [parsedSchema, setParsedSchema] = useState();
+const useParsedSchema = (defaultValue: object | any): [OpenrpcDocument | undefined, Dispatch<string>] => {
+  const [parsedSchema, setParsedSchema]: [OpenrpcDocument | undefined, Dispatch<OpenrpcDocument>] = useState();
   const validateAndSetSchema = (schema: string) => {
     let maybeSchema;
     try {
@@ -15,7 +16,8 @@ const useParsedSchema = (defaultValue: object | any) => {
       return;
     }
     refParser.dereference(maybeSchema).then((dereferencedSchema) => {
-      setParsedSchema(dereferencedSchema);
+      setParsedSchema(dereferencedSchema as OpenrpcDocument);
+      // set original non-dereff'd schema to localstorage
       _.defer(() => window.localStorage.setItem("schema", schema));
     });
   };

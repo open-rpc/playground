@@ -15,7 +15,7 @@ export default createStore(() => {
       /* tslint:enable */
       "ui:splitView": true,
       "ui:darkMode": false,
-      "ui:title": "OpenRPC Playground",
+      "ui:title": "Playground",
     },
     methods: {
       "ui:defaultExpanded": false,
