@@ -5,5 +5,5 @@ import queryParamStore from "./queryParamsStore";
 export default createStore(() => {
   const [query] = queryParamStore();
 
-  return useSearchBar(query.schemaUrl);
+  return useSearchBar(query.schemaUrl || query.url);
 });
