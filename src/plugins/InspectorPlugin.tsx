@@ -23,9 +23,9 @@ const InspectorPlugin: React.FC<IMethodPluginProps> = (props) => {
         openrpcMethodObject: props.openrpcMethodObject,
         request: {
           jsonrpc: "2.0",
-          id: 0,
           method: method.name,
           params: exampleParams || [],
+          id: 0,
         },
       })}><span role="img" aria-label="try-it-inspector">🕵️‍♂️</span>️️ Try It Now</Button>
 

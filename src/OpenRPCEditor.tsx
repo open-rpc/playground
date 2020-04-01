@@ -4,10 +4,12 @@ import * as monaco from "monaco-editor";
 import useWindowSize from "@rehooks/window-size";
 import { addDiagnostics } from "@etclabscore/monaco-add-json-schema-diagnostics";
 import schema from "@open-rpc/meta-schema";
+import _ from "lodash";
 
 interface IProps {
   onChange?: (newValue: any) => void;
   editorDidMount?: (_: any, editor: any) => any;
+  onMarkerChange?: (markers: monaco.editor.IMarker[]) => void;
   value: any;
 }
 
@@ -28,12 +30,12 @@ const OpenRPCEditor: React.FC<IProps> = (props) => {
         model.dispose();
       }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function handleEditorDidMount(_: any, editor: any) {
+  function handleEditorDidMount(__: any, editor: any) {
     editorRef.current = editor;
-    const modelUriString = "inmemory://openrpc-playground.json";
+    const modelUriString = `inmemory://openrpc-playground.json`;
     const modelUri = monaco.Uri.parse(modelUriString);
     model = monaco.editor.createModel(props.value || "", "json", modelUri);
     editor.setModel(model);
@@ -41,6 +43,17 @@ const OpenRPCEditor: React.FC<IProps> = (props) => {
     if (props.editorDidMount) {
       props.editorDidMount(_, editor);
     }
+    if (!props.onMarkerChange) {
+      return;
+    }
+    editor.onDidChangeModelDecorations(_.debounce(() => {
+      if (props.onMarkerChange) {
+        const mk = monaco.editor.getModelMarkers({
+          resource: modelUri,
+        });
+        props.onMarkerChange(mk);
+      }
+    }, 300));
   }
 
   const handleChange = (ev: any, value: any) => {
