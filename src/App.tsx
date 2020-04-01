@@ -2,7 +2,6 @@ import React, { useState, useEffect, Dispatch } from "react";
 import JSONValidationErrorList from "./JSONValidationErrorList";
 import * as monaco from "monaco-editor";
 import { Documentation } from "@open-rpc/docs-react";
-import useInterval from "@use-it/interval";
 import "./App.css";
 import AppBar from "./AppBar/AppBar";
 import { IUISchema } from "./UISchema";
@@ -68,15 +67,6 @@ const App: React.FC = () => {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [UISchema.appBar["ui:darkMode"]]);
-
-  useInterval(() => {
-    const modelUriString = "inmemory://openrpc-playground.json";
-    const modelUri = monaco.Uri.parse(modelUriString);
-    const mk = monaco.editor.getModelMarkers({
-      resource: modelUri,
-    });
-    setMarkers(mk);
-  }, 5000);
 
   useEffect(() => {
     if (results && editor) {
@@ -182,6 +172,9 @@ const App: React.FC = () => {
                 <JSONValidationErrorList markers={markers} />
                 <OpenRPCEditor
                   editorDidMount={handleEditorDidMount}
+                  onMarkerChange={(mks) => {
+                    setMarkers(mks);
+                  }}
                   onChange={(val) => {
                     setParsedSchema(val);
                   }}
@@ -191,7 +184,7 @@ const App: React.FC = () => {
             }
             right={
               <>
-                <Container >
+                <Container>
                   <Documentation
                     schema={parsedSchema as any}
                     uiSchema={UISchema}
