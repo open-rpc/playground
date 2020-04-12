@@ -53,6 +53,11 @@ const App: React.FC = () => {
   };
 
   useEffect(() => {
+    monaco.editor.setTheme(UISchema.appBar["ui:darkMode"] ? "vs-dark" : "vs");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     const defaultExample = examples.find((e) => e.name === "petstore");
     if (!defaultValue && !searchUrl && defaultExample) {
       setSearchUrl(defaultExample.url);
