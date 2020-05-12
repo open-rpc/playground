@@ -5,6 +5,8 @@ import searchBarStore from "../stores/searchBarStore";
 import { ExamplePairingObject, ExampleObject } from "@open-rpc/meta-schema";
 import useInspectorActionStore from "../stores/inspectorActionStore";
 
+export type TParamStructure = "either" | "by-name" | "by-position";
+
 const InspectorPlugin: React.FC<IMethodPluginProps> = (props) => {
   const [searchUrl] = searchBarStore();
   const [, setInspectorContents] = useInspectorActionStore();
@@ -14,7 +16,13 @@ const InspectorPlugin: React.FC<IMethodPluginProps> = (props) => {
   let exampleParams: any;
   if (method && method.examples && method.examples[examplePosition]) {
     example = method.examples[examplePosition] as ExamplePairingObject;
-    exampleParams = (example.params as ExampleObject[]).map((p) => p.value);
+    const paramStructure: TParamStructure = method.paramStructure || "either";
+    exampleParams = paramStructure === "by-name"
+      ? (example.params as ExampleObject[]).reduce(((memo, p) => {
+        memo[p.name] = p.value;
+        return memo;
+      }), {} as any)
+      : (example.params as ExampleObject[]).map(((p) => p.value));
   }
   return (
     <Tooltip title="Open in Inspector">
@@ -34,3 +42,5 @@ const InspectorPlugin: React.FC<IMethodPluginProps> = (props) => {
 };
 
 export default InspectorPlugin;
+
+
