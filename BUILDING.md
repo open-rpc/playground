@@ -4,8 +4,6 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 This document is licensed under [The Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.html).
 
-When using the name 'version' we mean the versioning scheme described in [VERSIONING.md](VERSIONING.md)
-
 ## Introduction
 
 This document is to describe the functionality a project MUST provide in terms of creating build artifacts. It also describes the structure in which project's MUST write build artifacts in.
@@ -64,7 +62,7 @@ Each release target MUST have a `bin/build.{target}.{ext}` file.
 The result of this is that every project MUST produce a build for each target when the following command is invoked:
 
 ```
-bin/build.{target}.{ext}`
+bin/build.{target}.{ext}
 ```
 
 The file MUST be placed in the project's `bin` directory.
