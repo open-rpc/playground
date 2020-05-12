@@ -14,7 +14,6 @@ This helps developers visualize the OpenRPC and iterate very quickly on creating
 Navigate to [playground.open-rpc.org](https://playground.open-rpc.org/) and start playing around. You can build your own OpenRPC document, validate existing documents quickly, or use the [examples](https://github.com/open-rpc/examples).
 
 
-
 ![openrpc-playground-screenshot](https://user-images.githubusercontent.com/364566/60648033-ef5d6580-9df3-11e9-8b48-5e239f0c7574.png)
 
 ## Keybinds
