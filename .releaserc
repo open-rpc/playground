@@ -14,7 +14,8 @@
       "path": "@qiwi/semantic-release-gh-pages-plugin",
       "msg": "deploy: new playground gh-pages release",
       "src": "build",
-      "branch": "gh-pages"
+      "branch": "gh-pages",
+      "pullTagsBranch": ""
     }
   ]
 }

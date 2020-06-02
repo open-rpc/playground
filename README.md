@@ -14,7 +14,6 @@ This helps developers visualize the OpenRPC and iterate very quickly on creating
 Navigate to [playground.open-rpc.org](https://playground.open-rpc.org/) and start playing around. You can build your own OpenRPC document, validate existing documents quickly, or use the [examples](https://github.com/open-rpc/examples).
 
 
-
 ![openrpc-playground-screenshot](https://user-images.githubusercontent.com/364566/60648033-ef5d6580-9df3-11e9-8b48-5e239f0c7574.png)
 
 ## Keybinds
@@ -119,6 +118,6 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Contributing
+##### Contribution Resources
 
 How to contribute, build and release are outlined in [CONTRIBUTING.md](CONTRIBUTING.md), [BUILDING.md](BUILDING.md) and [RELEASING.md](RELEASING.md) respectively. Commits in this repository follow the [CONVENTIONAL_COMMITS.md](CONVENTIONAL_COMMITS.md) specification.
