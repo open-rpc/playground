@@ -14,6 +14,7 @@ const InspectorPlugin: React.FC<IMethodPluginProps> = (props) => {
   const examplePosition = 0;
   let example;
   let exampleParams: any;
+  let emptyParams = [] as any;
   if (method && method.examples && method.examples[examplePosition]) {
     example = method.examples[examplePosition] as ExamplePairingObject;
     const paramStructure: TParamStructure = method.paramStructure || "either";
@@ -24,6 +25,9 @@ const InspectorPlugin: React.FC<IMethodPluginProps> = (props) => {
       }), {} as any)
       : (example.params as ExampleObject[]).map(((p) => p.value));
   }
+  if (method && method.paramStructure === "by-name") {
+    emptyParams = {};
+  }
   return (
     <Tooltip title="Open in Inspector">
       <Button variant="contained" onClick={() => setInspectorContents({
@@ -32,7 +36,7 @@ const InspectorPlugin: React.FC<IMethodPluginProps> = (props) => {
         request: {
           jsonrpc: "2.0",
           method: method.name,
-          params: exampleParams || [],
+          params: exampleParams || emptyParams,
           id: 0,
         },
       })}><span role="img" aria-label="try-it-inspector">🕵️‍♂️</span>️️ Try It Now</Button>
@@ -42,5 +46,3 @@ const InspectorPlugin: React.FC<IMethodPluginProps> = (props) => {
 };
 
 export default InspectorPlugin;
-
-
