@@ -52,6 +52,19 @@ examples:
 - provide custom name and logo
 - `http://playground.open-rpc.org/?uiSchema[appBar][ui:title]=My Site&uiSchema[appBar][ui:logoUrl]=https://github.com/open-rpc/design/raw/master/icons/open-rpc-logo-noText/open-rpc-logo-noText%20(PNG)/128x128.png`
 
+#### Pro tip
+
+If you want to use the content of a __Github Gist__ with the playground, you can:
+- use the _latest revision_ for a Gist file
+```
+https://playground.open-rpc.org/?schemaUrl=https://gist.githubusercontent.com/[gist username]/[gist ID]/raw/[file name]
+```
+
+- use a _specific revision_ for a Gist file:
+```
+https://playground.open-rpc.org/?schemaUrl=https://gist.githubusercontent.com/[gist username]/[gist ID]/raw/[gist commit ID]/[file name]
+```
+
 ## Resources and Inspirations
 
 - [open-rpc/spec](https://github.com/open-rpc/spec)
