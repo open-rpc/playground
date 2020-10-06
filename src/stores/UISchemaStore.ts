@@ -16,6 +16,7 @@ export default createStore(() => {
       "ui:splitView": true,
       "ui:darkMode": false,
       "ui:title": "Playground",
+      "ui:examplesDropdown": true,
     },
     methods: {
       "ui:defaultExpanded": false,
