@@ -84,7 +84,8 @@ class ApplicationBar extends Component<IProps> {
                     </Paper>
                   }
                 </Grid>
-                {this.props.uiSchema && this.props.uiSchema.appBar && this.props.uiSchema.appBar["ui:examplesDropdown"] &&
+                {this.props.uiSchema && this.props.uiSchema.appBar &&
+                 this.props.uiSchema.appBar["ui:examplesDropdown"] &&
                   <ExampleDocumentsDropdown examples={examples} onChange={onExampleDocumentsDropdownChange} />
                 }
               </Grid>
