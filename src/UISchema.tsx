@@ -6,6 +6,7 @@ export interface IUISchema {
     ["ui:inputPlaceholder"]: string,
     ["ui:splitView"]: boolean,
     ["ui:darkMode"]: boolean,
+    ["ui:examplesDropdown"]: boolean,
   };
   methods: {
     ["ui:defaultExpanded"]: boolean,
