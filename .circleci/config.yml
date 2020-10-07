@@ -85,6 +85,7 @@ workflows:
             - test
             - build
       - release:
+          context: open-rpc-deployer
           filters: *filter-only-master
           requires:
             - hold
