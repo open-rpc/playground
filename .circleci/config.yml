@@ -25,7 +25,7 @@ aliases:
 defaults: &defaults
   working_directory: ~/playground
   docker:
-    - image: circleci/node:lts
+    - image: circleci/node:12.18.4
 
 jobs:
   test:
