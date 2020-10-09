@@ -64,7 +64,7 @@
     "@types/json-schema": "^7.0.3",
     "@types/lodash": "^4.14.135",
     "@types/qs": "^6.5.3",
-    "@types/react": "^16.9.2",
+    "@types/react": "^16.9.51",
     "@types/react-dom": "^16.8.4",
     "css-mediaquery": "^0.1.2",
     "monaco-editor-webpack-plugin": "^1.7.0",
