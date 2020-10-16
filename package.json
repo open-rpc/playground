@@ -28,7 +28,7 @@
     "commander": "^2.20.0",
     "isomorphic-fetch": "^2.2.1",
     "json-schema-empty": "^1.1.1",
-    "json-schema-ref-parser": "^6.1.0",
+    "json-schema-ref-parser": "^9.0.6",
     "jsonschema": "^1.2.4",
     "lodash": "^4.17.20",
     "monaco-editor": "^0.18.1",
