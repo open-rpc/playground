@@ -25,12 +25,13 @@ import { IExample } from "./ExampleDocumentsDropdown/ExampleDocumentsDropdown";
 import Inspector from "@open-rpc/inspector";
 import useInspectorActionStore from "./stores/inspectorActionStore";
 import { useTransport, defaultTransports, ITransport } from "./hooks/useTransport";
+import fetchUrlSchemaFile from "./fetchUrlSchemaFile";
 
 const App: React.FC = () => {
-  const [defaultValue] = useDefaultEditorValue();
+  const [defaultValue, setDefaultValue] = useDefaultEditorValue();
   const [markers, setMarkers] = useState<monaco.editor.IMarker[]>([] as monaco.editor.IMarker[]);
   const [searchUrl, setSearchUrl] = searchBarStore();
-  const [results, setResults] = useState();
+  const [results, setResults] = useState<any>();
   const [error, setError] = useState<string | undefined>();
   const [notification, setNotification] = useState<ISnackBarNotification | undefined>();
   const [UISchema, setUISchemaBySection]: [IUISchema, any] = UISchemaStore();
@@ -60,13 +61,13 @@ const App: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // useEffect(() => {
-  //   const defaultExample = examples.find((e) => e.name === "petstore");
-  //   if (!defaultValue && !searchUrl && defaultExample) {
-  //     setSearchUrl(defaultExample.url);
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [defaultValue]);
+  useEffect(() => {
+    const defaultExample = examples.find((e) => e.name === "petstore");
+    if (!defaultValue && !searchUrl && defaultExample) {
+      setSearchUrl(defaultExample.url);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [defaultValue]);
 
   useEffect(() => {
     setReactJsonOptions({
@@ -76,15 +77,15 @@ const App: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [UISchema.appBar["ui:darkMode"]]);
 
-  // useEffect(() => {
-  //   if (results && editor) {
-  //     editor.setValue(results);
-  //   }
-  //   if (results) {
-  //     setParsedSchema(results!);
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [results]);
+  useEffect(() => {
+    if (results && editor) {
+      editor.setValue(results);
+    }
+    if (results) {
+      setParsedSchema(results!);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [results]);
 
   useEffect(() => {
     if (error) {
@@ -95,10 +96,10 @@ const App: React.FC = () => {
     }
   }, [error]);
 
-  // useEffect(() => {
-    // setParsedSchema(defaultValue || "");
+  useEffect(() => {
+    setParsedSchema(defaultValue || "");
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [defaultValue]);
+  }, [defaultValue]);
   const [reactJsonOptions, setReactJsonOptions] = useState({
     theme: "summerfruit:inverted",
     collapseStringsAfterLength: 25,
@@ -109,14 +110,18 @@ const App: React.FC = () => {
   });
   const [transportList, setTransportList] = useState(defaultTransports);
   const currentTheme = UISchema.appBar["ui:darkMode"] ? darkTheme : lightTheme;
-  const [transport, setTransport, , connected] = useTransport(
+  const [transport, selectedTransportType, setTransportType, , connected] = useTransport(
     transportList,
     searchUrl,
-    defaultTransports[0],
-    {},
+    transportList[0],
   );
-  const [selectedTransport, setSelectedTransport] = useState(defaultTransports[0]);
   const refreshOpenRpcDocument = async () => {
+    // handle .json urls
+    if (searchUrl && searchUrl.includes(".json")) {
+      const rd = await fetchUrlSchemaFile(searchUrl);
+      setDefaultValue(rd);
+      return setResults(rd);
+    }
     try {
       const d = await transport?.sendData({
         internalID: 999999,
@@ -127,18 +132,25 @@ const App: React.FC = () => {
           method: "rpc.discover",
         },
       });
-      setResults(d);
+      const rd = JSON.stringify(d, null, 2);
+      if (rd) {
+        setDefaultValue(rd);
+        setResults(rd);
+      }
     } catch (e) {
       setError(e.message);
     }
   };
 
   useEffect(() => {
-    console.log("changedSearchUrl", searchUrl);
-    // if (searchUrl && transport) {
-    //   refreshOpenRpcDocument();
-    // }
-  }, [searchUrl]);
+    refreshOpenRpcDocument();
+  }, []);
+
+  useEffect(() => {
+    if (searchUrl && transport) {
+      refreshOpenRpcDocument();
+    }
+  }, [searchUrl, transport]);
 
   useEffect(() => {
     if (inspectorContents) {
@@ -154,9 +166,9 @@ const App: React.FC = () => {
         uiSchema={UISchema}
         examples={examples as IExample[]}
         onExampleDocumentsDropdownChange={(example: IExample) => setSearchUrl(example.url)}
-        selectedTransport={selectedTransport}
+        selectedTransport={selectedTransportType}
         transportList={transportList}
-        onTransportChange={(changedTransport) => setSelectedTransport(changedTransport)}
+        onTransportChange={(changedTransport) => setTransportType(changedTransport)}
         onTransportAdd={(addedTransport: ITransport) => {
           setTransportList((oldList) => {
             return [
@@ -195,6 +207,7 @@ const App: React.FC = () => {
             <Inspector hideToggleTheme={true} url={
               searchUrl && searchUrl.includes(".json") ? null : searchUrl
             }
+              transport={selectedTransportType.type !== "plugin" ? selectedTransportType.type : undefined}
               request={inspectorContents && inspectorContents.request}
               openrpcDocument={parsedSchema}
             />

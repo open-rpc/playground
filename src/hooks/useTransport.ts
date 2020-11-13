@@ -138,7 +138,7 @@ type TUseTransport = (
   url: string,
   defaultTransportType: ITransport,
   transportOptions?: any,
-) => [Transport | undefined, (t: ITransport) => void, JSONRPCError | undefined, boolean];
+) => [Transport | undefined, ITransport, (t: ITransport) => void, JSONRPCError | undefined, boolean];
 
 export const useTransport: TUseTransport = (transports, url, defaultTransportType, transportOptions) => {
   const [transport, setTransport] = useState<Transport>();
@@ -147,6 +147,7 @@ export const useTransport: TUseTransport = (transports, url, defaultTransportTyp
     [ITransport | undefined, Dispatch<ITransport>] = useState(defaultTransportType);
   const [error, setError]: [JSONRPCError | undefined, Dispatch<JSONRPCError | undefined>] = useState();
   useEffect(() => {
+    console.log("transport changing");
     if (url === "" || url === undefined) {
       setTransport(undefined);
       return;
@@ -169,11 +170,12 @@ export const useTransport: TUseTransport = (transports, url, defaultTransportTyp
         setError(e);
       });
   }, [transportType, url, transports, transportOptions]);
+
   const setSelectedTransportType = async (t: ITransport) => {
     setTransportConnected(false);
     setTransportType(t);
   };
-  return [transport, setSelectedTransportType, error, transportConnected];
+  return [transport, transportType, setSelectedTransportType, error, transportConnected];
 };
 
 export default useTransport;
