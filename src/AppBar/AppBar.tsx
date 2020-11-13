@@ -33,8 +33,8 @@ const styles = (theme: Theme) => ({
 interface IProps extends WithStyles<typeof styles> {
   uiSchema?: IUISchema;
   examples?: IExample[];
-  transportList: ITransport[];
-  selectedTransport: ITransport;
+  transportList?: ITransport[];
+  selectedTransport?: ITransport;
   searchBarUrl?: string | undefined;
   onChangeUrl?: any;
   onDarkModeChange?: any;

@@ -6,10 +6,10 @@ import DropdownArrowIcon from "@material-ui/icons/ArrowDropDown";
 import { ITransport } from "../hooks/useTransport";
 
 interface IProps {
-  transports: ITransport[];
-  selectedTransport: ITransport;
-  onChange: (changedTransport: ITransport) => void;
-  onAddTransport: (addedTransport: ITransport) => void;
+  transports?: ITransport[];
+  selectedTransport?: ITransport;
+  onChange?: (changedTransport: ITransport) => void;
+  onAddTransport?: (addedTransport: ITransport) => void;
   style?: CSSProperties;
 }
 
@@ -22,7 +22,9 @@ const TransportDropdown: React.FC<IProps> = ({ selectedTransport, transports, on
   };
   const handleMenuItemClick = (transport: ITransport) => {
     setAnchorEl(null);
-    onChange(transport);
+    if (onChange) {
+      onChange(transport);
+    }
   };
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -55,7 +57,9 @@ const TransportDropdown: React.FC<IProps> = ({ selectedTransport, transports, on
         name: customTransportName,
         uri: customTransportUri,
       };
-      onAddTransport(t);
+      if (onAddTransport) {
+        onAddTransport(t);
+      }
       setDialogOpen(false);
     }
   };
@@ -121,7 +125,7 @@ const TransportDropdown: React.FC<IProps> = ({ selectedTransport, transports, on
               open={Boolean(dialogMenuAnchorEl)}
               onClose={handleDialogAnchorClose}
             >
-              {transports.filter((value) => value.type !== "plugin").map((transport, i) => (
+              {transports && transports.filter((value) => value.type !== "plugin").map((transport, i) => (
                 <MenuItem
                   onClick={() => handleCustomTransportDialogMenuItemClick(transport)}
                 >{transport.name}</MenuItem>
@@ -152,7 +156,7 @@ const TransportDropdown: React.FC<IProps> = ({ selectedTransport, transports, on
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        {transports.map((transport, i) => (
+        {transports && transports.map((transport, i) => (
           <MenuItem onClick={() => handleMenuItemClick(transport)}>{transport.name}</MenuItem>
         ))}
         <MenuItem onClick={() => setDialogOpen(true)}>
