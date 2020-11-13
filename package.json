@@ -41,7 +41,8 @@
     "react-json-view": "^1.19.1",
     "react-markdown": "^4.1.0",
     "react-split-pane": "^0.1.87",
-    "reusable": "^1.0.0-alpha.12"
+    "reusable": "^1.0.0-alpha.12",
+    "use-debounce": "^5.0.4"
   },
   "scripts": {
     "start": "rescripts start",

@@ -147,7 +147,6 @@ export const useTransport: TUseTransport = (transports, url, defaultTransportTyp
     [ITransport | undefined, Dispatch<ITransport>] = useState(defaultTransportType);
   const [error, setError]: [JSONRPCError | undefined, Dispatch<JSONRPCError | undefined>] = useState();
   useEffect(() => {
-    console.log("transport changing");
     if (url === "" || url === undefined) {
       setTransport(undefined);
       return;

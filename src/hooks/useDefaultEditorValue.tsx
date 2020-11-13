@@ -6,7 +6,6 @@ function useDefaultEditorValue(): [string | null, Dispatch<any>] {
     return window.localStorage.getItem("schema");
   });
   const setDefaultEditorValue = (str: string) => {
-    console.log("setting", str);
     _.defer(() => window.localStorage.setItem("schema", str));
     setDefaultValue(str);
   };

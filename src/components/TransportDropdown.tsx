@@ -22,7 +22,6 @@ const TransportDropdown: React.FC<IProps> = ({ selectedTransport, transports, on
   };
   const handleMenuItemClick = (transport: ITransport) => {
     setAnchorEl(null);
-    // this forces language change for react + i18n react
     onChange(transport);
   };
 

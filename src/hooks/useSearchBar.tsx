@@ -1,7 +1,4 @@
-import { useState, useEffect, Dispatch } from "react";
-import { isEmpty } from "lodash";
-import fetchUrlSchemaFile from "../fetchUrlSchemaFile";
-import fetchSchemaFromRpcDiscover from "../fetchSchemaFromRpcDiscover";
+import { useState, Dispatch } from "react";
 
 interface ISearchBarResponse {
   results: any;

@@ -27,11 +27,13 @@ import useInspectorActionStore from "./stores/inspectorActionStore";
 import { useTransport, defaultTransports, ITransport } from "./hooks/useTransport";
 import fetchUrlSchemaFile from "./fetchUrlSchemaFile";
 import queryParamsStore from "./stores/queryParamsStore";
+import { useDebounce } from "use-debounce";
 
 const App: React.FC = () => {
   const [defaultValue, setDefaultValue] = useDefaultEditorValue();
   const [markers, setMarkers] = useState<monaco.editor.IMarker[]>([] as monaco.editor.IMarker[]);
   const [searchUrl, setSearchUrl] = searchBarStore();
+  const [searchUrlDebounced] = useDebounce(searchUrl, 1000);
   const [results, setResults] = useState<any>();
   const [error, setError] = useState<string | undefined>();
   const [notification, setNotification] = useState<ISnackBarNotification | undefined>();
@@ -119,15 +121,15 @@ const App: React.FC = () => {
     return queryTransport || transportList[0];
   };
   const currentTheme = UISchema.appBar["ui:darkMode"] ? darkTheme : lightTheme;
-  const [transport, selectedTransportType, setTransportType, , connected] = useTransport(
+  const [transport, selectedTransportType, setTransportType] = useTransport(
     transportList,
-    searchUrl,
+    searchUrlDebounced,
     getQueryTransport(),
   );
   const refreshOpenRpcDocument = async () => {
     // handle .json urls
-    if (searchUrl && searchUrl.includes(".json")) {
-      const rd = await fetchUrlSchemaFile(searchUrl);
+    if (searchUrlDebounced && searchUrlDebounced.includes(".json")) {
+      const rd = await fetchUrlSchemaFile(searchUrlDebounced);
       setDefaultValue(rd);
       return setResults(rd);
     }
@@ -152,10 +154,11 @@ const App: React.FC = () => {
   };
 
   useEffect(() => {
-    if (searchUrl && transport) {
+    if (searchUrlDebounced && transport) {
       refreshOpenRpcDocument();
     }
-  }, [searchUrl, transport]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchUrlDebounced, transport]);
 
   useEffect(() => {
     if (inspectorContents) {
@@ -210,7 +213,7 @@ const App: React.FC = () => {
         right={
           <>
             <Inspector hideToggleTheme={true} url={
-              searchUrl && searchUrl.includes(".json") ? null : searchUrl
+              searchUrlDebounced && searchUrlDebounced.includes(".json") ? null : searchUrlDebounced
             }
               transport={selectedTransportType.type !== "plugin" ? selectedTransportType.type : undefined}
               request={inspectorContents && inspectorContents.request}
