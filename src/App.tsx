@@ -26,6 +26,7 @@ import Inspector from "@open-rpc/inspector";
 import useInspectorActionStore from "./stores/inspectorActionStore";
 import { useTransport, defaultTransports, ITransport } from "./hooks/useTransport";
 import fetchUrlSchemaFile from "./fetchUrlSchemaFile";
+import queryParamsStore from "./stores/queryParamsStore";
 
 const App: React.FC = () => {
   const [defaultValue, setDefaultValue] = useDefaultEditorValue();
@@ -40,6 +41,7 @@ const App: React.FC = () => {
   const [parsedSchema, setParsedSchema] = useParsedSchema(
     defaultValue ? JSON.parse(defaultValue) : null,
   );
+  const [query] = queryParamsStore();
   const setHorizontalSplit = (val: boolean) => {
     if (editor) {
       setTimeout(() => {
@@ -109,11 +111,18 @@ const App: React.FC = () => {
     name: false,
   });
   const [transportList, setTransportList] = useState(defaultTransports);
+  const getQueryTransport = () => {
+    if (!query.transport) {
+      return transportList[0];
+    }
+    const queryTransport = transportList.find((item) => item.type === query.transport);
+    return queryTransport || transportList[0];
+  };
   const currentTheme = UISchema.appBar["ui:darkMode"] ? darkTheme : lightTheme;
   const [transport, selectedTransportType, setTransportType, , connected] = useTransport(
     transportList,
     searchUrl,
-    transportList[0],
+    getQueryTransport(),
   );
   const refreshOpenRpcDocument = async () => {
     // handle .json urls
@@ -141,10 +150,6 @@ const App: React.FC = () => {
       setError(e.message);
     }
   };
-
-  useEffect(() => {
-    refreshOpenRpcDocument();
-  }, []);
 
   useEffect(() => {
     if (searchUrl && transport) {
