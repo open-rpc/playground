@@ -41,7 +41,8 @@
     "react-json-view": "^1.19.1",
     "react-markdown": "^4.1.0",
     "react-split-pane": "^0.1.87",
-    "reusable": "^1.0.0-alpha.12"
+    "reusable": "^1.0.0-alpha.12",
+    "use-debounce": "^5.0.4"
   },
   "scripts": {
     "start": "rescripts start",
@@ -70,7 +71,7 @@
     "monaco-editor-webpack-plugin": "^1.7.0",
     "react-scripts": "^3.4.3",
     "tslint": "^5.18.0",
-    "typescript": "^3.5.2"
+    "typescript": "^3.7.3"
   },
   "rescripts": [
     "rescript-monaco"

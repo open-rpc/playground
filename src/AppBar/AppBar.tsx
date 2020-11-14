@@ -19,6 +19,8 @@ import EditIcon from "@material-ui/icons/Edit";
 import { IUISchema } from "../UISchema";
 import SearchBar from "../SearchBar/SearchBar";
 import ExampleDocumentsDropdown, { IExample } from "../ExampleDocumentsDropdown/ExampleDocumentsDropdown";
+import { ITransport } from "../hooks/useTransport";
+import TransportDropdown from "../components/TransportDropdown";
 
 const styles = (theme: Theme) => ({
   title: {
@@ -31,11 +33,15 @@ const styles = (theme: Theme) => ({
 interface IProps extends WithStyles<typeof styles> {
   uiSchema?: IUISchema;
   examples?: IExample[];
+  transportList?: ITransport[];
+  selectedTransport?: ITransport;
   searchBarUrl?: string | undefined;
   onChangeUrl?: any;
   onDarkModeChange?: any;
   onSplitViewChange?: (split: boolean) => any;
   onExampleDocumentsDropdownChange?: (example: IExample) => any;
+  onTransportAdd: (transport: ITransport) => any;
+  onTransportChange: (transport: ITransport) => any;
 }
 
 class ApplicationBar extends Component<IProps> {
@@ -52,7 +58,7 @@ class ApplicationBar extends Component<IProps> {
       <AppBar position="fixed" color="default" elevation={0} className={classes.appBar}>
         <Toolbar>
           <Grid alignItems="center" container>
-            <Grid item xs={6} sm={6} md={3} direction="row" container>
+            <Grid item xs={6} sm={6} md={2} direction="row" container>
               {this.props.uiSchema && this.props.uiSchema.appBar && this.props.uiSchema.appBar["ui:logoUrl"] &&
                 <Grid>
                   <img
@@ -68,8 +74,19 @@ class ApplicationBar extends Component<IProps> {
               </Grid>
             </Grid>
             <Hidden smDown>
-              <Grid item container justify="center" alignItems="center" sm={6} >
-                <Grid item sm={9}>
+              <Grid item container justify="center" alignItems="center" sm={8} >
+                <Grid item>
+                  <TransportDropdown
+                    transports={this.props.transportList}
+                    onAddTransport={this.props.onTransportAdd}
+                    selectedTransport={this.props.selectedTransport}
+                    onChange={this.props.onTransportChange}
+                    style={{
+                      marginLeft: "10px",
+                    }}
+                  />
+                </Grid>
+                <Grid item sm={6}>
                   {this.props.uiSchema && this.props.uiSchema.appBar && this.props.uiSchema.appBar["ui:input"] &&
                     <Paper style={{
                       background: "rgba(0, 0, 0, 0.1)",
@@ -85,12 +102,12 @@ class ApplicationBar extends Component<IProps> {
                   }
                 </Grid>
                 {this.props.uiSchema && this.props.uiSchema.appBar &&
-                 this.props.uiSchema.appBar["ui:examplesDropdown"] &&
+                  this.props.uiSchema.appBar["ui:examplesDropdown"] &&
                   <ExampleDocumentsDropdown examples={examples} onChange={onExampleDocumentsDropdownChange} />
                 }
               </Grid>
             </Hidden>
-            <Grid item xs={6} sm={6} md={3} container justify="flex-end" alignItems="center">
+            <Grid item xs={6} sm={6} md={2} container justify="flex-end" alignItems="center">
               {uiSchema && uiSchema.appBar["ui:splitView"] ?
                 <Tooltip title={"Full Screen"}>
                   <IconButton onClick={() => {

@@ -8,7 +8,6 @@
     ],
     "jsx": "react",
     "outDir": "./build",
-    "strict": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "allowJs": true,
@@ -17,7 +16,8 @@
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
     "isolatedModules": true,
-    "noEmit": true
+    "noEmit": true,
+    "strict": true
   },
   "include": [
     "src"

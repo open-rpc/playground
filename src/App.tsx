@@ -24,11 +24,18 @@ import useMonacoVimMode from "./hooks/useMonacoVimMode";
 import { IExample } from "./ExampleDocumentsDropdown/ExampleDocumentsDropdown";
 import Inspector from "@open-rpc/inspector";
 import useInspectorActionStore from "./stores/inspectorActionStore";
+import { useTransport, defaultTransports, ITransport } from "./hooks/useTransport";
+import fetchUrlSchemaFile from "./fetchUrlSchemaFile";
+import queryParamsStore from "./stores/queryParamsStore";
+import { useDebounce } from "use-debounce";
 
 const App: React.FC = () => {
-  const [defaultValue] = useDefaultEditorValue();
+  const [defaultValue, setDefaultValue] = useDefaultEditorValue();
   const [markers, setMarkers] = useState<monaco.editor.IMarker[]>([] as monaco.editor.IMarker[]);
-  const [searchUrl, { results, error }, setSearchUrl] = searchBarStore();
+  const [searchUrl, setSearchUrl] = searchBarStore();
+  const [searchUrlDebounced] = useDebounce(searchUrl, 1000);
+  const [results, setResults] = useState<any>();
+  const [error, setError] = useState<string | undefined>();
   const [notification, setNotification] = useState<ISnackBarNotification | undefined>();
   const [UISchema, setUISchemaBySection]: [IUISchema, any] = UISchemaStore();
   const [editor, setEditor]: [any, Dispatch<{}>] = useState();
@@ -36,6 +43,7 @@ const App: React.FC = () => {
   const [parsedSchema, setParsedSchema] = useParsedSchema(
     defaultValue ? JSON.parse(defaultValue) : null,
   );
+  const [query] = queryParamsStore();
   const setHorizontalSplit = (val: boolean) => {
     if (editor) {
       setTimeout(() => {
@@ -104,7 +112,54 @@ const App: React.FC = () => {
     indentWidth: 2,
     name: false,
   });
+  const [transportList, setTransportList] = useState(defaultTransports);
+  const getQueryTransport = () => {
+    if (!query.transport) {
+      return transportList[0];
+    }
+    const queryTransport = transportList.find((item) => item.type === query.transport);
+    return queryTransport || transportList[0];
+  };
   const currentTheme = UISchema.appBar["ui:darkMode"] ? darkTheme : lightTheme;
+  const [transport, selectedTransportType, setTransportType] = useTransport(
+    transportList,
+    searchUrlDebounced,
+    getQueryTransport(),
+  );
+  const refreshOpenRpcDocument = async () => {
+    // handle .json urls
+    if (searchUrlDebounced && searchUrlDebounced.includes(".json")) {
+      const rd = await fetchUrlSchemaFile(searchUrlDebounced);
+      setDefaultValue(rd);
+      return setResults(rd);
+    }
+    try {
+      const d = await transport?.sendData({
+        internalID: 999999,
+        request: {
+          jsonrpc: "2.0",
+          params: [],
+          id: 999999,
+          method: "rpc.discover",
+        },
+      });
+      const rd = JSON.stringify(d, null, 2);
+      if (rd) {
+        setDefaultValue(rd);
+        setResults(rd);
+      }
+    } catch (e) {
+      setError(e.message);
+    }
+  };
+
+  useEffect(() => {
+    if (searchUrlDebounced && transport) {
+      refreshOpenRpcDocument();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchUrlDebounced, transport]);
+
   useEffect(() => {
     if (inspectorContents) {
       setHorizontalSplit(true);
@@ -119,6 +174,17 @@ const App: React.FC = () => {
         uiSchema={UISchema}
         examples={examples as IExample[]}
         onExampleDocumentsDropdownChange={(example: IExample) => setSearchUrl(example.url)}
+        selectedTransport={selectedTransportType}
+        transportList={transportList}
+        onTransportChange={(changedTransport) => setTransportType(changedTransport)}
+        onTransportAdd={(addedTransport: ITransport) => {
+          setTransportList((oldList) => {
+            return [
+              ...oldList,
+              addedTransport,
+            ];
+          });
+        }}
         onSplitViewChange={(value) => {
           setUISchemaBySection({
             value,
@@ -147,8 +213,9 @@ const App: React.FC = () => {
         right={
           <>
             <Inspector hideToggleTheme={true} url={
-              searchUrl && searchUrl.includes(".json") ? null : searchUrl
+              searchUrlDebounced && searchUrlDebounced.includes(".json") ? null : searchUrlDebounced
             }
+              transport={selectedTransportType.type !== "plugin" ? selectedTransportType.type : undefined}
               request={inspectorContents && inspectorContents.request}
               openrpcDocument={parsedSchema}
             />
