@@ -40,7 +40,7 @@
     "react-dom": "^16.12.0",
     "react-json-view": "^1.19.1",
     "react-markdown": "^4.1.0",
-    "react-split-pane": "^0.1.87",
+    "react-split-pane": "^0.1.92",
     "reusable": "^1.0.0-alpha.12",
     "use-debounce": "^5.0.4"
   },
