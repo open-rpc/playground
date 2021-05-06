@@ -30,7 +30,7 @@
     "json-schema-empty": "^1.1.1",
     "json-schema-ref-parser": "^6.1.0",
     "jsonschema": "^1.2.4",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "monaco-editor": "^0.18.1",
     "monaco-vim": "0.0.14",
     "open": "^6.4.0",
