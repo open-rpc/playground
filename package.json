@@ -13,7 +13,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@etclabscore/monaco-add-json-schema-diagnostics": "^1.0.3",
-    "@etclabscore/react-monaco-editor": "^1.0.4",
+    "@etclabscore/react-monaco-editor": "^1.1.1",
     "@material-ui/core": "4.9.8",
     "@material-ui/icons": "4.9.1",
     "@material-ui/lab": "4.0.0-alpha.47",
