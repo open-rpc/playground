@@ -7,6 +7,8 @@ export interface IUISchema {
     ["ui:splitView"]: boolean,
     ["ui:darkMode"]: boolean,
     ["ui:examplesDropdown"]: boolean,
+    ["ui:edit"]: boolean,
+    ["ui:transports"]: boolean,
   };
   methods: {
     ["ui:defaultExpanded"]: boolean,
