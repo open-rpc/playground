@@ -46,10 +46,14 @@ examples:
 
 - set splitView to false
   - `http://playground.open-rpc.org/?uiSchema[appBar][ui:splitView]=false`
+- disable the appbar splitView
+  - `http://playground.open-rpc.org/?uiSchema[appBar][ui:edit]=false`
 - hide appbar input bar
   - `http://playground.open-rpc.org/?uiSchema[appBar][ui:input]=false`
 - hide appbar examples dropdown
   - `http://playground.open-rpc.org/?uiSchema[appBar][ui:examplesDropdown]=false`
+- hide appbar transports
+  - `http://playground.open-rpc.org/?uiSchema[appBar][ui:transports]=false`
 - provide custom name and logo
 - `http://playground.open-rpc.org/?uiSchema[appBar][ui:title]=My Site&uiSchema[appBar][ui:logoUrl]=https://github.com/open-rpc/design/raw/master/icons/open-rpc-logo-noText/open-rpc-logo-noText%20(PNG)/128x128.png`
 
@@ -64,6 +68,45 @@ https://playground.open-rpc.org/?schemaUrl=https://gist.githubusercontent.com/[g
 - use a _specific revision_ for a Gist file:
 ```
 https://playground.open-rpc.org/?schemaUrl=https://gist.githubusercontent.com/[gist username]/[gist ID]/raw/[gist commit ID]/[file name]
+```
+
+## Configuration via Environment Variables
+
+If you require to have different default values for the `uiSchema`, `schemaUrl` or some other labels in the page that are not part of the `uiSchema`, you can use the below environment variables in your desired `.env` files before starting the app or before building it:
+
+
+| Variable    | Description |
+| ----------- | ----------- |
+| REACT_APP_DEFAULT_UISCHEMA_APPBAR_UI_INPUT | Default value for `uiSchema[appBar][ui:input]` |
+| REACT_APP_DEFAULT_UISCHEMA_APPBAR_UI_INPUTPLACEHOLDER | Default value for `uiSchema[appBar][ui:inputPlaceholder]` |
+| REACT_APP_DEFAULT_UISCHEMA_APPBAR_UI_LOGOURL | Default value for `uiSchema[appBar][ui:logoUrl]` |
+| REACT_APP_DEFAULT_UISCHEMA_APPBAR_UI_SPLITVIEW | Default value for `uiSchema[appBar][ui:splitView]` |
+| REACT_APP_DEFAULT_UISCHEMA_APPBAR_UI_DARKMODE | Default value for `uiSchema[appBar][ui:darkMode]` |
+| REACT_APP_DEFAULT_UISCHEMA_APPBAR_UI_TITLE | Default value for `uiSchema[appBar][ui:title]` |
+| REACT_APP_DEFAULT_UISCHEMA_APPBAR_UI_EXAMPLESDROPDOWN | Default value for `uiSchema[appBar][ui:examplesDropdown]` |
+| REACT_APP_DEFAULT_UISCHEMA_APPBAR_UI_EDIT | Default value for `uiSchema[appBar][ui:edit]` |
+| REACT_APP_DEFAULT_UISCHEMA_APPBAR_UI_TRANSPORTS | Default value for `uiSchema[appBar][ui:transports]` |
+| REACT_APP_DEFAULT_UISCHEMA_METHODS_UI_DEFAULTEXPANDED | Default value for `uiSchema[methods][ui:defaultExpanded]` |
+| REACT_APP_DEFAULT_UISCHEMA_METHODS_UI_METHODPLUGINS | Default value for `uiSchema[methods][ui:methodPlugins]` |
+| REACT_APP_DEFAULT_UISCHEMA_PARAMS_UI_DEFAULTEXPANDED | Default value for `uiSchema[params][ui:defaultExpanded]` |
+| REACT_APP_DEFAULT_SCHEMAURL | Default value for `schemaUrl` |
+| REACT_APP_EXAMPLE_DOCUMENTS_DROPDOWN_TITLE | Default title value for the examples drop-down |
+| REACT_APP_EXAMPLE_DOCUMENTS_DROPDOWN_TEXT | Default text value for the examples drop-down |
+| REACT_APP_EXAMPLE_DOCUMENTS_DROPDOWN_LIST | Default list of examples |
+
+*.env.development for a view only case*
+```
+REACT_APP_DEFAULT_UISCHEMA_APPBAR_UI_INPUT=false
+REACT_APP_DEFAULT_UISCHEMA_APPBAR_UI_LOGOURL="https://www.shutterstock.com/image-vector/abstract-initial-letter-s-logo-260nw-1862762845.jpg"
+REACT_APP_DEFAULT_UISCHEMA_APPBAR_UI_SPLITVIEW=false
+REACT_APP_DEFAULT_UISCHEMA_APPBAR_UI_TITLE="Company Services"
+REACT_APP_DEFAULT_UISCHEMA_APPBAR_UI_EXAMPLESDROPDOWN=true
+REACT_APP_DEFAULT_UISCHEMA_APPBAR_UI_EDIT=false
+REACT_APP_DEFAULT_UISCHEMA_APPBAR_UI_TRANSPORTS=false
+REACT_APP_DEFAULT_SCHEMAURL="https://raw.githubusercontent.com/open-rpc/examples/master/service-descriptions/petstore-openrpc.json"
+REACT_APP_EXAMPLE_DOCUMENTS_DROPDOWN_TITLE="Deployed Services"
+REACT_APP_EXAMPLE_DOCUMENTS_DROPDOWN_TEXT="Deployed Services"
+REACT_APP_EXAMPLE_DOCUMENTS_DROPDOWN_LIST=[{"name":"Pet Store","url":"https://raw.githubusercontent.com/open-rpc/examples/master/service-descriptions/petstore-openrpc.json"},{"name":"Shipping Service","url":"https://myserver.com/shipping/openrpc.json"},{"name":"Order Service","url":"https://myserver.com/order/openrpc.json"}]
 ```
 
 ## Resources and Inspirations

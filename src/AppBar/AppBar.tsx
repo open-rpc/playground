@@ -75,6 +75,7 @@ class ApplicationBar extends Component<IProps> {
             </Grid>
             <Hidden smDown>
               <Grid item container justify="center" alignItems="center" sm={8} >
+                {this.props.uiSchema && this.props.uiSchema.appBar && this.props.uiSchema.appBar["ui:transports"] &&
                 <Grid item>
                   <TransportDropdown
                     transports={this.props.transportList}
@@ -86,6 +87,7 @@ class ApplicationBar extends Component<IProps> {
                     }}
                   />
                 </Grid>
+                }
                 <Grid item sm={6}>
                   {this.props.uiSchema && this.props.uiSchema.appBar && this.props.uiSchema.appBar["ui:input"] &&
                     <Paper style={{
@@ -107,8 +109,10 @@ class ApplicationBar extends Component<IProps> {
                 }
               </Grid>
             </Hidden>
+
             <Grid item xs={6} sm={6} md={2} container justify="flex-end" alignItems="center">
-              {uiSchema && uiSchema.appBar["ui:splitView"] ?
+            {uiSchema && uiSchema.appBar["ui:edit"] ?
+              uiSchema && uiSchema.appBar["ui:splitView"] ?
                 <Tooltip title={"Full Screen"}>
                   <IconButton onClick={() => {
                     if (onSplitViewChange) {
@@ -128,7 +132,9 @@ class ApplicationBar extends Component<IProps> {
                     <EditIcon />
                   </IconButton>
                 </Tooltip>
-              }
+              :
+              ''
+            }
               <Tooltip title="Toggle Dark Theme">
                 <IconButton>
                   {uiSchema && uiSchema.appBar["ui:darkMode"] ?

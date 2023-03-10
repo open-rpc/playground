@@ -1,4 +1,4 @@
-export default [
+let defaultExamples = [
   {
     name: "api-with-examples",
     url: "https://raw.githubusercontent.com/open-rpc/examples/master/service-descriptions/api-with-examples-openrpc.json", //tslint:disable-line
@@ -28,3 +28,9 @@ export default [
     url: "https://raw.githubusercontent.com/open-rpc/examples/master/service-descriptions/empty-openrpc.json", //tslint:disable-line
   },
 ];
+
+if (process.env.REACT_APP_EXAMPLE_DOCUMENTS_DROPDOWN_LIST) {
+  defaultExamples = JSON.parse(process.env.REACT_APP_EXAMPLE_DOCUMENTS_DROPDOWN_LIST);
+}
+
+export default defaultExamples;
