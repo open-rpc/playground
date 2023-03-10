@@ -27,7 +27,7 @@ export default createStore(() => {
         false,
       "ui:title": process.env.REACT_APP_DEFAULT_UISCHEMA_APPBAR_UI_TITLE ? 
         process.env.REACT_APP_DEFAULT_UISCHEMA_APPBAR_UI_TITLE : 
-        "OpenRPC Definitions",
+        "Playground",
       "ui:examplesDropdown": process.env.REACT_APP_DEFAULT_UISCHEMA_APPBAR_UI_EXAMPLESDROPDOWN ? 
         (process.env.REACT_APP_DEFAULT_UISCHEMA_APPBAR_UI_EXAMPLESDROPDOWN.toLowerCase() === "true") : 
         true,
