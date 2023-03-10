@@ -90,9 +90,9 @@ If you require to have different default values for the `uiSchema`, `schemaUrl` 
 | REACT_APP_DEFAULT_UISCHEMA_METHODS_UI_METHODPLUGINS | Default value for `uiSchema[methods][ui:methodPlugins]` |
 | REACT_APP_DEFAULT_UISCHEMA_PARAMS_UI_DEFAULTEXPANDED | Default value for `uiSchema[params][ui:defaultExpanded]` |
 | REACT_APP_DEFAULT_SCHEMAURL | Default value for `schemaUrl` |
-| REACT_APP_EXAMPLE_DOCUMNETS_DROPDOWN_TITLE | Default title value for the examples drop-down |
-| REACT_APP_EXAMPLE_DOCUMNETS_DROPDOWN_TEXT | Default text value for the examples drop-down |
-| REACT_APP_EXAMPLE_DOCUMNETS_DROPDOWN_LIST | Default list of examples |
+| REACT_APP_EXAMPLE_DOCUMENTS_DROPDOWN_TITLE | Default title value for the examples drop-down |
+| REACT_APP_EXAMPLE_DOCUMENTS_DROPDOWN_TEXT | Default text value for the examples drop-down |
+| REACT_APP_EXAMPLE_DOCUMENTS_DROPDOWN_LIST | Default list of examples |
 
 *.env.development for a view only case*
 ```
@@ -104,9 +104,9 @@ REACT_APP_DEFAULT_UISCHEMA_APPBAR_UI_EXAMPLESDROPDOWN=true
 REACT_APP_DEFAULT_UISCHEMA_APPBAR_UI_EDIT=false
 REACT_APP_DEFAULT_UISCHEMA_APPBAR_UI_TRANSPORTS=false
 REACT_APP_DEFAULT_SCHEMAURL="https://raw.githubusercontent.com/open-rpc/examples/master/service-descriptions/petstore-openrpc.json"
-REACT_APP_EXAMPLE_DOCUMNETS_DROPDOWN_TITLE="Deployed Services"
-REACT_APP_EXAMPLE_DOCUMNETS_DROPDOWN_TEXT="Deployed Services"
-REACT_APP_EXAMPLE_DOCUMNETS_DROPDOWN_LIST=[{"name":"Pet Store","url":"https://raw.githubusercontent.com/open-rpc/examples/master/service-descriptions/petstore-openrpc.json"},{"name":"Shipping Service","url":"https://myserver.com/shipping/openrpc.json"},{"name":"Order Service","url":"https://myserver.com/order/openrpc.json"}]
+REACT_APP_EXAMPLE_DOCUMENTS_DROPDOWN_TITLE="Deployed Services"
+REACT_APP_EXAMPLE_DOCUMENTS_DROPDOWN_TEXT="Deployed Services"
+REACT_APP_EXAMPLE_DOCUMENTS_DROPDOWN_LIST=[{"name":"Pet Store","url":"https://raw.githubusercontent.com/open-rpc/examples/master/service-descriptions/petstore-openrpc.json"},{"name":"Shipping Service","url":"https://myserver.com/shipping/openrpc.json"},{"name":"Order Service","url":"https://myserver.com/order/openrpc.json"}]
 ```
 
 ## Resources and Inspirations

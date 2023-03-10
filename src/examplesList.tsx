@@ -29,8 +29,8 @@ let defaultExamples = [
   },
 ];
 
-if (process.env.REACT_APP_EXAMPLE_DOCUMNETS_DROPDOWN_LIST) {
-  defaultExamples = JSON.parse(process.env.REACT_APP_EXAMPLE_DOCUMNETS_DROPDOWN_LIST);
+if (process.env.REACT_APP_EXAMPLE_DOCUMENTS_DROPDOWN_LIST) {
+  defaultExamples = JSON.parse(process.env.REACT_APP_EXAMPLE_DOCUMENTS_DROPDOWN_LIST);
 }
 
 export default defaultExamples;

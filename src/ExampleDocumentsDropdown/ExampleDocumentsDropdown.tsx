@@ -36,16 +36,16 @@ const ExampleDocumentsDropdown: React.FC<IProps> = ({ examples, onChange }) => {
 
   return (
     <>
-      <Tooltip title={process.env.REACT_APP_EXAMPLE_DOCUMNETS_DROPDOWN_TITLE ? 
-        process.env.REACT_APP_EXAMPLE_DOCUMNETS_DROPDOWN_TITLE : 
+      <Tooltip title={process.env.REACT_APP_EXAMPLE_DOCUMENTS_DROPDOWN_TITLE ? 
+        process.env.REACT_APP_EXAMPLE_DOCUMENTS_DROPDOWN_TITLE : 
         "Example OpenRPC Documents"}>
         <Button
           onClick={handleClick}
           variant="outlined"
           endIcon={<DropdownIcon />}
           style={{ height: "38px", fontSize: "11px", marginLeft: "10px" }}
-        >{process.env.REACT_APP_EXAMPLE_DOCUMNETS_DROPDOWN_TEXT ? 
-          process.env.REACT_APP_EXAMPLE_DOCUMNETS_DROPDOWN_TEXT : 
+        >{process.env.REACT_APP_EXAMPLE_DOCUMENTS_DROPDOWN_TEXT ? 
+          process.env.REACT_APP_EXAMPLE_DOCUMENTS_DROPDOWN_TEXT : 
           "examples"}</Button>
       </Tooltip>
       <Menu
