@@ -59,7 +59,7 @@
     "@rescripts/cli": "0.0.13",
     "@rescripts/utilities": "0.0.6",
     "@types/classnames": "^2.2.9",
-    "@types/css-mediaquery": "^0.1.0",
+    "@types/css-mediaquery": "^0.1.1",
     "@types/jest": "^24.0.23",
     "@types/json-schema": "^7.0.3",
     "@types/lodash": "^4.14.185",
